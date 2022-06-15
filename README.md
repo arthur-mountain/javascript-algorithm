@@ -2,6 +2,8 @@
 Implement algorithm in javascript.
 
 ---
+## 排序:
+
 ####  bubble sort (n²)
     每一輪一路往後比較，如果【前一個元素比後一個元素大】就【直接兩兩交換】，每輪排序完後，可以排序出後面較大的值
 
@@ -26,3 +28,11 @@ Implement algorithm in javascript.
     P.S.
         若【基準點落在最大值或最小值】，O(n²)
         若【基準點落在中間】，O(nlogn)
+
+## 搜尋:
+
+####  binarySearch (log n)
+    在【已排序】的陣列中，每次尋找皆先選取【中間值】，
+    將【目標值】和【中間值】進行比較後，
+    【往右 or 往左】的小陣列中重複以上動作，
+    直到【目標值】等於【中間值】
