@@ -1,28 +1,35 @@
 const main = (str) => {
   const romanMap = {
-    "I": 1,
-    "V": 5,
-    "X": 10,
-    "L": 50,
-    "C": 100,
-    "D": 500,
-    "M": 1000,
+    I: 1,
+    V: 5,
+    X: 10,
+    L: 50,
+    C: 100,
+    D: 500,
+    M: 1000,
   };
 
-  return str.split("").reduce((acc, curr, aryIdx, ary) => {
-    const v1 = romanMap[curr];
-    const v2 = romanMap[ary[aryIdx + 1]];
+  let i = 0;
+  let result = 0;
+  while (true) {
+    if (!str[i]) break;
 
-    if (!v2) return acc > v1 ? acc + v1 : acc;
+    const v1 = romanMap[str[i]];
+    const v2 = romanMap[str[i + 1]];
 
-    if (v2 > v1) return acc + v2 - v1;
+    if (v2 > v1) {
+      result += v2 - v1;
+      i++; // subtraction should add additional ++
+    } else {
+      result += v1;
+    }
 
-    return acc + v1;
-  }, 0);
+    i++;
+  }
+
+  return result;
 };
 
-console.log("1. Roman To Integer: %s === 9", main("IX"));
 console.log("2. Roman To Integer: %s === 3", main("III"));
-console.log("3. Roman To Integer: %s === 30", main("XXX"));
-console.log("3. Roman To Integer: %s === 33", main("XXXIII"));
-console.log("3. Roman To Integer: %s === 88", main("LXXXVIII"));
+console.log("3. Roman To Integer: %s === 58", main("LVIII"));
+console.log("4. Roman To Integer: %s === 1994", main("MCMXCIV"));
