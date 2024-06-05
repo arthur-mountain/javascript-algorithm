@@ -29,6 +29,7 @@ const myAtoi = (s) => {
       }
 
       if (s[i] === "0") {
+        // NOTE: there're still add zero as leading number that processing by javascript engine, could we make it better?
         num += s[i];
         i++;
         continue;
