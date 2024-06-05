@@ -55,16 +55,19 @@ const myAtoi = (s) => {
 
   num = +(sign + num) || 0;
 
+  if (!num) return 0;
+
   // 4. check the interger is in range
   // 4.1 if gt than 2^31 -1 return 2^31 -1
   // 4.2 if lt than -2^31 return -2^31
-  const limit = 2 ** 31;
-  if (num > limit - 1) return limit - 1;
-  if (num < -limit) return -limit;
+  const MAX = 2147483647;
+  const MIN = -2147483648;
+  if (num > MAX) return MAX;
+  if (num < MIN) return MIN;
   return num;
 };
 
-console.log(myAtoi("0-1"));
+// console.log(myAtoi("0-1"));
 // console.log(myAtoi("1337c0d3"));
 // console.log(myAtoi("42"));
 // console.log(myAtoi("        -042"));
@@ -78,33 +81,3 @@ console.log(myAtoi("0-1"));
 // console.log(myAtoi("   +0 123"));
 // console.log(myAtoi("-5-"));
 // console.log(myAtoi("  +  413"));
-
-// while (1) {
-//   if (i > length) break;
-//   // 1. ignored leading white spaces
-//   // 2. check the next char is a sign character (+ or -)
-//   // 3. ignored the char(s) of zero until reach the first non-zero char
-//   // 3.1 if the no zero char founded, return 0
-//   if (s[i] === " ") {
-//     // if the space is not the leading char, break the loop
-//     if (num) break;
-//     i++;
-//     continue;
-//   }
-//
-//   if (s[i] === "+" || s[i] === "-") {
-//     // if the sign is not the leading char, break the loop
-//     if (num) break;
-//     sign += s[i];
-//     i++;
-//     continue;
-//   }
-//
-//   // if the first char is not a number, return 0
-//   if (!num && !isNumber(s[i])) return 0;
-//   // if reach the char is not a number, break the loop
-//   if (num && !isNumber(s[i])) break;
-//   // if is a number, add to num
-//   if (isNumber(s[i])) num += s[i];
-//   i++;
-// }
