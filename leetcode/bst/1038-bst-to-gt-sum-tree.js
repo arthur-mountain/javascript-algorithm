@@ -1,8 +1,3 @@
-const INPUTS = [
-  [4, 1, 6, 0, 2, 5, 7, null, null, null, 3, null, null, null, 8],
-  [0, null, 1],
-];
-
 /**
  * Definition for a binary tree node.
  * function TreeNode(val, left, right) {
@@ -18,29 +13,50 @@ const INPUTS = [
 const bstToGst = (root) => {
   if (!root) return root;
 
-  // calculate the sum of the right subtree
-  let current = root.right;
-  let stack = [];
-  while (current) {
-    if (current.right) stack.push(current.right);
-    current = current.right;
-  }
+  // - Go to rightmost node
+  //  - leaf node have same value
+  //  - go up to parent node
+  //    - parnet node value = parent node value + first right child value
+  //
+  //    - parent node left child value = parent node left child value + parent node value
+  //
+  //  - until go up to root node
+  //    - Go to rightmost node of left child node of root node
+  //      - leaf node = left child node value + root node value
+  //
+  //    - go up to parent node
+  //      - parnet node value = parent node value + first right child value
+  //      - parent node left child value = parent node left child value + parent node value
 
-  let sum = 0;
-  while (stack.length) {
-    const node = stack.pop();
-    if (node.right) sum += node.right.val;
-    node.val += sum;
-    sum = 0;
-  }
-
-  root.val += root.right.val;
-
-  // calculate the sum of the left subtree and always added new root val(sum of subtree include original root val)
-
-  console.log(root);
+  // const _bstToGst = (root) => {
+  //   // find the rightmost node
+  //   let current = root.right;
+  //   let stack = [root];
+  //   /* O(log n) */
+  //   while (current) {
+  //     if (current.right) stack.push(current.right);
+  //     current = current.right;
+  //   }
+  //
+  //   /* O((log n) ^ 2) */
+  //   while (stack.length) {
+  //     let node = stack.pop();
+  //
+  //     // node.val = node.val + node.right.val
+  //     if (node.right) node.val += node.right.val;
+  //
+  //     // node.left.val = node.left.val + node.val + sum of  node.left.right.val
+  //     if (node.left) {
+  //       current = node.left;
+  //       while (current) {
+  //         _bstToGst(current);
+  //         current.val += current.val + (current.right ? current.right.val : 0);
+  //         current = current.left;
+  //       }
+  //     }
+  //   }
+  // };
+  //
+  // _bstToGst(root);
+  // return root;
 };
-
-INPUTS.forEach((INPUT) => {
-  bstToGst(INPUT);
-});
