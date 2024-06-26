@@ -30,6 +30,28 @@ const bstToGst = (root) => {
   //      - parnet node value = parent node value + first right child value
   //      - parent node left child value = parent node left child value + parent node value
 
+  const sumOfLeftChilds = (root) => {};
+
+  const sumOfRightChilds = (root) => {
+    let current = root;
+    let stack = [];
+    while (current) {
+      stack.push(current);
+      current = current.right;
+    }
+
+    while (stack.length) {
+      const node = stack.pop();
+
+      if (node.right) node.val += node.right.val;
+
+      if (node.left) {
+        sumOfRightChilds(node);
+        sumOfLeftChilds(node);
+      }
+    }
+  };
+
   const getDfsRightStack = (root) => {
     let current = root;
     let stack = [];
