@@ -30,7 +30,15 @@ const bstToGst = (root) => {
   //      - parnet node value = parent node value + first right child value
   //      - parent node left child value = parent node left child value + parent node value
 
-  const sumOfLeftChilds = (root) => {};
+  const sumOfLeftChilds = (root) => {
+    sumOfRightChilds(root.left);
+
+    root.left.left.val += root.left.val;
+    while (current) {
+      current.val += root.left.val;
+      current = current.left;
+    }
+  };
 
   const sumOfRightChilds = (root) => {
     let current = root;
@@ -46,8 +54,12 @@ const bstToGst = (root) => {
       if (node.right) node.val += node.right.val;
 
       if (node.left) {
-        sumOfRightChilds(node);
-        sumOfLeftChilds(node);
+        let temp = node.left;
+        while (temp) {
+          sumOfRightChilds(node.left);
+          temp.val += node.val;
+          temp = temp.left;
+        }
       }
     }
   };
