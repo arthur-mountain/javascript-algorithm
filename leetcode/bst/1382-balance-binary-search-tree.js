@@ -11,5 +11,12 @@
  * @return {TreeNode}
  */
 const balanceBST = (root) => {
+  // Balance BST and the depth of the two subtrees of every node never differ by more than 1.
+
+  let depth = 0;
+  const BFS = (node) => {
+    if (!node) return;
+  };
+
   return root;
 };
