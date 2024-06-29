@@ -1,3 +1,8 @@
+/*
+ * - [X] Done
+ *   - iterate all edges until the vertex count equals to the length of edges
+ * - [] Refer to what others are doing
+ */
 /**
  * @param {number[][]} edges
  * @return {number}
