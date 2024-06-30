@@ -12,45 +12,59 @@ var getAncestors = function (n, edges) {
     return [];
   }
 
-  const result = Array.from({ length: n }, () => []);
-  console.log(result);
+  // TODO: try to using dfs
+  // const result = Array.from({ length: n }, () => null);
+  //
+  // (function dfs(start) {
+  //   result[start] = [];
+  //   const [a, v] = edges[start];
+  //   result[start].push(a);
+  //
+  //   visited.get(v).set(a);
+  //
+  //   dfs(start++);
+  // })(0);
 
-  // TODO try to using dfs
+  const result = Array.from({ length: n }, () => []);
   // each to vertex(index is 1) has from(index is 0) as ancestor
   // but the ancestors should be sorted
   for (let i = 0, length = edges.length; i < length; i++) {
     const [a, v] = edges[i];
-
     result[v].push(a);
-
-    if (result[a].length) {
-      result[v].push(...result[a]);
-    }
   }
 
+  let temp = [];
   for (let i = 0, length = result.length; i < length; i++) {
-    result[i] = [...new Set(result[i])].sort();
+    for (let j = 0, length = result[i].length; j < length; j++) {}
+    result[i].forEach((ancestor) => {
+      temp.push(ancestor);
+      if (result[ancestor].length) {
+        temp.push(...result[ancestor]);
+      }
+    });
+    result[i] = [...new Set(temp)].sort();
+    temp = [];
   }
 
   return result;
 };
 try {
   console.log(
-    getAncestors(6, [
+    getAncestors(8, [
+      [0, 7],
+      [7, 6],
       [0, 3],
-      [5, 0],
-      [2, 3],
-      [4, 3],
-      [5, 3],
-      [1, 3],
-      // TODO: add 2 as ancestor of 5 after [5,0] so the 0 index will less 2
-      [2, 5],
-      [0, 1],
-      [4, 5],
-      [4, 2],
-      [4, 0],
+      [6, 3],
+      [5, 4],
+      [1, 5],
+      [2, 7],
+      [3, 5],
+      [3, 1],
+      [0, 5],
+      [7, 5],
       [2, 1],
-      [5, 1],
+      [1, 4],
+      [6, 1],
     ]),
   );
 } catch (error) {
