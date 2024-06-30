@@ -15,6 +15,7 @@ var getAncestors = function (n, edges) {
   const result = Array.from({ length: n }, () => []);
   console.log(result);
 
+  // TODO try to using dfs
   // each to vertex(index is 1) has from(index is 0) as ancestor
   // but the ancestors should be sorted
   for (let i = 0, length = edges.length; i < length; i++) {
