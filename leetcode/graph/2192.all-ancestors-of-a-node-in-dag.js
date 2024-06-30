@@ -33,20 +33,26 @@ var getAncestors = function (n, edges) {
     result[v].push(a);
   }
 
+  // console.log("before: ", result);
+
   let temp = [];
   for (let i = 0, length = result.length; i < length; i++) {
     for (let j = 0, length = result[i].length; j < length; j++) {}
     result[i].forEach((ancestor) => {
       temp.push(ancestor);
       if (result[ancestor].length) {
+        console.log({ ancestor, new: result[ancestor] });
         temp.push(...result[ancestor]);
       }
     });
     result[i] = [...new Set(temp)].sort();
+    // console.log({ i, new: result[i] });
     temp = [];
   }
 
-  return result;
+  // console.log("after: ", result);
+
+  // return result;
 };
 try {
   console.log(
