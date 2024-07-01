@@ -16,63 +16,60 @@ var getAncestors = function (n, edges) {
   // const result = Array.from({ length: n }, () => null);
   //
   // (function dfs(start) {
-  //   result[start] = [];
-  //   const [a, v] = edges[start];
-  //   result[start].push(a);
+  //   if (start > edgesLength) {
+  //     return;
+  //   }
   //
-  //   visited.get(v).set(a);
+  //   result[start] = [];
+  //
+  //   for (let neighbor = 0; neighbor < edges[start].length; neighbor++) {
+  //     if(edges[start][neighbor]){}
+  //
+  //   }
   //
   //   dfs(start++);
   // })(0);
 
-  const result = Array.from({ length: n }, () => []);
+  const result = Array.from({ length: n }, () => new Set());
+
   // each to vertex(index is 1) has from(index is 0) as ancestor
   // but the ancestors should be sorted
   for (let i = 0, length = edges.length; i < length; i++) {
     const [a, v] = edges[i];
-    result[v].push(a);
+    result[v].add(a);
   }
 
-  // console.log("before: ", result);
+  console.log(result);
 
-  let temp = [];
-  for (let i = 0, length = result.length; i < length; i++) {
-    for (let j = 0, length = result[i].length; j < length; j++) {}
-    result[i].forEach((ancestor) => {
-      temp.push(ancestor);
-      if (result[ancestor].length) {
-        console.log({ ancestor, new: result[ancestor] });
-        temp.push(...result[ancestor]);
-      }
+  let temp;
+  for (let i = 0; i < n; i++) {
+    const resultArray = [...result[i]];
+    resultArray.forEach((ancestor) => {
+      temp = [ancestor, ...result[ancestor]];
     });
-    result[i] = [...new Set(temp)].sort();
-    // console.log({ i, new: result[i] });
+    result.push([...new Set(temp)].sort());
     temp = [];
   }
 
-  // console.log("after: ", result);
-
-  // return result;
+  return result.splice(0, n);
 };
 try {
-  console.log(
-    getAncestors(8, [
-      [0, 7],
-      [7, 6],
-      [0, 3],
-      [6, 3],
-      [5, 4],
-      [1, 5],
-      [2, 7],
-      [3, 5],
-      [3, 1],
-      [0, 5],
-      [7, 5],
-      [2, 1],
-      [1, 4],
-      [6, 1],
-    ]),
-  );
+  getAncestors(8, [
+    [0, 7],
+    [7, 6],
+    [0, 3],
+    [6, 3],
+    [5, 4],
+    [1, 5],
+    [2, 7],
+    [3, 5],
+    [3, 1],
+    [0, 5],
+    [7, 5],
+    [2, 1],
+    [1, 4],
+    [6, 1],
+  ]);
 } catch (error) {
   console.error(error);
 }
