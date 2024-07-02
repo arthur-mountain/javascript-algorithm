@@ -1,6 +1,7 @@
 /*
  * - [X] Done
- * - [] Refer to what others are doing
+ * - [X] Refer to what others are doing
+ *    - Same approach but check the count is equal to 3 after count++
  */
 /**
  * @param {number[]} arr
@@ -39,6 +40,24 @@ threeConsecutiveOdds = (arr) => {
       return true;
     }
     start++;
+  }
+
+  return false;
+};
+
+/* Refer answer */
+threeConsecutiveOdds = (arr) => {
+  let count = 0;
+
+  for (const num of arr) {
+    if (num % 2 !== 0) {
+      count++;
+      if (count === 3) {
+        return true;
+      }
+    } else {
+      count = 0;
+    }
   }
 
   return false;
