@@ -21,7 +21,7 @@ let intersect = (nums1, nums2) => {
   let result = [];
   for (const num of short) {
     const mnum = longMap.get(num);
-    if (mnum) {
+    if (mnum > 0) {
       result.push(num);
       longMap.set(num, mnum - 1);
     }
