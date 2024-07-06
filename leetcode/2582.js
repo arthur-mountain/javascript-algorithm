@@ -3,7 +3,9 @@
  *   - Check direction that depends on a multiple of n-1
  *   - Check if the increase starts at 1 or if the decrease starts at n,
  *   then add the remaining count which is time - pow * round
- * - [] Refer to what others are doing
+ * - [x] Refer to what others are doing
+ *   - Same logic to check the direction of time
+ *   - But use the modulo operator for the remaining n
  */
 /**
  * @param {number} n
@@ -75,3 +77,16 @@ console.log(passThePillow(3, 13));
 // time: 0 1 2 3 4 5 6 7 8 9 10 11 12 13
 // n:    1 2 3 2 1 2 3 2 1 2 3  2  1  2
 
+/* Refer answer */
+passThePillow = (n, time) => {
+  let count = Math.floor(time / (n - 1));
+  let mod = time % (n - 1);
+
+  // If is even starts at 1 and increase remain n
+  if (count % 2 == 0) {
+    return 1 + mod;
+  }
+
+  // otherwise starts at n and decrease remain n
+  return n - mod;
+};
