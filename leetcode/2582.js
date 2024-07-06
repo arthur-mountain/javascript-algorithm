@@ -36,8 +36,8 @@ let passThePillow = (n, time) => {
     return n;
   }
 
-  // If it is even, start at 1, and ascend remain n(time - pow * round)
-  // If it is odd, start at n, and descend remain n(time - pow * round)
+  // If it is even, start at 1, and add remain n(time - pow * round)
+  // If it is odd,  start at n, and sub remain n(time - pow * round)
   return round % 2 === 0 ? 1 + (time - pow * round) : n - (time - pow * round);
 };
 
@@ -82,11 +82,11 @@ passThePillow = (n, time) => {
   let count = Math.floor(time / (n - 1));
   let mod = time % (n - 1);
 
-  // If is even starts at 1 and increase remain n
+  // If is even starts at 1 and add remain n
   if (count % 2 == 0) {
     return 1 + mod;
   }
 
-  // otherwise starts at n and decrease remain n
+  // otherwise starts at n and sub remain n
   return n - mod;
 };
