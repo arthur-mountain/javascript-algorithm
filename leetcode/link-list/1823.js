@@ -13,11 +13,12 @@ let findTheWinner = (n, k) => {
   let count = 0;
   let current = circular.head;
   while (circular.size !== 1) {
-    while (k > 1) {
+    while (count < k) {
       current = current.next;
-      k--;
+      count++;
     }
     circular.delete(current);
+    count = 0;
   }
 
   circular.inspect();
