@@ -1,5 +1,8 @@
 /*
- * - [] Done
+ * - [x] Done
+ *   - circular single linked list, that start at 1th so the count start at 1
+ *   - when count to k, remove current, make prev.next to  current.next
+ *   - until the size of the linked list is 1
  * - [] Refer to what others are doing
  */
 /**
@@ -10,18 +13,27 @@
 let findTheWinner = (n, k) => {
   const circular = new CircularLinkedList(n);
 
-  let count = 0;
+  // circular.inspect();
+
+  let count = 1;
+  let prev = circular.tail;
   let current = circular.head;
   while (circular.size !== 1) {
-    while (count < k) {
+    while (count !== k) {
+      prev = current;
       current = current.next;
-      count++;
+      if (++count === k) break;
     }
-    circular.delete(current);
-    count = 0;
+
+    // console.log(current.value);
+    circular.delete(prev, current);
+    current = current.next;
+    count = 1;
   }
 
-  circular.inspect();
+  circular.inspect(current.next.value);
+
+  return current.next.value;
 };
 
 class Node {
@@ -34,27 +46,30 @@ class Node {
 class CircularLinkedList {
   constructor(size) {
     let head = new Node(1);
-    let tail = head;
     let num = 2;
+    let current = head;
     while (num <= size) {
       const newNode = new Node(num);
-      tail.next = newNode;
-      tail = newNode;
+      current.next = newNode;
+      current = newNode;
       num++;
     }
 
     this.head = head;
-    tail.next = this.head;
+    this.tail = current;
+    this.tail.next = head;
     this.size = size;
   }
 
-  delete(current) {
-    current.next = current.next.next;
+  delete(prev, current) {
+    prev.next = current.next;
     this.size--;
   }
 
-  inspect() {
-    console.log(require("node:util").inspect(this, { depth: null }));
+  inspect(node) {
+    console.log(
+      require("node:util").inspect(node || this, { depth: null, colors: true }),
+    );
   }
 
   print() {
@@ -68,4 +83,7 @@ class CircularLinkedList {
 
 findTheWinner(5, 2);
 
-// findTheWinner(6, 5);
+findTheWinner(6, 5);
+
+findTheWinner(3, 1);
+// 1 -> 2 -> 3
