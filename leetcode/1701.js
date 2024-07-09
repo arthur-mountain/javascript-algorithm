@@ -1,5 +1,7 @@
 /*
  * - [x] Done
+ * - [x] Refer to what others are doing
+ *    - Same concept but use two variable name
  */
 /**
  * @param {number[][]} customers
@@ -26,6 +28,48 @@ let averageWaitingTime = (customers) => {
   }
 
   return total / customers.length;
+};
+
+/* refer answer */
+averageWaitingTime = (customers) => {
+  let wait = 0;
+  let start = 0;
+
+  for (let i = 0; i < customers.length; i++) {
+    // the current customer chef start time
+    // if the previous end time over the current customer arrival time
+    // means the current customer need to wait extra time for chef service previous customer
+    // that start time should be the previous end time
+    start = start > customers[i][0] ? start : customers[i][0];
+
+    // wait time for the current customer
+    //
+    // chef start time sub customer arrival time,
+    // means the extra time that chef server previous customer
+    // it's also the waiting time for current customer
+    //
+    // and plus the original waiting time for the current customer
+    wait += start - customers[i][0] + customers[i][1];
+
+    // the next customer chef start time
+    start += customers[i][1];
+  }
+
+  return wait / customers.length;
+};
+
+/* refer answer */
+averageWaitingTime = (customers) => {
+  let wait = customers[0][1];
+  let start = customers[0][0] + wait;
+
+  for (let i = 1; i < customers.length; i++) {
+    start = start > customers[i][0] ? start : customers[i][0];
+    wait += start - customers[i][0] + customers[i][1];
+    start += customers[i][1];
+  }
+
+  return wait / customers.length;
 };
 
 averageWaitingTime([
