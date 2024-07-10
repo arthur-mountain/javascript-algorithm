@@ -1,6 +1,7 @@
 /*
  * - [x] Done
- * - [] Refer to what others are doing
+ * - [x] Refer to what others are doing
+ *   - The solutions seems same our approach
  */
 /**
  * @param {string[]} logs
