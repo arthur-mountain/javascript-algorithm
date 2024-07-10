@@ -21,6 +21,22 @@ let minOperations = (logs) => {
   return stack.length;
 };
 
+minOperations = (logs) => {
+  let depth = 0;
+
+  for (let i = 0; i < logs.length; i++) {
+    if (logs[i] === "./") continue;
+
+    if (logs[i] === "../") {
+      if (depth > 0) depth--;
+    } else {
+      depth++;
+    }
+  }
+
+  return depth < 0 ? 0 : depth;
+};
+
 minOperations(["d1/", "d2/", "../", "d21/", "./"]);
 minOperations(["d1/", "d2/", "./", "d3/", "../", "d31/"]);
 minOperations(["d1/", "../", "../", "../"]);
