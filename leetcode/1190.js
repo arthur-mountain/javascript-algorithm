@@ -32,6 +32,11 @@ let reverseParentheses = (s) => {
   return helper(s.split(""));
 };
 
+// TODO: using stack
+reverseParentheses = (s) => {
+  // let stack = [];
+};
+
 reverseParentheses("(abcd)");
 reverseParentheses("(u(love)i)");
 reverseParentheses("(ed(et(oc))el)");
