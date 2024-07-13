@@ -9,6 +9,7 @@
  * @return {number[]}
  */
 
+// WIP: Not working Not completed
 let survivedRobotsHealths = (positions, healths, directions) => {
   // if size is one, all of robot has same directions, just returns healths
   if (new Set(directions).size === 1) {
