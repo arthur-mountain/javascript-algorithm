@@ -141,17 +141,34 @@ survivedRobotsHealths = (positions, healths, directions) => {
 
         if (robot[1] > lastRobotHealth) {
           // if current robot's health is greater than last robot's health
-          // current robot's health should be decreased by 1, remove last robot from stack
-          stack.pop();
+          //
+          // current robot is survived, but the health should be decreased by 1,
+          //
+          // remove last robot from stack
+          //
+          // start iteration next while loop,
+          // keep fighting with right direction of robot from stack,
+          // until not more robot in stack,
+          // then break while loop then current robot will be added to stack
           robot[1] -= 1;
+          stack.pop();
         } else if (robot[1] < lastRobotHealth) {
           // if last robot's health is greater than current robot's health,
-          // last  robot's health should be decreased by 1, do not add current robot to stack
+          // last robot's health should be decreased by 1,
+          //
+          // current robot is not survived, so do not add current robot to stack,
+          // break while loop, start next iteration
+          //
           stack[stack.length - 1][1] -= 1;
           add = false;
         } else {
           // if current and last robot's health is same,
-          // remove last robot, and do not add current robot to stack
+          //
+          // both of robot should is not survived,
+          // 1. remove last robot from
+          // 2. do not add current robot to stack
+          //
+          // break while loop, start next iteration
           stack.pop();
           add = false;
         }
