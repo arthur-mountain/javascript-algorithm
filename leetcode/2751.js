@@ -97,6 +97,7 @@ let survivedRobotsHealths = (positions, healths, directions) => {
 
 /* refer answer */
 survivedRobotsHealths = (positions, healths, directions) => {
+  // step1: sorting robots by positions
   let robots = [];
 
   for (let i = 0; i < positions.length; ++i) {
@@ -105,8 +106,17 @@ survivedRobotsHealths = (positions, healths, directions) => {
 
   robots.sort((a, b) => a[0] - b[0]);
 
-  console.log(robots, "\n");
-
+  // step2: using stack
+  //
+  //   if robot is moving to the right, add it to the stack directly
+  //
+  //   if robot is moving to the left and last robot in stack moving to right, then fight,
+  //      - if current robot's health is greater than last robot's health,
+  //
+  //        else if last robot's health is greater than current robot's health,
+  //
+  //        else the both of robot's health is same,
+  //
   let stack = [];
 
   for (let robot of robots) {
@@ -148,6 +158,7 @@ survivedRobotsHealths = (positions, healths, directions) => {
     }
   }
 
+  // step3: sorting back by original order and return healths
   stack.sort((a, b) => a[3] - b[3]);
 
   let result = [];
