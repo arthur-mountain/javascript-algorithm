@@ -84,8 +84,73 @@ let survivedRobotsHealths = (positions, healths, directions) => {
   return [...robot.values()].map(({ health }) => health);
 };
 
-// survivedRobotsHealths([5, 4, 3, 2, 1], [2, 17, 9, 15, 10], "RRRRR");
-// survivedRobotsHealths([3, 5, 2, 6], [10, 10, 15, 12], "RLRL");
-// survivedRobotsHealths([1, 2, 5, 6], [10, 10, 11, 11], "RLRL");
+/* refer answer */
+survivedRobotsHealths = (positions, healths, directions) => {
+  let robots = [];
+
+  for (let i = 0; i < positions.length; ++i) {
+    robots.push([positions[i], healths[i], directions[i], i]);
+  }
+
+  robots.sort((a, b) => a[0] - b[0]);
+
+  // console.log(robots, "\n");
+
+  let stack = [];
+
+  for (let robot of robots) {
+    if (
+      robot[2] === "R" ||
+      stack.length === 0 ||
+      stack[stack.length - 1][2] === "L"
+    ) {
+      stack.push(robot);
+      continue;
+    }
+
+    if (robot[2] === "L") {
+      let add = true;
+      while (stack.length > 0 && stack[stack.length - 1][2] === "R" && add) {
+        let lastRobotHealth = stack[stack.length - 1][1];
+
+        if (robot[1] > lastRobotHealth) {
+          // if current robot's health is greater than last robot's health
+          // current robot's health should be decreased by 1, remove last robot from stack
+          stack.pop();
+          robot[1] -= 1;
+        } else if (robot[1] < lastRobotHealth) {
+          // if last robot's health is greater than current robot's health,
+          // last  robot's health should be decreased by 1, do not add current robot to stack
+          stack[stack.length - 1][1] -= 1;
+          add = false;
+        } else {
+          // if current and last robot's health is same,
+          // remove last robot, and do not add current robot to stack
+          stack.pop();
+          add = false;
+        }
+      }
+
+      if (add) {
+        stack.push(robot);
+      }
+    }
+  }
+
+  stack.sort((a, b) => a[3] - b[3]);
+
+  let result = [];
+  for (let robot of stack) {
+    result.push(robot[1]);
+  }
+
+  // console.log(result);
+
+  return result;
+};
+
+survivedRobotsHealths([5, 4, 3, 2, 1], [2, 17, 9, 15, 10], "RRRRR");
+survivedRobotsHealths([3, 5, 2, 6], [10, 10, 15, 12], "RLRL");
+survivedRobotsHealths([1, 2, 5, 6], [10, 10, 11, 11], "RLRL");
 survivedRobotsHealths([1, 40], [10, 11], "RL");
-// survivedRobotsHealths([3, 47], [46, 26], "LR");
+survivedRobotsHealths([3, 47], [46, 26], "LR");
