@@ -95,26 +95,29 @@ let countOfAtoms = (formula) => {
  *  2. Reduce string combine operation
  * */
 countOfAtoms = (formula) => {
-  formula = formula.split("");
-  let stack = [];
-  let str;
   let upperReg = /^[A-Z]/;
   let lowerReg = /^[a-z]/;
   let numberReg = /^\d/;
+  let i = 0,
+    j = 0,
+    n = formula.length,
+    str = "",
+    stack = [];
 
-  for (let i = 0; i < formula.length; i++) {
+  while (i < n) {
+    j = i;
     str = formula[i];
 
     if (upperReg.test(str)) {
-      while (formula[i + 1] && lowerReg.test(formula[i + 1])) {
-        str += formula[++i];
+      while (formula[j + 1] && lowerReg.test(formula[j + 1])) {
+        ++j;
       }
-      stack.push([str, 1]);
+      stack.push([formula.substring(i, j + 1), 1]);
     } else if (numberReg.test(str)) {
-      while (formula[i + 1] && numberReg.test(formula[i + 1])) {
-        str += formula[++i];
+      while (formula[j + 1] && numberReg.test(formula[j + 1])) {
+        ++j;
       }
-      stack[stack.length - 1][1] = +str;
+      stack[stack.length - 1][1] = +formula.substring(i, j + 1);
     } else if (str === "(") {
       stack.push([str, -1]);
     } else if (str === ")") {
@@ -133,15 +136,12 @@ countOfAtoms = (formula) => {
         stack.push([key, value]);
       });
 
-      let l = stack.length;
-      let nextCount = 1;
-      if (numberReg.test(formula[i + 1])) {
-        nextCount = formula[++i];
-        while (formula[i + 1] && numberReg.test(formula[i + 1])) {
-          nextCount += formula[++i];
-        }
-        nextCount = +nextCount;
+      while (formula[j + 1] && numberReg.test(formula[j + 1])) {
+        ++j;
       }
+
+      let l = stack.length;
+      let nextCount = j > i ? +formula.substring(i + 1, j + 1) : 1;
 
       while (stack[--l][0] !== "(") {
         stack[l][1] *= nextCount;
@@ -150,6 +150,8 @@ countOfAtoms = (formula) => {
       // remove open bracket
       stack.splice(l, 1);
     }
+
+    i = j + 1;
   }
 
   let result = {};
