@@ -90,6 +90,79 @@ let countOfAtoms = (formula) => {
     .join("");
 };
 
+/* follow up:
+ *  1. Use regex check char type, memory usage is better
+ * */
+countOfAtoms = (formula) => {
+  formula = formula.split("");
+  let stack = [];
+  let char;
+  let upperReg = /^[A-Z]/;
+  let lowerReg = /^[a-z]/;
+  let numberReg = /^\d/;
+
+  for (let i = 0; i < formula.length; i++) {
+    char = formula[i];
+
+    if (upperReg.test(char)) {
+      stack.push([char, 1]);
+    } else if (lowerReg.test(char)) {
+      stack[stack.length - 1][0] += char;
+    } else if (numberReg.test(char)) {
+      stack[stack.length - 1][1] = char;
+      while (formula[i + 1] && numberReg.test(formula[i + 1])) {
+        stack[stack.length - 1][1] += formula[++i];
+      }
+      stack[stack.length - 1][1] = +stack[stack.length - 1][1];
+    } else if (char === "(") {
+      stack.push([char, -1]);
+    } else if (char === ")") {
+      let temp = {};
+
+      while ((char = stack.pop())) {
+        if (!char) break;
+        if (char[0] === "(") {
+          stack.push(char);
+          break;
+        }
+        temp[char[0]] = (temp[char[0]] || 0) + char[1];
+      }
+
+      Object.entries(temp).forEach(([key, value]) => {
+        stack.push([key, value]);
+      });
+
+      let l = stack.length;
+      let nextCount = 1;
+      if (formula[i + 1] && numberReg.test(formula[i + 1])) {
+        nextCount = formula[++i];
+        while (formula[i + 1] && numberReg.test(formula[i + 1])) {
+          nextCount += formula[++i];
+        }
+        nextCount = +nextCount;
+      }
+
+      while (stack[--l][0] !== "(") {
+        stack[l][1] *= nextCount;
+      }
+
+      // remove open bracket
+      stack.splice(l, 1);
+    }
+  }
+
+  let result = {};
+
+  stack.forEach(([key, value]) => {
+    result[key] = (result[key] || 0) + value;
+  });
+
+  return Object.entries(result)
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map((a) => (a[1] === 1 ? a[0] : a.join("")))
+    .join("");
+};
+
 const assert = require("node:assert");
 assert.deepStrictEqual(countOfAtoms("H2O"), "H2O");
 assert.deepStrictEqual(countOfAtoms("Mg(OH)2"), "H2MgO2");
