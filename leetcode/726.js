@@ -92,40 +92,41 @@ let countOfAtoms = (formula) => {
 
 /* follow up:
  *  1. Use regex check char type, memory usage is better
+ *  2. Reduce string combine operation
  * */
 countOfAtoms = (formula) => {
   formula = formula.split("");
   let stack = [];
-  let char;
+  let str;
   let upperReg = /^[A-Z]/;
   let lowerReg = /^[a-z]/;
   let numberReg = /^\d/;
 
   for (let i = 0; i < formula.length; i++) {
-    char = formula[i];
+    str = formula[i];
 
-    if (upperReg.test(char)) {
-      stack.push([char, 1]);
-    } else if (lowerReg.test(char)) {
-      stack[stack.length - 1][0] += char;
-    } else if (numberReg.test(char)) {
-      stack[stack.length - 1][1] = char;
-      while (formula[i + 1] && numberReg.test(formula[i + 1])) {
-        stack[stack.length - 1][1] += formula[++i];
+    if (upperReg.test(str)) {
+      while (formula[i + 1] && lowerReg.test(formula[i + 1])) {
+        str += formula[++i];
       }
-      stack[stack.length - 1][1] = +stack[stack.length - 1][1];
-    } else if (char === "(") {
-      stack.push([char, -1]);
-    } else if (char === ")") {
+      stack.push([str, 1]);
+    } else if (numberReg.test(str)) {
+      while (formula[i + 1] && numberReg.test(formula[i + 1])) {
+        str += formula[++i];
+      }
+      stack[stack.length - 1][1] = +str;
+    } else if (str === "(") {
+      stack.push([str, -1]);
+    } else if (str === ")") {
       let temp = {};
 
-      while ((char = stack.pop())) {
-        if (!char) break;
-        if (char[0] === "(") {
-          stack.push(char);
+      while ((str = stack.pop())) {
+        if (!str) break;
+        if (str[0] === "(") {
+          stack.push(str);
           break;
         }
-        temp[char[0]] = (temp[char[0]] || 0) + char[1];
+        temp[str[0]] = (temp[str[0]] || 0) + str[1];
       }
 
       Object.entries(temp).forEach(([key, value]) => {
@@ -134,7 +135,7 @@ countOfAtoms = (formula) => {
 
       let l = stack.length;
       let nextCount = 1;
-      if (formula[i + 1] && numberReg.test(formula[i + 1])) {
+      if (numberReg.test(formula[i + 1])) {
         nextCount = formula[++i];
         while (formula[i + 1] && numberReg.test(formula[i + 1])) {
           nextCount += formula[++i];
