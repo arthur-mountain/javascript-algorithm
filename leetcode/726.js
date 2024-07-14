@@ -93,8 +93,10 @@ let countOfAtoms = (formula) => {
 /* follow up:
  *  1. Use regex check char type, memory usage is better
  *  2. Reduce string combine operation
+ *  3. Reduce close bracket operation that added each item using while+entries
  * */
 countOfAtoms = (formula) => {
+  let charReg = /[A-Za-z]/;
   let upperReg = /^[A-Z]/;
   let lowerReg = /^[a-z]/;
   let numberReg = /^\d/;
@@ -102,68 +104,142 @@ countOfAtoms = (formula) => {
     j = 0,
     n = formula.length,
     str = "",
-    stack = [];
+    stack = [],
+    result = {},
+    pstack = [];
 
   while (i < n) {
     j = i;
     str = formula[i];
 
-    if (upperReg.test(str)) {
-      while (formula[j + 1] && lowerReg.test(formula[j + 1])) {
-        ++j;
-      }
-      stack.push([formula.substring(i, j + 1), 1]);
-    } else if (numberReg.test(str)) {
-      while (formula[j + 1] && numberReg.test(formula[j + 1])) {
-        ++j;
-      }
-      stack[stack.length - 1][1] = +formula.substring(i, j + 1);
-    } else if (str === "(") {
-      stack.push([str, -1]);
-    } else if (str === ")") {
-      let temp = {};
-
-      while ((str = stack.pop())) {
-        if (!str) break;
-        if (str[0] === "(") {
-          stack.push(str);
-          break;
-        }
-        temp[str[0]] = (temp[str[0]] || 0) + str[1];
-      }
-
-      Object.entries(temp).forEach(([key, value]) => {
-        stack.push([key, value]);
-      });
-
-      while (formula[j + 1] && numberReg.test(formula[j + 1])) {
-        ++j;
-      }
-
-      let l = stack.length;
-      let nextCount = j > i ? +formula.substring(i + 1, j + 1) : 1;
-
-      while (stack[--l][0] !== "(") {
-        stack[l][1] *= nextCount;
-      }
-
-      // remove open bracket
-      stack.splice(l, 1);
+    if (str === "(") {
+      pstack.push({});
+      i++;
+      continue;
     }
 
+    if (str === ")") {
+      let counterStr = "";
+      let target = pstack.pop();
+
+      while (formula[j + 1] && numberReg.test(formula[j + 1])) {
+        ++j;
+      }
+
+      counterStr = +formula.substring(i, j + 0);
+      for (const key of Object.keys(target)) {
+        result[key] += target[key] *= counterStr;
+      }
+      i = j + 1;
+      continue;
+    }
+
+    let tempStr = "";
+    let counterStr = "";
+    let target = pstack.length ? pstack[pstack.length - 1] : result;
+
+    while (formula[j + 1] && charReg.test(formula[j + 1])) {
+      if (lowerReg.test(formula[j + 1])) {
+        ++j;
+      } else {
+        tempStr = formula.substring(i, j + 1);
+        break;
+      }
+    }
+
+    while (formula[j + 1] && numberReg.test(formula[j + 1])) {
+      ++j;
+    }
+
+    counterStr = +formula.substring(i + tempStr.length, j + 1);
+
+    target[tempStr] = (target[tempStr] || 0) + counterStr;
     i = j + 1;
   }
 
-  let result = {};
+  console.log(result);
 
-  stack.forEach(([key, value]) => {
-    result[key] = (result[key] || 0) + value;
-  });
+  // console.log(
+  //   Object.keys(result)
+  //     .toSorted()
+  //     .map((key) => key + (result[key] || ""))
+  //     .join(""),
+  // );
 
-  return Object.entries(result)
-    .sort((a, b) => a[0].localeCompare(b[0]))
-    .map((a) => (a[1] === 1 ? a[0] : a.join("")))
+  return Object.keys(result)
+    .sort()
+    .map((key) => key + (result[key] || ""))
     .join("");
+
+  // stack.forEach(([key, value]) => {
+  //   result[key] = (result[key] || 0) + value;
+  // });
+  //
+  // return Object.entries(result)
+  //   .sort((a, b) => a[0].localeCompare(b[0]))
+  //   .map((a) => (a[1] === 1 ? a[0] : a.join("")))
+  //   .join("");
+  //
+  // while (i < n) {
+  //   j = i;
+  //   str = formula[i];
+  //
+  //   if (upperReg.test(str)) {
+  //     while (formula[j + 1] && lowerReg.test(formula[j + 1])) {
+  //       ++j;
+  //     }
+  //     stack.push([formula.substring(i, j + 1), 1]);
+  //   } else if (numberReg.test(str)) {
+  //     while (formula[j + 1] && numberReg.test(formula[j + 1])) {
+  //       ++j;
+  //     }
+  //     stack[stack.length - 1][1] = +formula.substring(i, j + 1);
+  //   } else if (str === "(") {
+  //     stack.push([str, -1]);
+  //   } else if (str === ")") {
+  //     let temp = {};
+  //
+  //     while ((str = stack.pop())) {
+  //       if (!str) break;
+  //       if (str[0] === "(") {
+  //         stack.push(str);
+  //         break;
+  //       }
+  //       temp[str[0]] = (temp[str[0]] || 0) + str[1];
+  //     }
+  //
+  //     Object.entries(temp).forEach(([key, value]) => {
+  //       stack.push([key, value]);
+  //     });
+  //
+  //     while (formula[j + 1] && numberReg.test(formula[j + 1])) {
+  //       ++j;
+  //     }
+  //
+  //     let l = stack.length;
+  //     let nextCount = j > i ? +formula.substring(i + 1, j + 1) : 1;
+  //
+  //     while (stack[--l][0] !== "(") {
+  //       stack[l][1] *= nextCount;
+  //     }
+  //
+  //     // remove open bracket
+  //     stack.splice(l, 1);
+  //   }
+  //
+  //   i = j + 1;
+  // }
+  //
+  // result = {};
+  //
+  // stack.forEach(([key, value]) => {
+  //   result[key] = (result[key] || 0) + value;
+  // });
+  //
+  // return Object.entries(result)
+  //   .sort((a, b) => a[0].localeCompare(b[0]))
+  //   .map((a) => (a[1] === 1 ? a[0] : a.join("")))
+  //   .join("");
 };
 
 const assert = require("node:assert");
