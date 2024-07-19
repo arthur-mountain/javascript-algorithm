@@ -1,12 +1,16 @@
+/*
+ * - [x] Done
+ * - [] Refer to what others are doing
+ */
 /**
  * @param {number[][]} matrix
  * @return {number[]}
  */
 let luckyNumbers = (matrix) => {
   /*
-   * 1. Find the minimum value and its index in each row
+   * 1. Find the minimum value and index in it's own row
    *
-   * 2. Check the other same minValIndex value is less than minVal
+   * 2. Compare the minimum value is maximum value from same index of other row, we needs ignore it's own row
    * */
 
   let matrixLen = matrix.length;
@@ -38,6 +42,40 @@ let luckyNumbers = (matrix) => {
     if (isLuckNum) {
       return [minVal];
     }
+  }
+
+  return [];
+};
+
+/* 
+*improvement:
+  m x n matrix, so we have m row and n column,
+  we could solving min/max value in each row and column in an loop
+ * */
+luckyNumbers = (matrix) => {
+  const m = matrix.length;
+  const n = matrix[0].length;
+
+  for (let i = 0; i < m; i++) {
+    let min = Infinity;
+    let minIndex = -1;
+
+    for (let j = 0; j < n; j++) {
+      if (matrix[i][j] < min) {
+        min = matrix[i][(minIndex = j)];
+      }
+    }
+
+    for (let k = 0; k < m; k++) {
+      if (k === i) continue;
+
+      if (min <= matrix[k][minIndex]) {
+        min = null;
+        break;
+      }
+    }
+
+    if (min !== null) return [min];
   }
 
   return [];
