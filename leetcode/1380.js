@@ -4,50 +4,71 @@
  */
 let luckyNumbers = (matrix) => {
   /*
-   * 1. Find the pair of maximun and minimum number in each row
-   *
-   * 2. If the minimum number is greater than the previous maximum number, then it is the lucky number currently
    * */
-  let luckyPairs = [];
 
-  for (const row of matrix) {
-    luckyPairs.push([Math.min(...row), Math.max(...row)]);
-  }
+  let matrixLen = matrix.length;
+  let temp = [];
 
-  let luckyNumber = [];
-  for (let i = 0; i < luckyPairs.length; i++) {
-    for (let j = 1; j < luckyPairs.length; j++) {
-      if (luckyPairs[i][0] >= luckyPairs[j][1]) {
-        luckyNumber[0] = luckyPairs[i][0];
+  for (let i = 0; i < matrixLen; i++) {
+    let minMap = [Infinity, Infinity];
+    for (let j = 0, colLen = matrix[i].length; j < colLen; j++) {
+      if (matrix[i][j] <= matrix[i][minMap[0]]) {
+        minMap = [i, j];
       }
     }
+    temp.push(minMap);
   }
 
-  console.log(luckyNumber);
+  console.log(temp);
+  // console.log(matrix);
 
-  return luckyNumber;
+  // for (let i = 0; i < matrixLen; i++) {
+  //   const [minVal, minValColIndex, minValIndex] = temp[i];
+  //
+  //   let isLucky = true;
+  //   for (let j = 0, colLen = matrix[i].length; j < colLen; j++) {
+  //     if (minValColIndex === j) continue;
+  //
+  //     if (minVal < matrix[j]?.[minValIndex]) {
+  //       isLucky = false;
+  //       break;
+  //     }
+  //   }
+  //
+  //   if (isLucky) {
+  //     console.log([minVal]);
+  //     return [minVal];
+  //   }
+  // }
+  // console.log([]);
+
+  return [];
 };
 
-luckyNumbers([
-  [3, 7, 8],
-  [9, 11, 13],
-  [15, 16, 17],
-]); // [15]
+// luckyNumbers([
+//   [3, 7, 8],
+//   [9, 11, 13],
+//   [15, 16, 17],
+// ]); // [15]
 luckyNumbers([
   [1, 10, 4, 2],
   [9, 3, 8, 7],
   [15, 16, 17, 12],
 ]); // [12]
-luckyNumbers([
-  [7, 8],
-  [1, 2],
-]); // [7]
-
-luckyNumbers([
-  [3, 6],
-  [7, 1],
-  [5, 2],
-  [4, 8],
-]); // []
-
-luckyNumbers([[56216], [63251], [75772], [1945], [27014]]); // []
+// luckyNumbers([
+//   [7, 8],
+//   [1, 2],
+// ]); // [7]
+//
+// luckyNumbers([
+//   [3, 6],
+//   [7, 1],
+//   [5, 2],
+//   [4, 8],
+// ]); // []
+//
+// luckyNumbers([[56216], [63251], [75772], [1945], [27014]]); // []
+// luckyNumbers([
+//   [57849, 12931, 54418, 4630, 371],
+//   [57486, 70179, 8512, 6629, 45828],
+// ]); // []
