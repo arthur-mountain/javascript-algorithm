@@ -1,6 +1,7 @@
 /*
  * - [x] Done
- * - [] Refer to what others are doing
+ * - [x] Refer to what others are doing
+ *   - Same concept but use built-in array method
  */
 /**
  * @param {number[][]} matrix
@@ -78,6 +79,17 @@ luckyNumbers = (matrix) => {
     if (min !== null) return [min];
   }
 
+  return [];
+};
+
+/* Refer answer: using built in array method */
+luckyNumbers = (matrix) => {
+  for (let i = 0; i < matrix.length; i++) {
+    const min = Math.min(...matrix[i]);
+    const minIndex = matrix[i].indexOf(min);
+
+    if (matrix.every((row) => row[minIndex] <= min)) return [min];
+  }
   return [];
 };
 
