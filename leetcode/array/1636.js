@@ -1,11 +1,12 @@
 /*
  * - [x] Done
- *   - get the frequency of each number, {[number]: frequency}
- *   - combine numbers with the same frequency, {[frequency]: [numbers]}
- *   - first sort the frequency keys,
- *   - second sort the numbers in the same frequency
- *   - This not the best solution.
- * - [] Refer to what others are doing
+ *   - Get the frequency of each number, { [number]: frequency }
+ *   - Combine numbers with the same frequency, { [frequency]: [numbers] }
+ *   - First, sort the frequency keys
+ *   - Second, sort the numbers within the same frequency
+ *   - This is not the best solution.
+ * - [x] Follow up solutions
+ *   - Same concept, but the sort comparison function is cleaner
  */
 /**
  * @param {number[]} nums
@@ -50,6 +51,21 @@ frequencySort = (nums) => {
   return Object.entries(result)
     .sort((a, b) => a[0].length - b[0].length)
     .flatMap(([_, ns]) => ns.sort((a, b) => b - a));
+};
+
+/* Follow up */
+frequencySort = (nums) => {
+  const freq = new Map();
+
+  for (let i = 0; i < nums.length; i++) {
+    if (freq.get(nums[i])) {
+      freq.set(nums[i], freq.get(nums[i]) + 1);
+    } else {
+      freq.set(nums[i], 1);
+    }
+  }
+
+  return nums.sort((a, b) => freq.get(a) - freq.get(b) || b - a);
 };
 
 console.log(frequencySort([1, 1, 2, 2, 2, 3]));
