@@ -3,7 +3,7 @@
  *   - Check direction that depends on a multiple of n-1
  *   - Check if the increase starts at 1 or if the decrease starts at n,
  *   then add the remaining count which is time - pow * round
- * - [x] Refer to what others are doing
+ * - [x] Follow up solutions
  *   - Same logic to check the direction of time
  *   - But use the modulo operator for the remaining n
  */

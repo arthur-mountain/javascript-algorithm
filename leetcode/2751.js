@@ -1,6 +1,6 @@
 /*
  * - [] Done
- * - [x] Refer to what others are doing
+ * - [x] Follow up solutions
  *   - the positions of robots are unique but not sorted,
  *     needs sorting by positions, cause the robot fighting by nearest neighbor first
  *
@@ -95,7 +95,7 @@ let survivedRobotsHealths = (positions, healths, directions) => {
   return [...robot.values()].map(({ health }) => health);
 };
 
-/* refer answer */
+/* Follow up */
 /* this approach will using more memory,
  * cause that using stack + extra two dimensions array robots([positions, healths, directions, index][])
  *
@@ -193,7 +193,7 @@ survivedRobotsHealths = (positions, healths, directions) => {
   return result;
 };
 
-/* refer answer */
+/* Follow up */
 /* T: O(n logn), S: O(n)*/
 survivedRobotsHealths = (positions, healths, directions) => {
   const n = positions.length;

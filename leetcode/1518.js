@@ -4,7 +4,7 @@
  *    - Update the numBottles = numBottles - maxExchange + 1.
  *    - Continue this process until numBottles is less than maxExchange.
  *    - Finally, add the remaining number of bottles to the total.
- * - [x] Refer to what others are doing
+ * - [x] Follow up solutions
  *     - Same concept but use recursion
  *     - Using math formula
  */
@@ -48,13 +48,13 @@ numWaterBottles = (n, k) => {
   return total;
 };
 
-/* refer answer */
+/* Follow up */
 numWaterBottles = (n, k) => {
   if (n < k) return n;
   return k + numWaterBottles(n - k + 1, k);
 };
 
-/* refer answer */
+/* Follow up */
 numWaterBottles = (n, k) => {
   return n + Math.floor((n - 1) / (k - 1));
 };

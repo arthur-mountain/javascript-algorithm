@@ -3,7 +3,7 @@
  *   - circular single linked list, that start at 1th so the count start at 1
  *   - when count to k, remove current, make prev.next to  current.next
  *   - until the size of the linked list is 1
- * - [] Refer to what others are doing
+ * - [] Follow up solutions
  */
 /**
  * @param {number} n

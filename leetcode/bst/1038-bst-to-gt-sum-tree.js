@@ -1,7 +1,7 @@
 /*
  * - [X] Done
  *    - using itrative DFS
- * - [x] Refer to what others are doing
+ * - [x] Follow up solutions
  *    - using recursivly BFS
  */
 /**

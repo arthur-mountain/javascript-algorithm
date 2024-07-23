@@ -1,6 +1,6 @@
 /*
  * - [x] Done
- * - [x] Refer to what others are doing
+ * - [x] Follow up solutions
  *    - Same concept but use two variable name
  */
 /**
@@ -30,7 +30,7 @@ let averageWaitingTime = (customers) => {
   return total / customers.length;
 };
 
-/* refer answer */
+/* Follow up */
 averageWaitingTime = (customers) => {
   let wait = 0;
   let start = 0;
@@ -58,7 +58,7 @@ averageWaitingTime = (customers) => {
   return wait / customers.length;
 };
 
-/* refer answer */
+/* Follow up */
 averageWaitingTime = (customers) => {
   let wait = customers[0][1];
   let start = customers[0][0] + wait;

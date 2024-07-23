@@ -1,6 +1,6 @@
 /*
  * - [X] Done
- * - [X] Refer to what others are doing
+ * - [X] Follow up solutions
  *    - Same approach but check the count is equal to 3 after count++
  */
 /**

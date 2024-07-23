@@ -1,7 +1,7 @@
 /*
  * - [x] Done
  *   - using mapping for long array and loop through short array
- * - [x] Refer to what others are doing
+ * - [x] Follow up solutions
  *   - sorting and two pointers
  */
 /**

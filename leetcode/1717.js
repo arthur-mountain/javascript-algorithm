@@ -2,7 +2,7 @@
 
 /*
  * - [] Done
- * - [x] Refer to what others are doing
+ * - [x] Follow up solutions
  *   - ⭐ greedy algorithm
  */
 /**
@@ -111,7 +111,7 @@ maximumGain = (s, x, y) => {
   return res;
 };
 
-/* refer answer*/
+/* Follow up*/
 /* T: O(n), S: O(1) */
 maximumGain = (s, x, y) => {
   let aCount = 0;

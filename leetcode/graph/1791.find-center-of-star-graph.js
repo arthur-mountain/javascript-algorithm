@@ -1,7 +1,7 @@
 /*
  * - [X] Done
  *   - iterate all edges until the vertex count equals to the length of edges
- * - [X] Refer to what others are doing
+ * - [X] Follow up solutions
  *   - there must have a center vertex in star graph,
  *   - so we only need to check the first and second edge
  */

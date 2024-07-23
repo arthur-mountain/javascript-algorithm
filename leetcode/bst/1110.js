@@ -1,6 +1,6 @@
 /*
  * - [x] Done
- * - [] Refer to what others are doing
+ * - [] Follow up solutions
  */
 /**
  * Definition for a binary tree node.

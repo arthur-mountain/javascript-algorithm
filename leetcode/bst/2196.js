@@ -68,7 +68,7 @@ class BST {
   }
 }
 
-/* refer answer */
+/* Follow up */
 createBinaryTree = (descriptions) => {
   let childrenSet = new Set();
   let childrenHashmap = new Map();

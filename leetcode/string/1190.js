@@ -7,7 +7,7 @@
  *   - the inside string of parentheses will be reversed first
  *   - and then the outside string of parentheses will be reversed
  *   - finally, return the reversed string
- * - [] Refer to what others are doing
+ * - [] Follow up solutions
  */
 /**
  * @param {string} s

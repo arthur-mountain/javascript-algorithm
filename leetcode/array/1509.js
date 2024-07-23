@@ -1,6 +1,6 @@
 /*
  * - [] Done
- * - [] Refer to what others are doing
+ * - [] Follow up solutions
  */
 
 /**

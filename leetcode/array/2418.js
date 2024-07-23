@@ -1,6 +1,6 @@
 /*
  * - [x] Done
- * - [x] Refer to what others are doing
+ * - [x] Follow up solutions
  */
 /**
  * @param {string[]} names
@@ -25,7 +25,7 @@ sortPeople = (names, heights) => {
     .map((key) => map[key]);
 };
 
-/* refer answer*/
+/* Follow up */
 sortPeople = (names, heights) => {
   return names
     .map((name, i) => ({ name, height: heights[i] }))
