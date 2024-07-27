@@ -31,7 +31,8 @@ let minimumCost = (source, target, original, changed, cost) => {
    *       cause they can not be the minimum cost
    *     else if changed key is equal to target[i] then redefine the minimum cost
    *
-   *     iterate nested convert path, and founded the minimum cost
+   *     iterate nested convert path, and founded the minimum cost,
+   *
    *     e.g. c-> b,
    *       we have c -> b with 5 cost,
    *       but we also have c -> e -> b with 3 cost.
@@ -55,16 +56,15 @@ let minimumCost = (source, target, original, changed, cost) => {
     visitedSet,
     accCost,
   ) => {
-    if (!subArr) return Infinity;
+    if (!subArr) return currentCost;
 
+    // console.log(currentCost, targetStr, subArr, visitedSet, accCost);
     for (const [changedKey, changedCost] of subArr) {
       if (visitedSet.has(changedKey)) continue;
 
       if (changedCost > currentCost) continue;
 
-      if (changedCost > currentCost) return Infinity;
-
-      if ((accCost += changedCost) > currentCost) return Infinity;
+      if ((accCost += changedCost) > currentCost) return currentCost;
 
       if (changedKey === targetStr) {
         return accCost;
@@ -78,6 +78,8 @@ let minimumCost = (source, target, original, changed, cost) => {
         accCost,
       );
     }
+
+    return currentCost;
   };
 
   let totalCost = 0;
@@ -125,6 +127,13 @@ let minimumCost = (source, target, original, changed, cost) => {
   console.log(totalCost);
   return totalCost;
 };
+minimumCost(
+  "aababdaacb",
+  "bcdcdcbdcb",
+  ["a", "d", "d", "a", "c", "b", "c", "a", "c", "d", "b", "b"],
+  ["b", "c", "b", "d", "a", "a", "b", "c", "d", "a", "c", "d"],
+  [11, 4, 3, 2, 7, 11, 7, 6, 9, 2, 1, 7],
+);
 
 // minimumCost(
 //   "abcd",
@@ -138,10 +147,11 @@ let minimumCost = (source, target, original, changed, cost) => {
 //
 // minimumCost("abcd", "abce", ["a"], ["e"], [10000]);
 //
-minimumCost(
-  "aaaabadaaa",
-  "dbdadddbad",
-  ["c", "a", "c", "a", "a", "b", "b", "b", "d", "d", "c"],
-  ["a", "c", "b", "d", "b", "c", "a", "d", "c", "b", "d"],
-  [7, 8, 11, 9, 7, 6, 4, 6, 9, 5, 9],
-);
+// minimumCost(
+//   "aaaabadaaa",
+//   "dbdadddbad",
+//   ["c", "a", "c", "a", "a", "b", "b", "b", "d", "d", "c"],
+//   ["a", "c", "b", "d", "b", "c", "a", "d", "c", "b", "d"],
+//   [7, 8, 11, 9, 7, 6, 4, 6, 9, 5, 9],
+// );
+//
