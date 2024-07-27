@@ -49,26 +49,34 @@ let minimumCost = (source, target, original, changed, cost) => {
   console.log(map);
 
   const foundMinCost = (
+    currentCost,
+    targetStr,
     subArr,
     visitedSet,
-    targetStr,
     accCost,
-    currentCost,
   ) => {
     if (!subArr) return Infinity;
 
     for (const [changedKey, changedCost] of subArr) {
+      if (visitedSet.has(changedKey)) continue;
+
       if (changedCost > currentCost) continue;
 
-      if (visitedSet.has(changedKey)) continue;
-      accCost += changedCost;
-      if (accCost > currentCost) return Infinity;
+      if (changedCost > currentCost) return Infinity;
+
+      if ((accCost += changedCost) > currentCost) return Infinity;
 
       if (changedKey === targetStr) {
         return accCost;
       }
       visitedSet.add(changedKey);
-      return foundMinCost(map.get(changedKey), visitedSet, targetStr, accCost);
+      return foundMinCost(
+        currentCost,
+        targetStr,
+        map.get(changedKey),
+        visitedSet,
+        accCost,
+      );
     }
   };
 
@@ -102,12 +110,11 @@ let minimumCost = (source, target, original, changed, cost) => {
       min = Math.min(
         min,
         foundMinCost(
+          min,
+          target[i],
           map.get(changedKey),
           new Set(source[i], changedKey),
-          source[i],
-          target[i],
           changedCost,
-          min,
         ),
       );
     }
