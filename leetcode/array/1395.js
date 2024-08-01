@@ -2,7 +2,41 @@
  * @param {number[]} rating
  * @return {number}
  */
-let numTeams = (rating) => {};
+let numTeams = (rating) => {
+  let count = 0;
+
+  for (let i = 0; ; i++) {
+    if (i >= rating.length - 2) break;
+
+    let j = i + 1;
+    let k = j + 1;
+
+    while (k <= rating.length) {
+      console.log(i, j, k);
+
+      if (
+        (rating[i] < rating[j] && rating[j] < rating[k]) ||
+        (rating[i] > rating[j] && rating[j] > rating[k])
+      ) {
+        console.log(i, "-> ", rating[i]);
+        console.log(j, "-> ", rating[j]);
+        console.log(k, "-> ", rating[k]);
+        count++;
+      }
+
+      k++;
+
+      if (k > rating.length) {
+        j++;
+        k = j + 1;
+      }
+    }
+  }
+
+  console.log(count);
+
+  return count;
+};
 
 /* problem-solving by violence but `Time Limit Exceeded` */
 // numTeams = (rating) => {
