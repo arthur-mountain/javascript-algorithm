@@ -1,6 +1,7 @@
 /*
  * - [x] Done
- * - [] Follow up solutions
+ * - [x] Follow up solutions
+ *   - seems all the same logic
  */
 /**
  * @param {string[]} details
