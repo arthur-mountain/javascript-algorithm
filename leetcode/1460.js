@@ -1,6 +1,7 @@
 /*
  * - [x] Done
- * - [] Follow up solutions
+ * - [x] Follow up solutions
+ *   - as same as our the first and second solution
  */
 /**
  * @param {number[]} target
