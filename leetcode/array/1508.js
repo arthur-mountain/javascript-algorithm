@@ -3,6 +3,8 @@
  *   - Our approach concept is not totally correct, after we read the solutions.
  *   - but the ideas similar to the solutions, see the comments below.
  * - [] Follow up solutions
+ *   - sliding window
+ *   - heap / priority queue
  */
 /**
  * @param {number[]} nums
