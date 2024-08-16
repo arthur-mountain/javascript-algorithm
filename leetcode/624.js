@@ -8,26 +8,34 @@
  */
 let maxDistance = (arrays) => {
   /*
-   * pick the smallest element from the first array and the largest element from the rest of the arrays
+   * pick the largest element and the smallest element, and calculate the absolute difference
    *
-   * compare the difference
    *
-   * but the smallest element and the largest element may be in same array so this is not work
+   * failed test case:
+   *    [[1,5],[3,4]]
+   *
+   * in our implementation,
+   * we pick 5 as the largest element and 3 as the smallest element, it's abs(5 - 3) = 2
+   *
+   * but the correct answer is abs(4 - 1) = 3
    * */
-  let s = [-1, Infinity];
+
+  let max = [-1, 0];
+  let v;
   for (let i = 0, len = arrays.length; i < len; i++) {
-    if (arrays[i][0] >= s[1]) continue;
-    s = [i, arrays[i][0]];
+    v = arrays[i][arrays[i].length - 1];
+    if (v <= max[1]) continue;
+    max = [i, v];
   }
 
-  let max = 0;
+  let s = Infinity;
   for (let i = 0, len = arrays.length; i < len; i++) {
-    if (s[0] === i) continue;
-    max = Math.max(max, arrays[i][arrays[i].length - 1]);
+    if (i === max[0]) continue;
+    if (arrays[i][0] >= s) continue;
+    s = arrays[i][0];
   }
 
-  console.log(s, max, Math.abs(s[1] - max));
-  return Math.max(Math.abs(s[1] - max), Math.abs(max - s[1]));
+  return Math.abs(max[1] - s);
 };
 
 // maxDistance([
@@ -37,6 +45,12 @@ let maxDistance = (arrays) => {
 // ]);
 //
 // maxDistance([[1], [1]]);
+
+maxDistance([
+  [-1, 1],
+  [-3, 1, 4],
+  [-2, -1, 0, 2],
+]);
 
 maxDistance([
   [-1, 1],
