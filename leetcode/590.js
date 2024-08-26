@@ -14,6 +14,7 @@
  * @param {_Node|null} root
  * @return {number[]}
  */
+// recursively
 let postorder = (root) => {
   let values = [];
 
@@ -31,4 +32,27 @@ let postorder = (root) => {
 
   dfs(root);
   return values;
+};
+
+// followup: iteratively
+postorder = (root) => {
+  let stack = [root];
+  let values = [];
+
+  let node;
+  while (stack.length) {
+    node = stack.pop();
+
+    if (!node) continue;
+
+    if (node.children.length) {
+      for (let i = 0; i < node.children.length; i++) {
+        stack.push(node.children[i]);
+      }
+    }
+
+    values.push(node.val);
+  }
+
+  return values.reverse();
 };
