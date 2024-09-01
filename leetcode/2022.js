@@ -1,6 +1,9 @@
 /**
  * - [x] Done
- * - [] Follow up solutions
+ * - [x] Follow up solutions
+ *   - check the original array is valid with not equal to rol * col then return empty array
+ *   - use built in function like slice or splice
+ *   - splice is better space complexity because it's mutate the array
  */
 /**
  * @param {number[]} original
@@ -9,19 +12,20 @@
  * @return {number[][]}
  */
 let construct2DArray = (original, rol, col) => {
-  const num = rol * col;
-  const len = original.length;
-
-  if (num > len || num < len) return [];
+  if (original.length !== rol * col) return [];
 
   let result = [];
 
-  for (let r = 0; r < rol; r++) {
-    let subArr = [];
-    for (let c = 0; c < col; c++) {
-      subArr.push(original[r * col + c]);
-    }
-    result.push(subArr);
+  /* slice */
+  // let startIndex;
+  // for (let i = 0; i < rol; i++) {
+  //   startIndex = i * col;
+  //   result.push(original.slice(startIndex, startIndex + col));
+  // }
+
+  /* splice */
+  for (let i = 0; i < rol; i++) {
+    result.push(original.splice(0, col));
   }
 
   return result;
