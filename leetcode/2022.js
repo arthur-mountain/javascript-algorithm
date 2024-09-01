@@ -31,6 +31,17 @@ let construct2DArray = (original, rol, col) => {
   return result;
 };
 
+/**
+ * same concept with one line code use ternary operator with array methods(fill, map, splice)
+ * but the time complexity is not well cause use built in function
+ * */
+construct2DArray = (original, rol, col) =>
+  rol * col !== original.length
+    ? []
+    : Array(m)
+        .fill(0)
+        .map(() => original.splice(0, n));
+
 console.log(construct2DArray([1, 2, 3, 4], 2, 2)); // [[1, 2], [3, 4]]
 console.log(construct2DArray([1, 2, 3], 1, 3)); // [[1,2,3]]
 console.log(construct2DArray([1, 2], 1, 1)); // []
