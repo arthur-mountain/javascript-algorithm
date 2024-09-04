@@ -54,6 +54,27 @@ let getLucky = (s, k) => {
   return s;
 };
 
+/**
+ * self follow-up: using unicode to get convert number for reduce memory usage
+ * */
+getLucky = (s, k) => {
+  s = s
+    .split("")
+    .map((char) => char.charCodeAt(0) - 96)
+    .join("");
+
+  let temp = 0;
+  for (let i = 0; i < k; i++) {
+    for (let j = 0; j < s.length; j++) {
+      temp += +s[j];
+    }
+    s = temp.toString();
+    temp = 0;
+  }
+
+  return s;
+};
+
 getLucky("iiii", 1); //?
 getLucky("leetcode", 2); //?
 getLucky("zbax", 2); //?
