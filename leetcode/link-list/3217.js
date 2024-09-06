@@ -35,3 +35,26 @@ let modifiedList = (nums, head) => {
   }
   return head;
 };
+
+/** same approach with first implementation */
+modifiedList = (nums, head) => {
+  nums = new Set(nums);
+
+  let prev = null;
+  let current = head;
+  while (current) {
+    if (nums.has(current.val)) {
+      if (current === head) {
+        current = head = current.next;
+      } else {
+        prev.next = current.next;
+        current = current.next;
+      }
+    } else {
+      prev = current;
+      current = current.next;
+    }
+  }
+  return head;
+};
+
