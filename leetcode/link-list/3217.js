@@ -1,6 +1,7 @@
 /*
  * - [x] Done
- * - [] Follow up solutions
+ * - [x] Follow up solutions
+ *   - create new head(via dummy node) is easier than our first/second implementation for update the next node
  */
 /**
  * Definition for singly-linked list.
@@ -58,3 +59,19 @@ modifiedList = (nums, head) => {
   return head;
 };
 
+/** followup: create new head */
+modifiedList = (nums, head) => {
+  nums = new Set(nums);
+  let cur = new ListNode(null, head);
+  let newHead = cur;
+
+  while (cur.next) {
+    if (nums.has(cur.next.val)) {
+      cur.next = cur.next.next;
+    } else {
+      cur = cur.next;
+    }
+  }
+
+  return newHead.next;
+};
