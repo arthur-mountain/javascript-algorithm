@@ -27,13 +27,15 @@ var isSubPath = function (head, root) {
   const dfs = (startHead, node) => {
     if (node.val === startHead.val) {
       startHead = startHead.next;
-    } else if (node.val === head.val) {
-      startHead = head.next;
     } else {
       startHead = head;
     }
 
     if (!startHead) return (isSub = true);
+
+    if (node.val === startHead.val) {
+      startHead = startHead.next;
+    }
 
     node.left && dfs(startHead, node.left);
     node.right && dfs(startHead, node.right);
