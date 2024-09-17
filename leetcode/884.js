@@ -1,6 +1,6 @@
 /*
- * - [] Done
- * - [] Follow up solutions
+ * - [x] Done
+ * - [x] Follow up solutions
  */
 /**
  * @param {string} s1
@@ -59,6 +59,43 @@ uncommonFromSentences = (s1, s2) => {
   for (const [word, count] of map.entries()) {
     if (count === 1) {
       // Time complexity: O(1) for push to last position does not shift front elements
+      result.push(word);
+    }
+  }
+
+  return result;
+  // Final time complexity: O(n + m)
+  // Final space complexity: O(n + m)
+};
+
+/** followup: Save the s1 and s2 word count in map */
+uncommonFromSentences = (s1, s2) => {
+  // Space complexity: O(n + m)
+  const map = {}; // { [word]: [s1 count, s2 count] }
+
+  // Time complexity: O(n) for split s1
+  // Time complexity: O(1) for map get and set
+  for (const word of s1.split(" ")) {
+    map[word] ||= [0, 0];
+    map[word][0] += 1;
+  }
+
+  // Time complexity: O(m) for split s2
+  // Time complexity: O(1) for map get and set
+  for (const word of s2.split(" ")) {
+    map[word] ||= [0, 0];
+    map[word][1] += 1;
+  }
+
+  // Space complexity: O(n + m)
+  const result = [];
+
+  // Time complexity: O(n + m) for iterate map
+  for (const word in map) {
+    if (
+      (map[word][0] === 1 && map[word][1] === 0) ||
+      (map[word][0] === 0 && map[word][1] === 1)
+    ) {
       result.push(word);
     }
   }
