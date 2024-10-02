@@ -38,3 +38,8 @@ let arrayRankTransform = (arr) => {
   // Total Space Complexity: O(n)
   return arr;
 };
+
+/** follow up ideas:
+ * 1. sort the array with radix sort to reduce time complexity to O(n)
+ * */
+arrayRankTransform = (arr) => {};
