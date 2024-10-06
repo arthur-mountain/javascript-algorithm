@@ -91,3 +91,13 @@ areSentencesSimilar = (s1, s2) => {
   // Check if the remaining unmatched part is in the middle
   return start + end >= n2;
 };
+
+/** refer solutions */
+areSentencesSimilar = (s1, s2) => {
+  if (s1 == s2) return true;
+  s1 = s1.split(" ");
+  s2 = s2.split(" ");
+  while (s1.at(0) === s2.at(0)) s1.shift(), s2.shift();
+  while (s1.at(-1) === s2.at(-1)) s1.pop(), s2.pop();
+  return !s1.length || !s2.length;
+};
