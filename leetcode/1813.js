@@ -3,8 +3,8 @@
  * - [] Follow up solutions
  */
 /**
- * @param {string} sentence1
- * @param {string} sentence2
+ * @param {string} s1
+ * @param {string} s2
  * @return {boolean}
  */
 let areSentencesSimilar = (s1, s2) => {
@@ -60,23 +60,34 @@ let areSentencesSimilar = (s1, s2) => {
 /** refer solutions */
 areSentencesSimilar = (s1, s2) => {
   /** refer solutions */
+  // Time complexity: O(n)
+  // Space complexity: O(n)
   s1 = s1.split(" ");
+  // Time complexity: O(m)
+  // Space complexity: O(m)
   s2 = s2.split(" ");
 
+  // Time complexity: swap two array O(1)
   // Ensure s1 is the longer sentence
   if (s1.length < s2.length) [s1, s2] = [s2, s1];
 
+  // Space complexity: O(1)
   let start = 0,
     end = 0;
+
+  // Time complexity: O(n + m)
+  // Space complexity: O(1)
   let n1 = s1.length,
     n2 = s2.length;
 
-  // Compare from the start
+  // Compare from the start. Time complexity: O(m)
   while (start < n2 && s1[start] === s2[start]) start++;
 
-  // Compare from the end
+  // Compare from the end. Time complexity: O(m)
   while (end < n2 && s1[n1 - end - 1] === s2[n2 - end - 1]) end++;
 
+  // Total time complexity: O(n + m)
+  // Total space complexity: O(n + m)
   // Check if the remaining unmatched part is in the middle
   return start + end >= n2;
 };
