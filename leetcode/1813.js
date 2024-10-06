@@ -57,3 +57,26 @@ let areSentencesSimilar = (s1, s2) => {
   return true;
 };
 
+/** refer solutions */
+areSentencesSimilar = (s1, s2) => {
+  /** refer solutions */
+  s1 = s1.split(" ");
+  s2 = s2.split(" ");
+
+  // Ensure s1 is the longer sentence
+  if (s1.length < s2.length) [s1, s2] = [s2, s1];
+
+  let start = 0,
+    end = 0;
+  let n1 = s1.length,
+    n2 = s2.length;
+
+  // Compare from the start
+  while (start < n2 && s1[start] === s2[start]) start++;
+
+  // Compare from the end
+  while (end < n2 && s1[n1 - end - 1] === s2[n2 - end - 1]) end++;
+
+  // Check if the remaining unmatched part is in the middle
+  return start + end >= n2;
+};
