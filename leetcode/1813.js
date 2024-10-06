@@ -1,6 +1,8 @@
 /*
  * - [] Done
- * - [] Follow up solutions
+ *   - [] Follow up solutions
+ *
+ * - [x] refer solutions
  */
 /**
  * @param {string} s1
