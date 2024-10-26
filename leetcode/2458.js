@@ -1,4 +1,8 @@
 /**
+ * - [x] Done
+ * - [] Follow up solutions
+ */
+/**
  * Definition for a binary tree node.
  * function TreeNode(val, left, right) {
  *     this.val = (val===undefined ? 0 : val)
@@ -11,150 +15,62 @@
  * @param {number[]} queries
  * @return {number[]}
  */
-var treeQueries = function (root, queries) {
-  /**
-    第一次 DFS：計算每個節點的「原始高度」，即從該節點到其最遠葉子節點的距離。這可以在每個節點的左右子樹都計算完後返回結果。
+let treeQueries = (root, queries) => {
+  const height = new Map(); // 節點子樹高度
+  const depth = new Map(); // 節點深度
+  const maxHeight = new Map(); // 不經過節點的最大高度
 
-    葉節點高度為 0：
-    葉節點高度為 0，父節點高度為子節點高度加 1。
-    這種定義是自底向上的計算方法，適合計算每個節點到其最遠葉節點的距離。
-    這樣根節點的高度會是樹的總高度。
-    第一次 DFS，我們採用這種計算方式紀錄高度
+  // 第一次DFS：計算深度和高度
+  function calculateHeightAndDepth(node, d = 0) {
+    if (!node) return -1; // 如果是空的，回傳-1
 
-    根節點高度為 0：
-    根節點高度為 0，子節點高度為父節點高度加 1。
-    這種高度定義是自頂向下的計算方式，也可以稱為「層級深度」。
+    // 記錄這個節點在第幾層
+    depth.set(node.val, d);
 
+    // 往左右兩邊走，看看各自最深能走多遠
+    const leftHeight = calculateHeightAndDepth(node.left, d + 1);
+    const rightHeight = calculateHeightAndDepth(node.right, d + 1);
 
-    =================================================
+    // 這個節點的高度 = 最深的那邊 + 1
+    const h = Math.max(leftHeight, rightHeight) + 1;
+    height.set(node.val, h);
 
-    第二次 DFS：計算每個節點的「次大子樹高度」來處理移除子節點後的情況。這一步的核心在於將每個節點的子樹高度記錄到父節點中，使我們能在查詢時知道刪除某個子樹後父節點的剩餘高度。
-  */
-  const height = new Map(); // 記錄每個節點的高度
-  const maxSubtreeHeight = new Map(); // 記錄每個節點的次大子樹高度
+    return h;
+  }
 
-  // 第一次 DFS：計算每個節點的高度
-  (function dfs(node) {
-    if (!node) return -1; // 空節點高度為 -1
-    const leftHeight = dfs(node.left);
-    const rightHeight = dfs(node.right);
-    const nodeHeight = 1 + Math.max(leftHeight, rightHeight);
-    height.set(node.val, nodeHeight); // 記錄該節點的高度
-    return nodeHeight;
-  })(root);
-
-  // 第二次 DFS：計算每個節點的次大子樹高度
-  (function dfs(node, parentHeight) {
+  // 第二次DFS：計算不經過每個節點的最大高度
+  function calculateMaxHeight(node, maxPathLength = 0) {
     if (!node) return;
+
+    // 先知道自己在第幾層
+    const d = depth.get(node.val);
+
+    // 看看左右兩邊各自可以走多遠
     const leftHeight = node.left ? height.get(node.left.val) + 1 : 0;
     const rightHeight = node.right ? height.get(node.right.val) + 1 : 0;
 
-    maxSubtreeHeight.set(
-      node.val,
-      Math.max(parentHeight, leftHeight, rightHeight),
-    );
+    // 處理左子節點
+    if (node.left) {
+      // 如果移除左子節點，可能的最長路徑有兩種：
+      // 1. 從上面傳下來的路徑長度(maxPathLength)
+      // 2. 從這個節點往右子樹走的路徑(d + rightHeight)
+      const pathWithoutLeft = Math.max(maxPathLength, d + rightHeight);
+      maxHeight.set(node.left.val, pathWithoutLeft);
 
-    // 更新左右子節點的父高度來遞歸計算
-    dfs(node.left, Math.max(parentHeight, rightHeight));
-    dfs(node.right, Math.max(parentHeight, leftHeight));
-  })(root, 0);
+      // 繼續往左邊走，更新可能的最長路徑
+      calculateMaxHeight(node.left, Math.max(maxPathLength, d + rightHeight));
+    }
 
-  // 處理查詢
-  const heights = [];
-  for (const query of queries) {
-    heights.push(maxSubtreeHeight.get(query));
+    // 處理右子節點（邏輯同上，但換成考慮左子樹）
+    if (node.right) {
+      const pathWithoutRight = Math.max(maxPathLength, d + leftHeight);
+      maxHeight.set(node.right.val, pathWithoutRight);
+      calculateMaxHeight(node.right, Math.max(maxPathLength, d + leftHeight));
+    }
   }
-  return heights;
+
+  calculateHeightAndDepth(root);
+  calculateMaxHeight(root);
+
+  return queries.map((q) => maxHeight.get(q));
 };
-
-/**
-
-Questions:
-1. 針對 dfs 計算高度的兩種方式（自頂向下和自底向上），我要怎麼知道應該使用哪種方式來解題?
-
-2. 我要怎麼知道要使用 dfs2 的方式來計算高度?
-
-3. 在一開始我要怎麼知道必須使用 DFS or BFS?
-
-4. 在一開始要怎麼知道要使用兩次，因為最好的方式就只想要用一次 DFS or BFS 解題
-
-
-這四個問題探討了決定如何選擇 DFS、BFS、遍歷方向和遍歷次數的核心考量。這裡逐一分析每個問題，並提供一些判斷的通用指引和實戰建議，這樣在面對類似題目時，能更靈活地決定最佳解法。
-
----
-
-### 1. 如何判斷應該使用自頂向下或自底向上計算高度？
-
-自頂向下或自底向上的選擇，通常取決於**題目是從整棵樹的根節點開始累計結果**，還是**需要最終結果基於子樹的計算**。
-
-- **自底向上**（Bottom-Up）適用情境：
-  - 當結果依賴於**從葉節點累計向上**的計算，如「從某節點到其最遠葉子節點的距離」。
-  - 自底向上可以在計算高度時簡化邏輯，因為每個節點的高度可以通過其子節點的高度直接遞歸得出。
-  - 比如：計算每個節點的深度、樹的最大高度等問題時，自底向上往往是最佳選擇。
-
-- **自頂向下**（Top-Down）適用情境：
-  - 當問題要求**從根節點向下遍歷並累加一些屬性值**，而最終結果不依賴於子節點的結果。
-  - 自頂向下適合計算「從根節點到某個節點的距離」或處理「每個節點的父節點影響的累加值」。
-  - 比如：在遍歷過程中累加某些屬性（如總和或最大值）時，自頂向下的累計可以更直觀。
-
-**在這道題中**：
-- 我們使用的是**自底向上**，因為每個節點的高度（即到達最遠葉節點的距離）依賴於其子節點的高度信息。這樣我們在 `dfs1` 計算高度時能自底向上累加，簡化高度的計算過程。
-
----
-
-### 2. 如何判斷要使用 `dfs2` 的方式來計算高度？
-
-`dfs2` 這種方式主要是為了解決**每個節點在「移除自己或子節點時，剩下的最大高度」**這類問題。在遇到此類情況時，我們需要：
-- 讓每個節點的結果不受其自身的子樹影響，這樣才能正確反映「移除該子樹後」的狀態。
-- 同時，需要傳遞父節點的高度信息，並動態更新兄弟節點的高度來維持正確性。
-
-**使用 `dfs2` 的情境**：
-- 當題目要求「移除某節點或其子節點後的最大值」時，我們需要排除當前節點的影響，因此需要向子節點傳遞父節點或兄弟節點的信息。
-- 通常可以通過「對每個節點傳遞 `parentHeight`，並排除當前子樹影響」的方式來實現。
-
-**在這道題中**：
-- 需要知道每個節點在移除子樹後的剩餘最大高度，因此使用 `dfs2`，並在遞歸時傳遞 `parentHeight`。這樣每個子節點都能正確地排除父節點和兄弟節點的高度影響。
-
----
-
-### 3. 如何判斷應該使用 DFS 或 BFS？
-
-- **DFS（深度優先搜索）**：通常適用於樹狀或圖形結構，尤其當問題依賴於遞歸子問題的結果時，DFS 更方便遞歸處理。例如：
-  - 計算樹的高度、深度或判斷子樹結構等問題，因為這些問題往往需要「基於子樹結果」進行計算。
-  - DFS 適合分而治之的情境，比如「從子節點累計向上」。
-
-- **BFS（廣度優先搜索）**：適合逐層處理，通常在「層次遍歷」或需要「最近的目標」這類問題上使用。例如：
-  - 最短路徑、最小步數、層級遍歷等問題，因為 BFS 能逐層遍歷且最先到達最近的節點。
-  - 如果需要每層累計值（例如樹的層級之和），BFS 往往能較自然地處理。
-
-**判斷關鍵**：
-- 當**問題依賴於累計子樹結果**時，DFS 往往更適合，因為 DFS 的遞歸特性可以讓子樹計算自然地向上遞推。
-- 當**問題依賴於逐層遍歷**或**最短距離**時，BFS 更適合。
-
-**在這道題中**：
-- 需要計算每個節點的高度（自底向上）、排除子樹的最大高度（從父節點遞歸向下），這樣的問題依賴於**子樹信息的累積**，因此適合使用 DFS。
-
----
-
-### 4. 如何知道需要使用兩次 DFS（或 BFS）來解題？
-
-確定是否需要兩次 DFS/BFS 的判斷，通常來自於：
-1. **結果是否依賴於前置的數據**：如果某些計算結果可以在第一次遍歷中儲存，並且後續遍歷需要這些數據，則可能需要多次遍歷。
-2. **狀態是否重疊**：若每次遍歷的目標不同（如一次計算高度，另一次計算排除子樹後的高度），則往往需要多次遍歷以確保每次結果獨立，避免重疊影響。
-
-**如何盡量減少遍歷次數**：
-- 一次遍歷理想但未必可行，尤其是當需要的數據（如高度）無法在單次 DFS/BFS 中計算完全時，通常需要額外的遍歷。
-- 如果能在一次 DFS 中同時完成不同的結果計算（例如利用多個返回值或結構儲存），可以有效減少遍歷次數。
-
-**在這道題中**：
-- 由於每個節點的 `subtree height` 需要排除其子樹的影響，這必須先得到每個節點的高度（`dfs1`），再根據高度計算剩餘最大高度（`dfs2`），因此需要兩次遍歷。
-
----
-
-### 總結
-
-1. **自頂向下和自底向上選擇**：如果結果依賴於子樹結果，通常使用自底向上；若問題描述從根節點累計層次或距離，則考慮自頂向下。
-2. **使用 `dfs2` 的情境**：若題目要求移除子樹後的剩餘屬性值（例如高度），則需要保留父節點高度，並排除當前子樹影響。
-3. **DFS 或 BFS 判斷**：若問題依賴於子樹累積結果，選擇 DFS；若問題要求逐層處理或最短距離，選擇 BFS。
-4. **是否需要多次遍歷**：如果問題依賴於不同的狀態或結果、且結果之間相互依賴（如高度和排除子樹後的高度），則往往需要多次遍歷，通常一次 DFS 難以完成。
- */
