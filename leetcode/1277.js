@@ -120,3 +120,29 @@ countSquares = (matrix) => {
 
   return count;
 };
+
+/**
+ * follow up:
+ * 同樣使用動態規劃，但不額外建立 dp 表，直接在原矩陣上修改
+ * 時間複雜度為 O(m × n)
+ * 空間複雜度為 O(1)
+ **/
+countSquares = (matrix) => {
+  let m = matrix.length;
+  let n = matrix[0].length;
+  let count = 0;
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (matrix[i][j] == 1 && i - 1 >= 0 && j - 1 >= 0) {
+        let minVal = Math.min(
+          matrix[i - 1][j],
+          Math.min(matrix[i - 1][j - 1], matrix[i][j - 1]),
+        );
+        matrix[i][j] = minVal + 1;
+      }
+      count += matrix[i][j];
+    }
+  }
+  return count;
+};
