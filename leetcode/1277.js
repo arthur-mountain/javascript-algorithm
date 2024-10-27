@@ -168,3 +168,39 @@ countSquares = (matrix) => {
 
   return count;
 };
+
+/*
+ * follow up:
+ * dynamic top-down
+ * */
+countSquares = (matrix) => {
+  if (!matrix || matrix.length === 0) return 0;
+
+  const m = matrix.length;
+  const n = matrix[0].length;
+  let count = 0;
+
+  const memo = {};
+  const dp = (i, j) => {
+    if (i < 0 || j < 0 || matrix[i][j] === 0) {
+      return 0;
+    }
+
+    if (memo[`${i},${j}`]) {
+      return memo[`${i},${j}`];
+    }
+
+    const result = Math.min(dp(i - 1, j), dp(i, j - 1), dp(i - 1, j - 1)) + 1;
+    count += memo[`${i},${j}`] = result;
+
+    return result;
+  };
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      dp(i, j);
+    }
+  }
+
+  return count;
+};
