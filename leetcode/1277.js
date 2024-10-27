@@ -1,6 +1,6 @@
 /*
  * - [x] Done
- * - [] Follow up solutions
+ * - [x] Follow up solutions
  */
 /**
  * @param {number[][]} matrix
@@ -144,5 +144,27 @@ countSquares = (matrix) => {
       count += matrix[i][j];
     }
   }
+  return count;
+};
+
+countSquares = (matrix) => {
+  let count = 0;
+
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[0].length; j++) {
+      if (matrix[i][j] === 0) continue;
+
+      if (i > 0 && j > 0) {
+        matrix[i][j] += Math.min(
+          matrix[i - 1][j - 1], // 左上
+          matrix[i - 1][j], // 上
+          matrix[i][j - 1], // 左
+        );
+      }
+
+      count += matrix[i][j];
+    }
+  }
+
   return count;
 };
