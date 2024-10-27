@@ -75,3 +75,48 @@ let countSquares = (matrix) => {
 
   return count;
 };
+
+/**
+ * follow up:
+ * 1. 使用動態規劃來優化時間複雜度
+ * 2. 創建一個 dp 表，dp[i][j] 表示以 (i,j) 為右下角可以形成的最大正方形邊長
+ * 3. 遍歷矩陣，填充 dp 表
+ * 4. 將所有可能的正方形數量加總
+ * 5. 時間複雜度為 O(m × n)，空間複雜度為 O(m × n)
+ **/
+countSquares = (matrix) => {
+  const m = matrix.length;
+  const n = matrix[0].length;
+  let count = 0;
+
+  // 創建 dp 表，初始化為 0
+  // dp[i][j] 表示以 (i,j) 為右下角可以形成的最大正方形邊長
+  // 空間複雜度: O(m * n)
+  let dp = Array(m)
+    .fill()
+    .map(() => Array(n).fill(0));
+
+  // 填充 dp 表
+  // 時間複雜度: O(m * n)
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (matrix[i][j] === 0) continue;
+
+      if (i === 0 || j === 0) {
+        // 第一行或第一列，只能形成 1x1 的正方形
+        dp[i][j] = 1;
+      } else {
+        // 取左上、上、左三個位置的最小值 + 1 (+1 -> 加上自己，即 1x1 square)
+        dp[i][j] =
+          Math.min(
+            dp[i - 1][j - 1], // 左上
+            dp[i - 1][j], // 上
+            dp[i][j - 1], // 左
+          ) + 1;
+      }
+      count += dp[i][j]; // 將所有可能的正方形數量加總
+    }
+  }
+
+  return count;
+};
