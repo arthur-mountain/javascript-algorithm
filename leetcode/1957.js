@@ -1,6 +1,6 @@
 /*
  * Status:
- *  - [] Done
+ *  - [x] Done
  *  - [] Follow up solutions
  *
  * Title: 957. Delete Characters to Make Fancy String
@@ -29,17 +29,35 @@ let makeFancyString = (s) => {
   let currentCount = 0;
   s = s.split("");
 
-  for (let i = 0, len = s.length; i < len; i++) {
-    if (!currentChar || currentChar !== s[i]) {
-      currentChar = s[i];
-      currentCount = 1;
-    } else if (currentCount < 2) {
-      currentCount++;
-    } else {
-      s.splice(i, 1);
-      i--;
-    }
-  }
+  // This will reach TLE
+  // for (let i = 0, len = s.length; i < len; i++) {
+  //   if (!currentChar || currentChar !== s[i]) {
+  //     currentChar = s[i];
+  //     currentCount = 1;
+  //   } else if (currentCount < 2) {
+  //     currentCount++;
+  //   } else {
+  //     s.splice(i, 1);
+  //     i--;
+  //   }
+  // }
+  // return s.join("");
 
-  return s.join("");
+  // Same idea but using built-in filter
+  // Time: O(n + n + n) = O(n) -> split + filter + join
+  // Space: O(n) -> filter will create a new array
+  return s
+    .filter((str) => {
+      if (!currentChar || currentChar !== str) {
+        currentChar = str;
+        currentCount = 1;
+        return 1;
+      } else if (currentCount < 2) {
+        currentCount++;
+        return 1;
+      } else {
+        return 0;
+      }
+    })
+    .join("");
 };
