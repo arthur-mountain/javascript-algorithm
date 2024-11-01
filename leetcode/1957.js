@@ -31,7 +31,7 @@ let makeFancyString = (s) => {
 
   // This will reach TLE
   // for (let i = 0, len = s.length; i < len; i++) {
-  //   if (!currentChar || currentChar !== s[i]) {
+  //   if (currentChar !== s[i]) {
   //     currentChar = s[i];
   //     currentCount = 1;
   //   } else if (currentCount < 2) {
@@ -48,7 +48,7 @@ let makeFancyString = (s) => {
   // Space: O(n) -> filter will create a new array
   return s
     .filter((str) => {
-      if (!currentChar || currentChar !== str) {
+      if (currentChar !== str) {
         currentChar = str;
         currentCount = 1;
         return 1;
