@@ -1,7 +1,7 @@
 /*
  * Status:
  *  - [x] Done
- *  - [] Follow up solutions
+ *  - [x] Follow up solutions
  *
  * Title: 957. Delete Characters to Make Fancy String
  *
@@ -60,4 +60,30 @@ let makeFancyString = (s) => {
       }
     })
     .join("");
+};
+
+/**
+ * follow up solution
+ * Time: O(n) -> iterate string s
+ * Space: O(n) -> create new string res
+ **/
+makeFancyString = (s) => {
+  let res = "";
+  let cur = "";
+  let count = 0;
+
+  for (const str of s) {
+    if (cur === str) {
+      count++;
+    } else {
+      cur = str;
+      count = 1;
+    }
+
+    if (count < 3) {
+      res += str;
+    }
+  }
+
+  return res;
 };
