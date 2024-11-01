@@ -6,6 +6,7 @@
  * Title: 957. Delete Characters to Make Fancy String
  *
  * Topics:
+ *  String
  *
  * Statements:
  *   Remove minimum number of characters from s,
