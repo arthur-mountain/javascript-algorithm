@@ -1,0 +1,45 @@
+/*
+ * Status:
+ *  - [] Done
+ *  - [] Follow up solutions
+ *
+ * Title: 957. Delete Characters to Make Fancy String
+ *
+ * Topics:
+ *
+ * Statements:
+ *   Remove minimum number of characters from s,
+ *   to make no three or more consecutive characters in s.
+ *
+ * Thoughts:
+ *   create the current char, current count var,
+ *
+ *   Iterate the string as str,
+ *   if no current char, set it to str and count to 1
+ *   if the current char is diff than str, set the current char to str and count to 1
+ *   if the current char is the same as str and the count is less than 2, increase the count
+ *   else remove the char from string
+ **/
+/**
+ * @param {string} s
+ * @return {string}
+ */
+let makeFancyString = (s) => {
+  let currentChar = "";
+  let currentCount = 0;
+  s = s.split("");
+
+  for (let i = 0, len = s.length; i < len; i++) {
+    if (!currentChar || currentChar !== s[i]) {
+      currentChar = s[i];
+      currentCount = 1;
+    } else if (currentCount < 2) {
+      currentCount++;
+    } else {
+      s.splice(i, 1);
+      i--;
+    }
+  }
+
+  return s.join("");
+};
