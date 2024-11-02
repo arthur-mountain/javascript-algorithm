@@ -1,12 +1,14 @@
 /*
  * Status:
  *  - [x] Done
- *  - [] Follow up solutions
+ *  - [x] Follow up solutions
+ *    - Not significant improvements in follow-up, but a few more solutions were added.
  *
  * Title:
  *  2490. Circular Sentence
  *
  * Topics:
+ *  String
  *
  * Constraints:
  *  1. The sentence consist of all lowercase or uppercase letters.
@@ -61,6 +63,43 @@ isCircularSentence = (sentence) => {
     } else {
       if (sentence[i][sentence[i].length - 1] !== sentence[i + 1][0])
         return false;
+    }
+  }
+
+  return true;
+};
+
+isCircularSentence = (sentence) => {
+  const len = sentence.length;
+
+  // compare last char of the last word is equal to the first char of the first word
+  if (sentence[0] !== sentence[len - 1]) return false;
+
+  for (let i = 0; i < len; i++) {
+    // found the space, compare the prev and next char is circular
+    if (sentence[i] === " " && sentence[i - 1] !== sentence[i + 1]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+/**
+ * !!!Not recommended,
+ * as same as above solution but we check the last char of the last word
+ * is equal to the first char of the first word in for loop.
+ * */
+isCircularSentence = (sentence) => {
+  const len = sentence.length;
+
+  for (let i = 0; i < len; i++) {
+    if (sentence[i] === " ") {
+      // found the space, compare the prev and next char is circular
+      if (sentence[i - 1] !== sentence[i + 1]) return false;
+    } else if (i === len - 1) {
+      // found the last char of last word, compare the first char of the first word
+      if (sentence[i] !== sentence[0]) return false;
     }
   }
 
