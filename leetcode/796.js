@@ -90,3 +90,19 @@ rotateString = (s, goal) => {
   }
   return false;
 };
+
+/* improvement v3 */
+rotateString = (s, goal) => {
+  /**
+   * Time complexity: O(n^2)
+   * Space complexity: O(n)
+   **/
+  let count = 0;
+  while (count < s.length) {
+    if (s === goal) return true;
+    s = s.slice(1) + s[0]; // Rotate by moving first character to the end
+    count++;
+  }
+  return false;
+};
+
