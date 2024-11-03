@@ -1,7 +1,7 @@
 /*
  * Status:
  *  - [x] Done
- *  - [] Follow up solutions
+ *  - [x] Follow up solutions
  *
  * Title:
  *  796. Rotate String
@@ -106,3 +106,20 @@ rotateString = (s, goal) => {
   return false;
 };
 
+/* follow up */
+rotateString = (s, goal) => {
+  /**
+   * Thoughts:
+   *  Concatenating s with itself (s + s) will create all possible strings after rotation.
+   *
+   *  Therefore, we only need to check if s is included in the new string.
+   *
+   *  For example:
+   *   If s = "abcde", then s + s results in "abcdeabcde",
+   *   which contains all possible strings after rotation.
+   *
+   *  Time complexity: O(n)
+   *  Space complexity: O(1)
+   **/
+  return goal.length === s.length && (s + s).includes(goal);
+};
