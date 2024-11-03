@@ -64,3 +64,29 @@ let rotateString = (s, goal) => {
   return false;
 };
 
+/* improvement v2 */
+rotateString = (s, goal) => {
+  /**
+   * Thoughts:
+   *  if s === goal, return true
+   *
+   *  if s.length === 1, return s === goal
+   *
+   *  if the len of s and goal are not equal, return false
+   *
+   *  for each element in s,
+   *  concat the substring from i to the end of s and the substring from 0 to i
+   *
+   *  Time complexity: O(n * (n+n)) => O(n^2)
+   *  Space complexity: O(1)
+   **/
+  if (s === goal) return true;
+  let sLen = s.length;
+  if (sLen === 1) return s === goal;
+  if (sLen !== goal.length) return false;
+
+  for (let i = 0; i < sLen; i++) {
+    if (s.substring(i) + s.substring(0, i) === goal) return true;
+  }
+  return false;
+};
