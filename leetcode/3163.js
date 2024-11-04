@@ -68,3 +68,35 @@ let compressedString = (word) => {
 
   return comp;
 };
+
+/** another approach */
+compressedString = (word) => {
+  /*
+   * Thoughts:
+   *  Similar to the approach above using a `while` loop,
+   *  but this time counting consecutive characters directly within the inner `while` loop.
+   *
+   *  Time complexity: O(n)
+   *  Space complexity: O(n)
+   */
+  let comp = ""; // 最終壓縮結果
+  let i = 0; // 指向當前處理的位置
+
+  while (i < word.length) {
+    // 當前字符
+    let c = word[i];
+    // 計數這個字符最多可以重複9次
+    let count = 0;
+
+    // 計算連續相同字符的長度，最多取9個
+    while (i < word.length && word[i] === c && count < 9) {
+      count++;
+      i++;
+    }
+
+    // 將計數和字符添加到結果中
+    comp += count + c;
+  }
+
+  return comp;
+};
