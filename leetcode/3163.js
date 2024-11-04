@@ -57,14 +57,8 @@ let compressedString = (word) => {
   let comp = "";
 
   for (let i = 1, len = word.length; i <= len; i++) {
-    if (curr[1] === word[i]) {
-      if (curr[0] < 9) {
-        curr[0]++;
-      } else {
-        comp += `${curr[0]}${curr[1]}`;
-        curr[0] = 1;
-        curr[1] = word[i];
-      }
+    if (curr[1] === word[i] && curr[0] < 9) {
+      curr[0]++;
     } else {
       comp += `${curr[0]}${curr[1]}`;
       curr[0] = 1;
