@@ -1,7 +1,8 @@
 /*
  * Status:
  *  - [x] Done
- *  - [] Follow-up solutions
+ *  - [x] Follow-up solutions
+ *    - Same as the approaches or ideas in the solutions.
  *
  * Title:
  *  3163. String Compression III
@@ -76,10 +77,12 @@ compressedString = (word) => {
    *  Similar to the approach above using a `while` loop,
    *  but this time counting consecutive characters directly within the inner `while` loop.
    *
+   *  Using an array to store the compressed string improves performance compared to string concatenation.
+   *
    *  Time complexity: O(n)
    *  Space complexity: O(n)
    */
-  let comp = ""; // 最終壓縮結果
+  let result = []; // 最終壓縮結果
   let i = 0; // 指向當前處理的位置
 
   while (i < word.length) {
@@ -95,8 +98,8 @@ compressedString = (word) => {
     }
 
     // 將計數和字符添加到結果中
-    comp += count + c;
+    result.push(count, c);
   }
 
-  return comp;
+  return result.join("");
 };
