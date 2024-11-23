@@ -8,11 +8,6 @@
  *
  * Topics:
  *
- * Constraints:
- *  1. 1 <= s.length, goal.length <= 100
- *
- *  2. s and goal consist of lowercase English letters.
- *
  * Statements:
  *  We are given two strings, s and goal.
  *
@@ -25,6 +20,11 @@
  *  For example, if s = "abcde", and goal = "cdeab", return true.
  *  first  shift -> s = "bcdea"
  *  second shift -> s = "cdeab" # this same as goal so return true
+ *
+ * Constraints:
+ *  1. 1 <= s.length, goal.length <= 100
+ *
+ *  2. s and goal consist of lowercase English letters.
  **/
 /**
  * @param {string} s

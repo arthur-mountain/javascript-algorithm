@@ -10,9 +10,6 @@
  * Topics:
  *  String
  *
- * Constraints:
- *  1. word consists only of lowercase English letters.
- *
  * Statements:
  *  Implement a string compression algorithm.
  *
@@ -22,6 +19,9 @@
  *   2.1 If the count reaches 9 or the current character differs from the previous one,
  *
  *   2.2 Append the count and the character to the compressed string.
+ *
+ * Constraints:
+ *  1. word consists only of lowercase English letters.
  **/
 /**
  * @param {string} word

@@ -8,17 +8,6 @@
  *
  * Topics:
  *
- * Constraints:
- *  1. nums.length == n
- *
- *  2. 1 <= n <= 105
- *
- *  3. 1 <= maximumBit <= 20
- *
- *  4. 0 <= nums[i] < 2 ^ maximumBit
- *
- *  5. `nums` is sorted in ascending order.
- *
  * Statements:
  *  the k that must be less than 2 ^ maximumBit, k < 2 ^ maximumBit,
  *
@@ -67,6 +56,17 @@
  *    remove last number from nums is 2
  *
  *   and so on
+ *
+ * Constraints:
+ *  1. nums.length == n
+ *
+ *  2. 1 <= n <= 105
+ *
+ *  3. 1 <= maximumBit <= 20
+ *
+ *  4. 0 <= nums[i] < 2 ^ maximumBit
+ *
+ *  5. `nums` is sorted in ascending order.
  **/
 /**
  * @param {number[]} nums

@@ -11,17 +11,17 @@
  *
  *    2. Prefix Sum
  *
- * Constraints:
- *    1. 1 <= nums.length <= 1000
- *
- *    2. -10^6 <= nums[i] <= 10^6
- *
  * Statements:
  *   Given an array nums. We define a running sum of an array as runningSum[i] = sum(nums[0]…nums[i]).
  *
  *   Example:
  *     Input: nums = [1,2,3,4]
  *     Output: [1, 1+2, 1+2+3, 1+2+3+4]
+ *
+ * Constraints:
+ *    1. 1 <= nums.length <= 1000
+ *
+ *    2. -10^6 <= nums[i] <= 10^6
  **/
 /**
  * @param {number[]} nums

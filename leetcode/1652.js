@@ -8,12 +8,6 @@
  *
  * Topics:
  *
- * Constraints:
- *  1.  n == code.length
- *  2. 1 <= n <= 100
- *  3. 1 <= code[i] <= 100
- *  4. -(n - 1) <= k <= n - 1
- *
  * Statements:
  *  given a number of k, decrypt the code by folloing rules,
  *  the code is circular, so the next of the last element is the first element,
@@ -22,6 +16,12 @@
  *  if (k < 0) code[i] = sum of previous k elements
  *  if(k === 0) code[i] = 0
  *  return the decrypted code
+ *
+ * Constraints:
+ *  1.  n == code.length
+ *  2. 1 <= n <= 100
+ *  3. 1 <= code[i] <= 100
+ *  4. -(n - 1) <= k <= n - 1
  **/
 /**
  * @param {number[]} code

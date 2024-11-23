@@ -10,14 +10,14 @@
  *  String
  *  Greedy
  *
+ * Statements:
+ *  A beautiful string is one where we can partition it into substrings,
+ *  each with an even length, where all characters in each substring are the same(0 or 1).
+ *
  * Constraints:
  *  1. s has an even length.
  *
  *  2. s[i] is either '0' or '1'.
- *
- * Statements:
- *  A beautiful string is one where we can partition it into substrings,
- *  each with an even length, where all characters in each substring are the same(0 or 1).
  **/
 /**
  * @param {string} s

@@ -10,11 +10,6 @@
  * Topics:
  *  String
  *
- * Constraints:
- *  1. The sentence consist of all lowercase or uppercase letters.
- *  2. No leading or trailing spaces.
- *  3. Each word separated by a space.
- *
  * Statements:
  *  The last char of first word in the sentence is the first char of the next word,
  *  The last char of the last word in the sentence is the first char of the first word.
@@ -23,6 +18,11 @@
  *   sentence = "leetcode exercises sound delightful"
  *   leetcode -> exercises -> sound -> delightful -> leetcode -> ...
  *          e -> e       s -> s   d -> d        l -> l      e -> ...
+ *
+ * Constraints:
+ *  1. The sentence consist of all lowercase or uppercase letters.
+ *  2. No leading or trailing spaces.
+ *  3. Each word separated by a space.
  *
  * Thoughts:
  *  Iterate sentence,

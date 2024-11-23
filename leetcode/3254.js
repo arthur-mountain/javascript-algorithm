@@ -10,11 +10,6 @@
  *  1. array
  *  2. sliding window
  *
- * Constraints:
- *  1. 1 <= n == nums.length <= 500
- *  2. 1 <= nums[i] <= 105
- *  3. 1 <= k <= n
- *
  * Statements:
  *  the subarray:
  *    1. the size k of nums
@@ -24,6 +19,11 @@
  *  results of size n - k + 1
  *
  *  the results[i] is the power of nums[i..(i + k - 1)].
+ *
+ * Constraints:
+ *  1. 1 <= n == nums.length <= 500
+ *  2. 1 <= nums[i] <= 105
+ *  3. 1 <= k <= n
  **/
 /**
  * @param {number[]} nums
