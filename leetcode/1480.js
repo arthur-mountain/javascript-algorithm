@@ -7,7 +7,9 @@
  *    1480. Running Sum of 1d Array
  *
  * Topics:
+ *    1. Array
  *
+ *    2. Prefix Sum
  *
  * Constraints:
  *    1. 1 <= nums.length <= 1000
