@@ -1,13 +1,15 @@
 /**
  * Status:
  *  - [x] Done
- *  - [ ] Follow-up solutions
+ *  - [x] Follow-up solutions
  *
  * Title:
  *    1342. Number of Steps to Reduce a Number to Zero
  *
  * Topics:
  *    1. Math
+ *
+ *    2. Bit Manipulation
  *
  * Constraints:
  *    1. 0 <= num <= 10^6
@@ -34,6 +36,25 @@ let numberOfSteps = (num) => {
 
     if (num % 2 === 0) {
       num /= 2;
+    } else {
+      num--;
+    }
+  }
+
+  return steps;
+};
+
+// Follow up:
+// num % 2 === 0 is the same as num & 1 === 0
+// num /=2 is the same as num >>= 1
+numberOfSteps = (num) => {
+  let steps = 0;
+
+  while (num > 0) {
+    steps++;
+
+    if ((num & 1) === 0) {
+      num >>= 1;
     } else {
       num--;
     }
