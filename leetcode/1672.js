@@ -54,3 +54,19 @@ let maximumWealth = (accounts) => {
   }
   return max;
 };
+
+maximumWealth = (accounts) => {
+  /*
+   * Thoughts:
+   *    as same as above implementation but
+   *    we are using built-in reduce to sum the wealth of each customer in this approach
+   **/
+  let max = 0;
+  for (let i = 0, r = accounts.length; i < r; i++) {
+    max = Math.max(
+      max,
+      accounts[i].reduce((acc, cur) => acc + cur, 0),
+    );
+  }
+  return max;
+};
