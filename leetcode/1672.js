@@ -44,7 +44,9 @@ let maximumWealth = (accounts) => {
    *
    *    update the maximum money between the current maximum wealth variable and the current customer sum of wealth
    **/
+  // Space: O(1)
   let max = 0;
+  // Time: O(m * n)
   for (let i = 0, m = accounts.length; i < m; i++) {
     let cur_sum = 0;
     for (let j = 0, n = accounts[i].length; j < n; j++) {
@@ -61,7 +63,9 @@ maximumWealth = (accounts) => {
    *    as same as above implementation but
    *    we are using built-in reduce to sum the wealth of each customer in this approach
    **/
+  // Space: O(1)
   let max = 0;
+  // Time: O(m * n)
   for (let i = 0, m = accounts.length; i < m; i++) {
     max = Math.max(
       max,
@@ -78,6 +82,7 @@ maximumWealth = (accounts) => {
    *    mutate previous element to max wealth,
    *    end of the loop return the last element, which is the maximum wealth
    **/
+  // Time: O(m * n)
   for (let i = 0, m = accounts.length; i < m; i++) {
     accounts[i] = Math.max(
       i > 0 ? accounts[i - 1] : 0,
