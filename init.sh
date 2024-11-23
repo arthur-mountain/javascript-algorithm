@@ -25,9 +25,9 @@ cat >"$FILE_PATH" <<-EOF
  *
  * Topics:
  *
- * Constraints:
- *
  * Statements:
+ *
+ * Constraints:
  **/
 EOF
 
