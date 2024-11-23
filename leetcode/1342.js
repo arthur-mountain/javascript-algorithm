@@ -29,8 +29,10 @@ let numberOfSteps = (num) => {
    *    while is num is not 0,
    *    check if num is even or odd, and do the operation
    * */
+  // Space: O(1)
   let steps = 0;
 
+  // Time: O(log(n)), must be one step will divide by 2
   while (num > 0) {
     steps++;
 
@@ -48,8 +50,10 @@ let numberOfSteps = (num) => {
 // num % 2 === 0 is the same as num & 1 === 0
 // num /=2 is the same as num >>= 1
 numberOfSteps = (num) => {
+  // Space: O(1)
   let steps = 0;
 
+  // Time: O(log(n))
   while (num > 0) {
     steps++;
 
