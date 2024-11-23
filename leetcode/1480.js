@@ -57,6 +57,8 @@ runningSum = (nums) => {
   // Time complexity: O(n)
   for (let i = 1, r = nums.length; i < r; i++) {
     nums[i] = nums[i - 1] + nums[i];
+    // or
+    // nums[i] += nums[i - 1];
   }
   return nums;
 };
