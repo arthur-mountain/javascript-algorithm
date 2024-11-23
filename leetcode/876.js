@@ -1,7 +1,7 @@
 /**
  * Status:
  *  - [x] Done
- *  - [ ] Follow-up solutions
+ *  - [x] Follow-up solutions
  *
  * Title:
  *    876. Middle of the Linked List
