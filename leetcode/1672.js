@@ -1,7 +1,7 @@
 /**
  * Status:
  *  - [x] Done
- *  - [ ] Follow-up solutions
+ *  - [x] Follow-up solutions
  *
  * Title:
  *    1672. Richest Customer Wealth
@@ -69,4 +69,20 @@ maximumWealth = (accounts) => {
     );
   }
   return max;
+};
+
+maximumWealth = (accounts) => {
+  /*
+   * Thoughts:
+   *    do not create extra variable to store the current customer wealth,
+   *    mutate previous element to max wealth,
+   *    end of the loop return the last element, which is the maximum wealth
+   **/
+  for (let i = 0, r = accounts.length; i < r; i++) {
+    accounts[i] = Math.max(
+      i > 0 ? accounts[i - 1] : 0,
+      accounts[i].reduce((acc, cur) => acc + cur, 0),
+    );
+  }
+  return accounts[accounts.length - 1];
 };
