@@ -1,7 +1,7 @@
 /**
  * Status:
  *  - [x] Done
- *  - [] Follow-up solutions
+ *  - [x] Follow-up solutions
  *
  * Title:
  *    412. Fizz Buzz
@@ -75,6 +75,28 @@ fizzBuzz = (n) => {
     } else {
       answer.push(`${i}`);
     }
+  }
+
+  return answer;
+};
+
+// Follow up -> String concatenation
+fizzBuzz = (n) => {
+  // Space: O(n)
+  let answer = Array({ length: n });
+
+  // Time: O(n)
+  for (let i = 1, idx = 0; i <= n; i++) {
+    let cur = "";
+
+    if (i % 3 === 0) {
+      cur += "Fizz";
+    }
+    if (i % 5 === 0) {
+      cur += "Buzz";
+    }
+
+    answer[idx++] = cur ? cur : `${i}`;
   }
 
   return answer;
