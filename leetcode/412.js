@@ -1,7 +1,7 @@
 /**
  * Status:
  *  - [x] Done
- *  - [ ] Follow-up solutions
+ *  - [] Follow-up solutions
  *
  * Title:
  *    412. Fizz Buzz
@@ -48,6 +48,32 @@ let fizzBuzz = (n) => {
       answer[idx++] = "Buzz";
     } else {
       answer[idx++] = `${i}`;
+    }
+  }
+
+  return answer;
+};
+
+// Not better than the previous one,
+// create empty array, and push elements to the array,
+// cause the array might recalculate the memory address behind the scene
+// depends on language implementation
+//
+// but more readable, cause we don't need to calculate the index
+fizzBuzz = (n) => {
+  // Space: O(n)
+  let answer = [];
+
+  // Time: O(n)
+  for (let i = 1; i <= n; i++) {
+    if (i % 3 === 0 && i % 5 === 0) {
+      answer.push("FizzBuzz");
+    } else if (i % 3 === 0) {
+      answer.push("Fizz");
+    } else if (i % 5 === 0) {
+      answer.push("Buzz");
+    } else {
+      answer.push(`${i}`);
     }
   }
 
