@@ -35,9 +35,9 @@ let canConstruct = (ransomNote, magazine) => {
    *  if the char is in the hashmap and the frequency is not 0, decrease the frequency by 1.
    *  otherwise, return false.
    *
-   *  Space: O(n)
+   *  Space: O(1) -> we count the number of alphabets, the alphabets is 26
    *
-   *  Time: O(m + n)
+   *  Time: O(Math.max(m, n))
    * */
 
   const map = new Map();
