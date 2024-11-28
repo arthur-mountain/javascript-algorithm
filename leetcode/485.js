@@ -50,3 +50,37 @@ let findMaxConsecutiveOnes = (nums) => {
   }
   return max;
 };
+
+// 如上述，如果要用 i < len 的話，回傳得時候，因為 current_count 是沒被計算到 Math.max 的
+// 所以回傳也要 Math.max(max, current_count)
+findMaxConsecutiveOnes = (nums) => {
+  let max = 0,
+    current_count = 0;
+
+  for (let i = 0, len = nums.length; i < len; i++) {
+    if (nums[i]) {
+      current_count++;
+    } else {
+      max = Math.max(max, current_count);
+      current_count = 0;
+    }
+  }
+  return Math.max(max, current_count);
+};
+
+// 最簡單得做法是，直接把 Math.max 在每次 for loop 裡面都取
+// 這樣就不用在意 for loop 走完之後，最後一個 current_count 是不是被取到 max
+findMaxConsecutiveOnes = (nums) => {
+  let max = 0,
+    current_count = 0;
+
+  for (let i = 0, len = nums.length; i < len; i++) {
+    if (nums[i]) {
+      current_count++;
+    } else {
+      current_count = 0;
+    }
+    max = Math.max(max, current_count);
+  }
+  return max;
+};
