@@ -3,7 +3,7 @@
 set -e
 
 if [ -z "$1" ]; then
-  echo "Error: No filename provided. Usage: ./script.sh <filename>"
+  echo "Error: No filename provided. Usage: ./init.sh <filename>"
   exit 1
 fi
 
