@@ -27,6 +27,7 @@
  * @param {string[]} words
  * @return {number}
  */
+// P.S. 也可以使用 array 來存儲 moses code，access 的時候就要用 ansi code
 const mosesMap = {
   a: ".-",
   b: "-...",
