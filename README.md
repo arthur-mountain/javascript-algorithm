@@ -1,47 +1,37 @@
-# Algorithm
+# Algorithms and Data Structures
 
-Implement algorithm in javascript.
+這是一個用 JavaScript 實作常見演算法和資料結構的專案，旨在學習和練習基礎和進階的演算法技巧。
 
----
+## 📁 目錄結構
 
-## 排序
+- `algorithms`: 包含各種演算法的實作，按照主題分類
 
-#### bubble sort (n²)
+  - `dp` - 動態規劃演算法
 
-    每一輪一路往後比較，如果【前一個元素比後一個元素大】就【直接兩兩交換】，每輪排序完後，可以排序出後面較大的值
+  - `searching` - 搜索演算法
 
-#### selection sort (n²)
+  - `sorting` - 排序演算法
 
-    每輪比完才交換位置，【以預設最小值的方式】，把每輪比較出來的最小值往前放
+  - `kmp.js` - KMP 字串匹配演算法的實作
 
-#### insertion sort (n²)
+- `data-structures`: 資料結構的實作(如: 鏈結串列、堆疊、佇列、樹等)
 
-    拿當下的每個元素，跟【前面的元素比較】，插入到正確的位置
+  - **Graph**: 圖的表示方式與遍歷演算法 (BFS, DFS)。
 
-#### merge sort (nlogn)
+  - **HashTable**: 雜湊表的實作。
 
-    拆分：將大陣列使用【二分法左右一直拆成小陣列】直到小陣列中只剩一個元素，
-    合併：兩邊各自將【小陣列進行排序及合併】，直到最後兩邊會有已排序完的小陣列，再組回成大陣列
+  - **LinkList**: 單向與雙向鏈結串列的實作。
 
-#### quick sort (n²)
+  - **Queue**: 佇列 (FIFO) 的實作。
 
-    拆分：
-        以【一個值為基準點(pivot)】進行拆分，
-        【比 pivot 小就放到前面】(比基準值小的小陣列)，
-        【比 pivot 大就放到後面】(比基準值大的小陣列)，
-        直到陣列中只剩一個元素。
-    合併：把左右陣列合併，組回大陣列。
+  - **Stack**: 堆疊 (LIFO) 的實作。
 
-    P.S.
-        若【基準點落在最大值或最小值】，O(n²)
-        若【基準點落在中間】，O(nlogn)
+  - **Tree**: 二元樹、二元搜尋樹與樹的遍歷演算法。
 
-## 搜尋
+- `leetcodes`
 
-#### binarySearch (log n)
+  LeetCode 題目和解法的記錄。
 
-    在【已排序】的陣列中，每次尋找皆先選取【中間值】，
-    將【目標值】和【中間值】進行比較後，
-    【往右 or 往左】的小陣列中重複以上動作，
-    直到【目標值】等於【中間值】
+## ⚖️ Licenses
 
+This project is licensed under the MIT licenses. 詳情請參考 [LICENSE](./LICENSE)
