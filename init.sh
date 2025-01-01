@@ -7,7 +7,15 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-FILE_PATH="leetcodes/$1.js"
+# File name
+FILE_PATH="$1.js"
+
+# Add Topic folder to file path if exists
+if [ -n "$2" ]; then
+  FILE_PATH="$2/$FILE_PATH"
+fi
+
+FILE_PATH="leetcodes/${FILE_PATH}"
 
 if [ -f "$FILE_PATH" ]; then
   echo "Error: File '$FILE_PATH' already exists."
@@ -23,11 +31,19 @@ cat >"$FILE_PATH" <<-EOF
  *
  * Title:
  *
+ *
  * Topics:
+ *
+ *
  *
  * Statements:
  *
+ *
+ *
  * Constraints:
+ *
+ *
+ *
  **/
 EOF
 
