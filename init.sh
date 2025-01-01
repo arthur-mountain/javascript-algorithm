@@ -7,7 +7,7 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-FILE_PATH="leetcode/$1.js"
+FILE_PATH="leetcodes/$1.js"
 
 if [ -f "$FILE_PATH" ]; then
   echo "Error: File '$FILE_PATH' already exists."
