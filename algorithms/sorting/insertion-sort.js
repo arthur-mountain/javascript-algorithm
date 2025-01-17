@@ -7,7 +7,7 @@
  *   首先，2 < 9 兩個交換(8, 2, 9, 5, 1)
  *   再來，2 < 8 兩個交換(2, 8, 9, 5, 1)
  * 第三輪，拿 5 跟前面的比較... 以此類推
-*/
+ */
 
 function insertionSort(array) {
   const length = array.length;
@@ -15,12 +15,12 @@ function insertionSort(array) {
   for (let i = 0; i < length - 1; i++) {
     for (let j = i + 1; j > 0; j--) {
       if (array[j] < array[j - 1]) {
-        [array[j - 1], array[j]] = [array[j], array[j - 1]]
+        [array[j - 1], array[j]] = [array[j], array[j - 1]];
       }
     }
   }
 
   return array;
-};
+}
 
-console.log("🚀 ~ insertion-sort.js ~", insertionSort([8, 9, 2, 5, 1]))
+console.log("🚀 ~ insertion-sort.js ~", insertionSort([8, 9, 2, 5, 1]));

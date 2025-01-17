@@ -28,23 +28,23 @@ function merge(left, right) {
   // 兩邊陣列都有元素
   while (leftIdx < left.length && rightIdx < right.length) {
     if (left[leftIdx] < right[rightIdx]) {
-      result.push(left[leftIdx])
-      leftIdx++
+      result.push(left[leftIdx]);
+      leftIdx++;
     } else {
-      result.push(right[rightIdx])
-      rightIdx++
+      result.push(right[rightIdx]);
+      rightIdx++;
     }
   }
 
   // 只會有一個 while 迴圈會被執行，不是左邊仍有元素，不然就是右邊仍有元素
   while (leftIdx < left.length) {
-    result.push(left[leftIdx])
-    leftIdx++
+    result.push(left[leftIdx]);
+    leftIdx++;
   }
 
   while (rightIdx < right.length) {
-    result.push(right[rightIdx])
-    rightIdx++
+    result.push(right[rightIdx]);
+    rightIdx++;
   }
 
   return result;
@@ -55,11 +55,12 @@ function mergeAndSlice(array) {
 
   if (length === 1) return array;
 
-  const midIndex = Math.floor(length / 2)
-  const leftAry = array.slice(0, midIndex)
-  const rightAry = array.slice(midIndex)
+  const midIndex = Math.floor(length / 2);
+  const leftAry = array.slice(0, midIndex);
+  const rightAry = array.slice(midIndex);
 
   return merge(mergeAndSlice(leftAry), mergeAndSlice(rightAry));
-};
+}
 
-console.log("🚀 ~ merge-sort.js ~", mergeAndSlice([8, 9, 2, 5, 1]))
+console.log("🚀 ~ merge-sort.js ~", mergeAndSlice([8, 9, 2, 5, 1]));
+

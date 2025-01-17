@@ -14,7 +14,7 @@ function selectionSort(array) {
   // 取一個元素(第一個 for)，跟每個元素(第二個 for)作比較
   for (let i = 0; i < length - 1; i++) {
     // 先預設最小值為取一個元素 index
-    minValueIndex = i
+    minValueIndex = i;
 
     /**
      * let j = i ，
@@ -23,11 +23,11 @@ function selectionSort(array) {
      */
     for (let j = i; j < length; j++) {
       /**
-       * 若第一輪 for 迴圈的中 
-       * minValueIndex的值比較大，就換成 minValueIndex = j 
+       * 若第一輪 for 迴圈的中
+       * minValueIndex的值比較大，就換成 minValueIndex = j
        */
       if (array[minValueIndex] > array[j]) {
-        minValueIndex = j
+        minValueIndex = j;
       }
     }
 
@@ -38,4 +38,5 @@ function selectionSort(array) {
   return array;
 }
 
-console.log("selection-sort.js ~ line 30 ~ ", selectionSort([8, 9, 2, 5, 1]))
+console.log("selection-sort.js ~ line 30 ~ ", selectionSort([8, 9, 2, 5, 1]));
+
