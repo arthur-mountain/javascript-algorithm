@@ -9,6 +9,11 @@ class StaticArray {
     this.#data = [];
     this.#length = 0;
     this.#capacity = Math.max(capacity || 0, this.#minCapacity);
+    this.#sizeChecker();
+  }
+
+  #sizeChecker() {
+    if (this.#intervalId) return;
     this.#intervalId = setInterval(() => {
       if (this.#length < this.#capacity / 2) {
         this.#shrink();
@@ -51,6 +56,7 @@ class StaticArray {
     if (this.#length >= this.#capacity) {
       this.#extend();
     }
+    this.#sizeChecker();
   }
 
   pushRight(element) {
@@ -58,6 +64,7 @@ class StaticArray {
     if (this.#length >= this.#capacity) {
       this.#extend();
     }
+    this.#sizeChecker();
   }
 
   popLeft() {
@@ -70,6 +77,7 @@ class StaticArray {
     }
     this.#data[this.#length - 1] = null;
     this.#length--;
+    this.#sizeChecker();
     return element;
   }
 
@@ -79,13 +87,19 @@ class StaticArray {
     }
     const element = this.#data[this.#length - 1];
     this.#data[--this.#length] = null;
+    this.#sizeChecker();
     return element;
   }
 
   clear() {
+    if (this.#length <= 0) return;
     this.#capacity = this.#minCapacity;
     this.#data = new Array(this.#capacity);
     this.#length = 0;
+    if (this.#intervalId) {
+      clearInterval(this.#intervalId);
+      this.#intervalId = null;
+    }
   }
 
   printAll() {
