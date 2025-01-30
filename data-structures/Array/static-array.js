@@ -34,6 +34,36 @@ class StaticArray {
     this.#capacity = newCapacity;
   }
 
+  resize(newCapacity) {
+    if (newCapacity < this.#length) {
+      throw new Error("New capacity is less than current length");
+    }
+    const newData = new Array(newCapacity);
+    for (let i = 0; i < this.#length; i++) {
+      newData[i] = this.#data[i];
+    }
+    this.#data = newData;
+    this.#capacity = newCapacity;
+  }
+
+  find(element) {
+    for (let i = 0; i < this.#length; i++) {
+      if (this.#data[i] === element) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  contains(element) {
+    for (let i = 0; i < this.#length; i++) {
+      if (this.#data[i] === element) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   isFull() {
     return this.#length === this.#capacity;
   }
@@ -84,8 +114,7 @@ class StaticArray {
 
   clear() {
     if (this.#length <= 0) return;
-    this.#capacity = this.#minCapacity;
-    this.#data = new Array(this.#capacity);
+    this.#data = new Array((this.#capacity = this.#minCapacity));
     this.#length = 0;
   }
 
