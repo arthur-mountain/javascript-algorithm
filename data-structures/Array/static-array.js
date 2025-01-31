@@ -10,15 +10,7 @@ class StaticArray {
     this.#capacity = Math.max(capacity || 0, this.#minCapacity);
   }
 
-  shrink() {
-    this.resize(Math.max(this.#capacity / 2, this.#minCapacity));
-  }
-
-  extend() {
-    this.resize(this.#capacity * 2);
-  }
-
-  resize(newCapacity) {
+  #resize(newCapacity) {
     if (newCapacity < this.#length) {
       throw new Error("New capacity is less than current length");
     }
@@ -30,7 +22,15 @@ class StaticArray {
     this.#capacity = newCapacity;
   }
 
-  find(element) {
+  shrink() {
+    this.#resize(Math.max(this.#capacity / 2, this.#minCapacity));
+  }
+
+  extend() {
+    this.#resize(this.#capacity * 2);
+  }
+
+  findIndex(element) {
     for (let i = 0; i < this.#length; i++) {
       if (this.#data[i] === element) {
         return i;
