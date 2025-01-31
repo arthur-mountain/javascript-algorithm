@@ -35,13 +35,6 @@ class DynamicArray {
     this.#staticArray.set(index, element);
   }
 
-  insert(index, element) {
-    this.#staticArray.insert(index, element);
-    if (this.#staticArray.isFull()) {
-      this.#staticArray.extend();
-    }
-  }
-
   delete(index) {
     this.#staticArray.delete(index);
   }
@@ -52,6 +45,13 @@ class DynamicArray {
 
   printAll() {
     this.#staticArray.printAll();
+  }
+
+  insert(index, element) {
+    this.#staticArray.insert(index, element);
+    if (this.#staticArray.isFull()) {
+      this.#staticArray.extend();
+    }
   }
 }
 
