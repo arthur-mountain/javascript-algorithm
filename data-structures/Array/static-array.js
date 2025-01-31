@@ -11,27 +11,11 @@ class StaticArray {
   }
 
   shrink() {
-    const newCapacity = Math.max(this.#capacity / 2, this.#minCapacity);
-    const newData = new Array(newCapacity);
-
-    for (let i = 0; i < this.#length; i++) {
-      newData[i] = this.#data[i];
-    }
-
-    this.#data = newData;
-    this.#capacity = newCapacity;
+    this.resize(Math.max(this.#capacity / 2, this.#minCapacity));
   }
 
   extend() {
-    const newCapacity = this.#capacity * 2;
-    const newData = new Array(newCapacity);
-
-    for (let i = 0; i < this.#length; i++) {
-      newData[i] = this.#data[i];
-    }
-
-    this.#data = newData;
-    this.#capacity = newCapacity;
+    this.resize(this.#capacity * 2);
   }
 
   resize(newCapacity) {
