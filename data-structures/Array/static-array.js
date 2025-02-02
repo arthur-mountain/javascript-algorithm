@@ -1,11 +1,10 @@
 class StaticArray {
   #data;
   #length;
-  #capacity;
-  #minCapacity = 100;
+  #capacity = 100;
 
   constructor(capacity) {
-    this.#capacity = Math.max(capacity || 0, this.#minCapacity);
+    this.#capacity = Math.max(capacity || 0, this.#capacity);
     this.#data = new Array(this.#capacity);
     this.#length = 0;
   }
@@ -23,7 +22,7 @@ class StaticArray {
   }
 
   shrink() {
-    this.#resize(Math.max(this.#capacity / 2, this.#minCapacity));
+    this.#resize(Math.max(this.#capacity / 2, this.#capacity));
   }
 
   extend() {
@@ -31,7 +30,7 @@ class StaticArray {
   }
 
   findIndex(element) {
-    for (let i = 0; i < this.#length; i++) {
+    for (let i = 0; i < this.#capacity; i++) {
       if (this.#data[i] === element) {
         return i;
       }
@@ -65,21 +64,27 @@ class StaticArray {
   }
 
   get(index) {
+    if (index < 0 || index >= this.#capacity) {
+      throw new Error("Index out of bounds");
+    }
     return this.#data[index];
   }
 
   set(index, element) {
-    if (index < 0 || index >= this.#length) {
+    if (index < 0 || index >= this.#capacity) {
       throw new Error("Index out of bounds");
     }
     this.#data[index] = element;
   }
 
   insert(index, element) {
-    if (index < 0 || index >= this.#length) {
+    if (this.isFull()) {
+      throw new Error("Array is full");
+    }
+    if (index < 0 || index >= this.#capacity) {
       throw new Error("Index out of bounds");
     }
-    for (let i = this.#length; i > index; i--) {
+    for (let i = this.#capacity; i > index; i--) {
       this.#data[i] = this.#data[i - 1];
     }
     this.#data[index] = element;
@@ -87,31 +92,42 @@ class StaticArray {
   }
 
   delete(index) {
-    if (index < 0 || index >= this.#length) {
+    if (index < 0 || index >= this.#capacity) {
       throw new Error("Index out of bounds");
     }
-    for (let i = index; i < this.#length; i++) {
-      this.#data[i] = this.#data[i + 1];
+    if (index === this.#capacity - 1) {
+      this.#data[index] = undefined;
+    } else {
+      for (let i = index; i < this.#capacity; i++) {
+        this.#data[i] = this.#data[i + 1];
+      }
     }
     this.#length--;
   }
 
   clear() {
     if (this.#length <= 0) return;
-    this.#data = new Array((this.#capacity = this.#minCapacity));
+    this.#data = new Array(this.#capacity);
     this.#length = 0;
   }
 
   printAll() {
-    console.log("🚀 ~ printAll ~ capacity: ", this.#capacity);
     if (this.#length <= 0) {
       console.log("No elements to print.");
     } else {
-      for (let i = 0; i < this.#length; i++) {
-        console.log("🚀 ~ printAll ~ at: ", i);
+      for (let i = 0; i < this.#capacity; i++) {
+        console.log("🚀 ~ printAll ~ at: %s \n", i);
         console.log("🚀 ~ printAll ~ item: ", this.#data[i], "\n");
       }
     }
+  }
+
+  toString() {
+    const chars = [];
+    for (let i = 0; i < this.#capacity; i++) {
+      chars.push(this.#data[i]);
+    }
+    return "[" + chars.join(", ") + "]";
   }
 }
 
