@@ -5,9 +5,9 @@ class StaticArray {
   #minCapacity = 100;
 
   constructor(capacity) {
-    this.#data = [];
-    this.#length = 0;
     this.#capacity = Math.max(capacity || 0, this.#minCapacity);
+    this.#data = new Array(this.#capacity);
+    this.#length = 0;
   }
 
   #resize(newCapacity) {
@@ -39,13 +39,13 @@ class StaticArray {
     return -1;
   }
 
+  find(element) {
+    const index = this.findIndex(element);
+    return index === -1 ? undefined : this.#data[index];
+  }
+
   contains(element) {
-    for (let i = 0; i < this.#length; i++) {
-      if (this.#data[i] === element) {
-        return true;
-      }
-    }
-    return false;
+    return this.findIndex(element) >= 0;
   }
 
   isFull() {
