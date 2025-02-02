@@ -1,4 +1,4 @@
-const StaticArray = require("./static-array");
+const { StaticArray } = require("./static-array");
 
 class DynamicArray extends StaticArray {
   constructor() {
@@ -11,4 +11,4 @@ class DynamicArray extends StaticArray {
   }
 }
 
-export { DynamicArray };
+module.exports = { DynamicArray };

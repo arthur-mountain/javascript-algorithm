@@ -1,4 +1,4 @@
-const DynamicArray = require("./dynamic-array");
+const { DynamicArray } = require("./dynamic-array");
 
 class CustomArray extends DynamicArray {
   #intervalId;
@@ -25,4 +25,4 @@ class CustomArray extends DynamicArray {
   }
 }
 
-export { CustomArray };
+module.exports = { CustomArray };

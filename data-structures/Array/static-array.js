@@ -115,4 +115,4 @@ class StaticArray {
   }
 }
 
-export { StaticArray };
+module.exports = { StaticArray };
