@@ -1,6 +1,6 @@
-const StaticArray = require("./static-array");
+const DynamicArray = require("./dynamic-array");
 
-class CustomArray extends StaticArray {
+class CustomArray extends DynamicArray {
   #intervalId;
 
   constructor() {
@@ -22,11 +22,6 @@ class CustomArray extends StaticArray {
       clearInterval(this.#intervalId);
       this.#intervalId = null;
     }
-  }
-
-  insert(index, element) {
-    super.insert(index, element);
-    this.isFull() && this.extend();
   }
 }
 
