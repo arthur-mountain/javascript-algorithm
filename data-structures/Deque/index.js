@@ -1,42 +1,48 @@
-const DynamicArray = require("../Array/dynamic-array");
+const { DynamicArray } = require("../Array/dynamic-array");
 
-class Deque {
-  #dynamicArray;
+class Deque extends DynamicArray {
+  #PUBLIC_METHOD_SET = new Set([
+    "pushLeft",
+    "pushRight",
+    "popLeft",
+    "popRight",
+    "isFull",
+    "isEmpty",
+    "size",
+    "capacity",
+    "printAll",
+    "toString",
+  ]);
 
   constructor() {
-    this.#dynamicArray = new DynamicArray();
-  }
-
-  isFull() {
-    return this.#dynamicArray.isFull();
-  }
-
-  isEmpty() {
-    return this.#dynamicArray.isEmpty();
-  }
-
-  printAll() {
-    this.#dynamicArray.printAll();
+    super();
+    return new Proxy(this, {
+      apply: (target, prop, receiver) => {
+        if (this.#PUBLIC_METHOD_SET.has(prop)) {
+          return Reflect.get(target, prop, receiver);
+        }
+      },
+    });
   }
 
   pushLeft(element) {
-    this.#dynamicArray.insert(0, element);
+    this.insert(0, element);
   }
 
   pushRight(element) {
-    this.#dynamicArray.insert(this.#dynamicArray.size(), element);
+    this.insert(this.size(), element);
   }
 
   popLeft() {
-    const element = this.#dynamicArray.get(0);
-    this.#dynamicArray.delete(0);
+    const element = this.get(0);
+    this.delete(0);
     return element;
   }
 
   popRight() {
-    const lastIndex = this.#dynamicArray.size() - 1;
-    const element = this.#dynamicArray.get(lastIndex);
-    this.#dynamicArray.delete(lastIndex);
+    const lastIndex = this.size() - 1;
+    const element = this.get(lastIndex);
+    this.delete(lastIndex);
     return element;
   }
 }
