@@ -47,4 +47,4 @@ class Deque extends DynamicArray {
   }
 }
 
-export { Deque };
+module.exports = { Deque };
