@@ -1,19 +1,19 @@
 const { DynamicArray } = require("../Array/dynamic-array");
 
-class Deque extends DynamicArray {
-  static #PUBLIC_METHOD_SET = new Set([
-    "pushLeft",
-    "pushRight",
-    "popLeft",
-    "popRight",
-    "isFull",
-    "isEmpty",
-    "size",
-    "capacity",
-    "printAll",
-    "toString",
-  ]);
+const PUBLIC_METHOD_SET = new Set([
+  "pushLeft",
+  "pushRight",
+  "popLeft",
+  "popRight",
+  "isFull",
+  "isEmpty",
+  "size",
+  "capacity",
+  "printAll",
+  "toString",
+]);
 
+class Deque extends DynamicArray {
   constructor() {
     super();
     const instance = this;
@@ -23,10 +23,7 @@ class Deque extends DynamicArray {
           return Reflect.get(target, prop, receiver);
         }
 
-        if (
-          Deque.#PUBLIC_METHOD_SET.has(prop) ||
-          prop in Object.getPrototypeOf(target)
-        ) {
+        if (PUBLIC_METHOD_SET.has(prop)) {
           const value = Reflect.get(target, prop, receiver);
           return typeof value === "function" ? value.bind(instance) : value;
         }
