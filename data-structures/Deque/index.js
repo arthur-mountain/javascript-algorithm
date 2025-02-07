@@ -1,7 +1,7 @@
 const { DynamicArray } = require("../Array/dynamic-array");
 
 class Deque extends DynamicArray {
-  #PUBLIC_METHOD_SET = new Set([
+  static #PUBLIC_METHOD_SET = new Set([
     "pushLeft",
     "pushRight",
     "popLeft",
@@ -16,11 +16,22 @@ class Deque extends DynamicArray {
 
   constructor() {
     super();
+    const instance = this;
     return new Proxy(this, {
-      apply: (target, prop, receiver) => {
-        if (this.#PUBLIC_METHOD_SET.has(prop)) {
+      get(target, prop, receiver) {
+        if (typeof prop === "symbol") {
           return Reflect.get(target, prop, receiver);
         }
+
+        if (
+          Deque.#PUBLIC_METHOD_SET.has(prop) ||
+          prop in Object.getPrototypeOf(target)
+        ) {
+          const value = Reflect.get(target, prop, receiver);
+          return typeof value === "function" ? value.bind(instance) : value;
+        }
+
+        throw new Error(`Property '${prop}' is not accessible on Deque`);
       },
     });
   }
