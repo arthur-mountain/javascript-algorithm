@@ -27,4 +27,5 @@ class Stack {
   }
 }
 
-export default Stack
+export default Stack;
+

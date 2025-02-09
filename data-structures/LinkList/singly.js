@@ -7,8 +7,8 @@ class ListNode {
 }
 
 class LinkList {
-  static behind = 'behind';
-  static front = 'front';
+  static behind = "behind";
+  static front = "front";
   #head;
   #tail;
   #length;
@@ -172,7 +172,7 @@ class LinkList {
     // while print
     let current = this.#head;
     while (current) {
-      console.log('current node: ', current, '\n');
+      console.log("current node: ", current, "\n");
       current = current.next;
     }
   }
@@ -180,3 +180,4 @@ class LinkList {
 // const ILinkListSingly = new LinkList();
 
 export default LinkList;
+

@@ -21,7 +21,7 @@ class PriorityQueue {
       this.#queue.splice(currentIdx, 0, newNode);
       this.#length++;
       return true;
-    };
+    }
     return this.#insertRecursive(newNode, currentIdx + 1);
   }
 
@@ -29,7 +29,7 @@ class PriorityQueue {
     if (priority < 0) {
       console.warn("was not priority provide");
       return this;
-    };
+    }
 
     const queue = this.#queue;
     const newNode = new PriorityNode(value, priority);
@@ -67,11 +67,12 @@ class PriorityQueue {
     const print = (startIdx = 0) => {
       if (!this.#queue[startIdx]) return;
       console.log("🚀 ~ printAll at: ", startIdx);
-      console.log("🚀 ~ printAll item: ", this.#queue[startIdx], '\n');
+      console.log("🚀 ~ printAll item: ", this.#queue[startIdx], "\n");
       return print(startIdx + 1);
     };
     return print();
   }
-};
+}
 
 export default PriorityQueue;
+

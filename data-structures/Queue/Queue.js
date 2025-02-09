@@ -36,12 +36,13 @@ class Queue {
     const print = (startIdx = 0) => {
       if (!this.#queue[startIdx]) return;
       console.log("🚀 ~ printAll ~ at: ", startIdx);
-      console.log("🚀 ~ printAll ~ item: ", this.#queue[startIdx], '\n');
+      console.log("🚀 ~ printAll ~ item: ", this.#queue[startIdx], "\n");
       return print(startIdx + 1);
-    }
+    };
 
     return print();
   }
 }
 
 export default Queue;
+

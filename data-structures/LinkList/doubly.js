@@ -47,7 +47,9 @@ class LinkList {
     if (index === 0) return this.#head;
     if (index === this.#length) return this.#tail;
     const isCloseFromHead = this.#length / 2 <= index;
-    return isCloseFromHead ? this.#searchFromHead(index) : this.#searchFromTail(index);
+    return isCloseFromHead
+      ? this.#searchFromHead(index)
+      : this.#searchFromTail(index);
   }
   append(valueOrNode) {
     const node = this.#createNode(valueOrNode);
@@ -112,7 +114,7 @@ class LinkList {
     const target = this.getNode(index);
     if (!target) return;
     target.value = value;
-  };
+  }
   size() {
     return this.#length;
   }
@@ -123,7 +125,7 @@ class LinkList {
   printAll() {
     let current = this.#head;
     while (current) {
-      console.log('current node: ', current, '\n');
+      console.log("current node: ", current, "\n");
       current = current.next;
     }
   }
@@ -132,3 +134,4 @@ class LinkList {
 // const ILinkListDouble = new LinkList();
 
 export default LinkList;
+

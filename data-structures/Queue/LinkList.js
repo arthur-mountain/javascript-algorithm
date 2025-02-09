@@ -54,15 +54,19 @@ class Queue {
   }
 
   printAll() {
-    const tmp = []
+    const tmp = [];
     let current = this.#first;
     while (current) {
-      tmp.push(current)
+      tmp.push(current);
       current = current.next;
     }
 
-    console.log("🚀 ~ file: LinkList-queue.js ~ line 58 ~ Queue ~ print ~ tmp\n", tmp)
+    console.log(
+      "🚀 ~ file: LinkList-queue.js ~ line 58 ~ Queue ~ print ~ tmp\n",
+      tmp,
+    );
   }
 }
 
 export default Queue;
+
