@@ -1,26 +1,42 @@
 class CircularQueue {
   #queue;
   #capacity;
+  #front;
+  #rear;
 
   constructor(capacity) {
     this.#queue = Array((this.#capacity = capacity));
-    console.log(this.#queue);
-    console.log(this.#capacity);
+    this.#front = this.#rear = -1;
   }
 
   enqueue(item) {
-    throw new Error("Not implemented");
+    if (this.isFull()) {
+      return false;
+    }
+    if (this.isEmpty()) {
+      this.#front = this.#rear = 0;
+    } else {
+      this.#rear = (this.#rear + 1) % this.#capacity; // circular increment
+    }
+    this.#queue[this.#rear] = item;
+    return true;
   }
 
   dequeue() {
-    throw new Error("Not implemented");
+    if (this.isEmpty()) {
+      return null;
+    }
+    const item = this.#queue[this.#front];
+    this.#front = (this.#front + 1) % this.#capacity; // circular increment
+    return item;
   }
 
   isEmpty() {
-    throw new Error("Not implemented");
+    return this.#front === -1;
   }
+
   isFull() {
-    throw new Error("Not implemented");
+    return this.#front === (this.#rear + 1) % this.#capacity;
   }
 }
 
