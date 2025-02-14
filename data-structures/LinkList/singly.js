@@ -180,4 +180,3 @@ class LinkList {
 // const ILinkListSingly = new LinkList();
 
 export default LinkList;
-

@@ -134,4 +134,3 @@ class LinkList {
 // const ILinkListDouble = new LinkList();
 
 export default LinkList;
-
