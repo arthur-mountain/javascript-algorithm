@@ -10,8 +10,8 @@
  * Search Edge: O(1)：若知道要查找的兩個節點，則能直接查找它們之間是否有邊存在。
  *
  * 缺點:
- *  若是密集圖（dense graph），其空間複雜度較高；
- *  若是稀疏圖（sparse graph），則可能會有許多不必要的空間浪費。
+ *  若是密集圖(dense  graph)，其空間複雜度較高；
+ *  若是稀疏圖(sparse graph)，則可能會有許多不必要的空間浪費。
  *
  * 應用:
  *  Graph 常用在社交網絡、路徑尋找演算法、網路路徑分析等應用。
@@ -154,7 +154,7 @@ class Graph {
         /** @param {number} neighbor */
         (neighbor) => {
           if (!visited[neighbor]) {
-            return dfsHelper(neighbor);
+            dfsHelper(neighbor);
           }
         },
       );
