@@ -166,4 +166,4 @@ class BSTree {
   }
 }
 
-export default BSTree;
+module.exports = { BSTree };

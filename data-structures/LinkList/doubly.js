@@ -7,7 +7,7 @@ class ListNode {
   }
 }
 
-class LinkList {
+class DoublyLinkList {
   #head;
   #tail;
   #length;
@@ -131,6 +131,6 @@ class LinkList {
   }
 }
 
-// const ILinkListDouble = new LinkList();
+// const ILinkListDouble = new DoublyLinkList();
 
-export default LinkList;
+module.exports = { DoublyLinkList };

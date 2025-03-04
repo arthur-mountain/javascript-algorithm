@@ -6,7 +6,7 @@ class ListNode {
   }
 }
 
-class LinkList {
+class SinglyLinkList {
   static behind = "behind";
   static front = "front";
   #head;
@@ -177,6 +177,7 @@ class LinkList {
     }
   }
 }
-// const ILinkListSingly = new LinkList();
 
-export default LinkList;
+// const ILinkListSingly = new SinglyLinkList();
+
+module.exports = { SinglyLinkList };

@@ -17,7 +17,7 @@
  */
 
 // Adjacent matrix
-class Graph {
+class AdjacentMatrixGraph {
   constructor() {
     this.adjacencyMatrix = [];
   }
@@ -64,6 +64,6 @@ class Graph {
   dfsRecursive(start) {}
 }
 
-// const IGraph = new Graph(3);
+// const IGraph = new AdjacentMatrixGraph(3);
 
-export default Graph;
+module.exports = { AdjacentMatrixGraph };

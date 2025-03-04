@@ -7,7 +7,7 @@ class ListNode {
   }
 }
 
-class Stack {
+class LinkListStack {
   #first;
   #last;
   #size;
@@ -80,4 +80,4 @@ class Stack {
   }
 }
 
-export default Stack;
+module.exports = { LinkListStack };

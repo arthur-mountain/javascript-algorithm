@@ -155,4 +155,4 @@ class HashTable {
 
 // const IHashTable = new HashTable(3);
 
-export default HashTable;
+module.exports = { HashTable };

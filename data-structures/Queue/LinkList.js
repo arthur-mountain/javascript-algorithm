@@ -7,7 +7,7 @@ class ListNode {
   }
 }
 
-class Queue {
+class LinkListQueue {
   #first;
   #last;
   #size;
@@ -68,4 +68,4 @@ class Queue {
   }
 }
 
-export default Queue;
+module.exports = { LinkListQueue };

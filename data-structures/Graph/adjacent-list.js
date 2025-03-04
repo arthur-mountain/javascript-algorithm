@@ -18,7 +18,7 @@
  */
 
 // Adjacent list
-class Graph {
+class AdjacentListGraph {
   constructor() {
     this.adjacencyList = {};
   }
@@ -164,6 +164,6 @@ class Graph {
   }
 }
 
-// const IGraph = new Graph(3);
+// const IGraph = new AdjacentListGraph(3);
 
-export default Graph;
+module.exports = { AdjacentListGraph };
