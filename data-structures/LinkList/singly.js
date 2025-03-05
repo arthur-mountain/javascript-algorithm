@@ -1,7 +1,7 @@
 //@ts-check
 class ListNode {
   constructor(value) {
-    this.value = value ?? value;
+    this.value = value ?? null;
     this.next = null;
   }
 }
@@ -38,25 +38,32 @@ class SinglyLinkList {
     return this;
   }
 
+  getNodeRecursive(index) {
+    if (index < 0 || index > this.#length) return null;
+    if (index === 0) return this.#head;
+    if (index === this.#length) return this.#tail;
+
+    const getNodeRecursive = (startIdx = 1, current = this.#head.next) => {
+      return startIdx === index
+        ? current
+        : getNodeRecursive(startIdx + 1, current.next);
+    };
+
+    return getNodeRecursive();
+  }
+
   getNode(index) {
     if (index < 0 || index > this.#length) return null;
     if (index === 0) return this.#head;
     if (index === this.#length) return this.#tail;
 
-    // recursive get
-    // const getNodeRecursive = (startIdx = 1, current = this.#head.next) => {
-    //   return startIdx === index ? current : getNodeRecursive(startIdx + 1, current.next);
-    // }
-
-    // return getNodeRecursive();
-
-    // while get
     let current = this.#head;
     let startIdx = 0;
     while (startIdx++) {
       current = current.next;
-      if (startIdx === index) return current;
+      if (startIdx === index) break;
     }
+    return current;
   }
 
   insertTo(valueOrNode, index) {
@@ -83,7 +90,7 @@ class SinglyLinkList {
 
   update(value, index) {
     const currentNode = this.getNode(index);
-    if (!currentNode) return currentNode;
+    if (!currentNode) return;
     currentNode.value = value;
   }
 
@@ -109,36 +116,43 @@ class SinglyLinkList {
     this.#length--;
   }
 
-  reverse() {
-    // only one node
+  reverseRecursive() {
     if (!this.#head || !this.#head.next) return this.#head;
 
-    // recursive reverse 1
-    // const reverseRecursive = (current = this.#head, prev = null) => {
-    //   // 反轉到最後，最後一個必定為 null, 並把前一個node當作新的 head
-    //   if (!current) return (this.#head = prev);
-    //   reverseRecursive((() => {
-    //     const next = current.next;
-    //     current.next = prev;
-    //     return next;
-    //   })(), current);
-    // }
-    // reverseRecursive();
+    const reverseRecursive = (current = this.#head, prev = null) => {
+      // 反轉到最後，最後一個必定為 null, 並把前一個node當作新的 head
+      if (!current) return (this.#head = prev);
+      reverseRecursive(
+        (() => {
+          const next = current.next;
+          current.next = prev;
+          return next;
+        })(),
+        current,
+      );
+    };
+    reverseRecursive();
+  }
 
-    // recursive reverse 2
+  reverseRecursive2() {
+    if (!this.#head || !this.#head.next) return this.#head;
+
     // 這個會直衝到最後一個元素，call frame 會疊到底 O(n)
-    // const getNewHeadRecursive = (head = this.#head) => {
-    //   if (!head.next) return head;
-    //   const newHead = getNewHeadRecursive(head.next);
-    //   // 直衝到最後一個，因此 head 會從最後一個的前一個開始，
-    //   // 將 head 後面一個的next往前轉到當前 head, 並將當前 head 的下一個清空
-    //   head.next.next = head;
-    //   head.next = null;
-    //   return newHead;
-    // }
-    // this.#head = getNewHeadRecursive();
+    const getNewHeadRecursive = (head = this.#head) => {
+      if (!head.next) return head;
+      const newHead = getNewHeadRecursive(head.next);
+      // 直衝到最後一個，因此 head 會從最後一個的前一個開始，
+      // 將 head 後面一個的next往前轉到當前 head, 並將當前 head 的下一個清空
+      head.next.next = head;
+      head.next = null;
+      return newHead;
+    };
+    this.#head = getNewHeadRecursive();
+  }
 
-    // while reverse
+  reverse() {
+    if (!this.#head || !this.#head.next) return this.#head;
+
     let prev = null;
     let current = this.#head;
     let next = null;
@@ -152,24 +166,26 @@ class SinglyLinkList {
 
     this.#head = this.#tail;
   }
+
   size() {
     return this.#length;
   }
+
   clear() {
     this.#head = this.#tail = null;
     this.#length = 0;
   }
 
-  printAll() {
-    // recursive print
-    // const print = (head = this.#head) => {
-    //   if (!head) return;
-    //   console.log('current node: ', head, '\n');
-    //   return print(head.next);
-    // }
-    // print();
+  printAllRecursive() {
+    const print = (head = this.#head) => {
+      if (!head) return;
+      console.log("current node: ", head, "\n");
+      print(head.next);
+    };
+    print();
+  }
 
-    // while print
+  printAll() {
     let current = this.#head;
     while (current) {
       console.log("current node: ", current, "\n");
