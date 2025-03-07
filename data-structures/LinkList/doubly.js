@@ -21,6 +21,7 @@ class DoublyLinkList {
   #createNode(value) {
     return value instanceof ListNode ? value : new ListNode(value);
   }
+
   #searchFromHead(index) {
     let target = this.#head;
     let idx = 0;
@@ -30,6 +31,7 @@ class DoublyLinkList {
     }
     return target;
   }
+
   #searchFromTail(index) {
     let target = this.#tail;
     let idx = 0;
@@ -51,6 +53,7 @@ class DoublyLinkList {
       ? this.#searchFromHead(index)
       : this.#searchFromTail(index);
   }
+
   append(valueOrNode) {
     const node = this.#createNode(valueOrNode);
 
@@ -67,6 +70,7 @@ class DoublyLinkList {
     this.#length++;
     return this;
   }
+
   prepend(valueOrNode) {
     const node = this.#createNode(valueOrNode);
 
@@ -83,6 +87,7 @@ class DoublyLinkList {
     this.#length++;
     return this;
   }
+
   insertTo(valueOrNode, index) {
     if (index === this.#length) return this.append(valueOrNode);
     const target = this.getNode(index);
@@ -93,6 +98,7 @@ class DoublyLinkList {
     target.next = target.next.prev = node;
     this.#length++;
   }
+
   remove(index) {
     if (index === 0) {
       this.#head = this.#head.next;
@@ -110,18 +116,22 @@ class DoublyLinkList {
     target.next.prev = target.prev;
     this.#length--;
   }
+
   update(value, index) {
     const target = this.getNode(index);
     if (!target) return;
     target.value = value;
   }
+
   size() {
     return this.#length;
   }
+
   clear() {
     this.#head = this.#tail = null;
     this.#length = 0;
   }
+
   printAll() {
     let current = this.#head;
     while (current) {
