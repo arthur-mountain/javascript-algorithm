@@ -18,44 +18,45 @@
  *  ...以此類推
  */
 
-function bubbleSort(arr) {
-  const arrLength = arr.length - 1;
+const bubbleSort = (arr) => {
+  const length = arr.length - 1;
 
-  for (let i = 0; i < arrLength; i++) {
-    /**
-     * 3 每次都會確定排序完最後一個元素(最大值)，
-     *   因為不用再比較排序好的元素，所以 arrLength - i
-     */
-    for (let j = 0; j < arrLength - i; j++) {
+  for (let i = 0; i < length; i++) {
+    // 每輪排序完都會確定「最後一個」元素(最大值)，因為不用再比較排序好的元素，所以 length - i
+    for (let j = 0; j < length - i; j++) {
+      // 如果前面的元素比後面的元素要大，則交換元素位置
       if (arr[j] > arr[j + 1]) {
         const temp = arr[j];
         arr[j] = arr[j + 1];
         arr[j + 1] = temp;
-
-        // [arr[j],arr[j+1]]=[arr[j+1],arr[j]];
+        // [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
       }
     }
   }
 
   return arr;
-}
+};
 
-function bubbleSort2(arr) {
-  let toIndex = arr.length;
+// 同上，把原本上面的內層迴圈中的 length - i 的判斷，
+// 改用 while，因此在 for loop 的 condition 可以直接寫 length
+const bubbleSort2 = (arr) => {
+  let length = arr.length;
 
-  while (toIndex > 1) {
-    toIndex--;
+  while (length > 1) {
+    length--;
 
-    for (let i = 0; i < toIndex; i++) {
+    for (let i = 0; i < length; i++) {
       // 如果前面的元素比後面的元素要大，則交換元素位置
       if (arr[i] > arr[i + 1]) {
-        let tempValue = arr[i];
+        const temp = arr[i];
         arr[i] = arr[i + 1];
-        arr[i + 1] = tempValue;
+        arr[i + 1] = temp;
       }
     }
   }
-  return arr;
-}
 
-console.log(bubbleSort([1, 4, 7, 9, 213, 46, 234, 745]));
+  return arr;
+};
+
+console.log(bubbleSort([1, 4, 7, 9, 213, 46, 234, 745])); // [ 1,   4,   7,   9, 46, 213, 234, 745 ]
+console.log(bubbleSort2([1, 4, 7, 9, 213, 46, 234, 745])); // [ 1,   4,   7,   9, 46, 213, 234, 745 ]
