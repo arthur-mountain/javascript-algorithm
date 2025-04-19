@@ -1,49 +1,147 @@
-const data = [8, 9, 6, 3, 11, 25, 32, 2, 1];
+const input = [8, 9, 6, 3, 11, 25, 32, 2, 1];
 
 /**
- * 快速排序：
+ * # 快速排序
  * 以【一個值為基準(pivot)】進行拆分，
  *【比 pivot 小就放到前面】(比基準值小的小陣列)，
  *【比 pivot 大就放到後面】(比基準值大的小陣列)，
  * 直到陣列中都只剩一個元素後即排序完畢。
  *
- * 例如：[8, 9, 6, 3, 1]
+ * # 複雜度
+ * - Time  : O(nlogn)
+ * - Space : O(n)
+ * - 穩定性: 穩定排序（相等元素不會換位置）
+ * Functions       | 使用方式      | Partition 方式           | 空間複雜度 | 適合用途
+ * quickSortSimple | 遞迴 + slice  | 無實際分割，只用左右陣列 | O(n)       | 教學、理解基本 quick sort
+ * quickSortLomuto | in-place 遞迴 | Lomuto（首元素為 pivot） | O(1)       | LeetCode、簡潔好懂
+ * quickSortHoare  | in-place 遞迴 | Hoare（中間為 pivot）    | O(1)       | 效能最佳、實務推薦
  *
- * 第一輪的_quickSort
- *  partition 函式，start = 0, end = 4 ，基準值為 array[start] = 8;
- *    i = 1 , pivotIdx = 1, 9 < 8 ，false，不交換([8, 9, 6, 3, 1])
- *    i = 2 , pivotIdx = 1, 6 < 8 ，true，交換([8,「6」,「9」, 3, 1]), pivotIdx++
- *    i = 3 , pivotIdx = 2, 3 < 8 ，true，交換([8, 6,「3」,「9」, 1]), pivotIdx++
- *    i = 4 , pivotIdx = 3, 1 < 8 ，true，交換([8, 6, 3,「1」,「9」]), pivotIdx++
+ * # 範例: input -> [8, 9, 6, 3, 1]
  *
- *    此時 pivotIdx = 4 , [8, 6, 3, 1, 9]，最後要把最後一個比基準值小的值交換
+ * 1. quickSortSimple
+ *    第一輪 quickSortSimple
+ *     pivot = 8
+ *     ary = [9, 6, 3, 1]
  *
- *    start 和 pivotIdx - 1 交換，即 8 和 1 互換， [「1」, 6, 3,「8」, 9]
+ *     forEach 遍歷 ary:
+ *       9 > 8 → 放進 right
+ *       6 < 8 → 放進 left
+ *       3 < 8 → 放進 left
+ *       1 < 8 → 放進 left
  *
- *    此時以 8 為基準，右邊的值都比它大，左邊的值都比它小
+ *     left = [6, 3, 1]
+ *     right = [9]
  *
- *    return 3; (pivotIdx - 1)，回傳以 8 為基準的 index, 8 這個元素已經排序完畢
+ *    回傳值為：
+ *     [...quickSortSimple([6, 3, 1]), 8, ...quickSortSimple([9])]
+ *        ↓ 遞迴處理 left 和 right
  *
- * 左邊的_quickSort，以此類推...
- * 右邊的_quickSort，以此類推...
+ *    最終結果： [1, 3, 6, 8, 9]
+ *
+ *  2. quickSortLomuto(以 array[start] 當 pivot)
+ *     第一輪的 _quickSort
+ *     partition 函式，start = 0, end = 4 ，pivot 為 array[start] = 8
+ *       i = 1 , splitIdx = 1, 9 < 8 → false，不交換 → [8, 9, 6, 3, 1]
+ *       i = 2 , splitIdx = 1, 6 < 8 → true，交換 [8,「6」,「9」, 3, 1], splitIdx++
+ *       i = 3 , splitIdx = 2, 3 < 8 → true，交換 [8, 6,「3」,「9」, 1], splitIdx++
+ *       i = 4 , splitIdx = 3, 1 < 8 → true，交換 [8, 6, 3,「1」,「9」], splitIdx++
+ *
+ *       結束迴圈後 splitIdx = 4，代表 index 0 ~ 3 都是比 pivot 小的值
+ *       將 pivot 與 splitIdx - 1 交換： [「1」, 6, 3,「8」, 9]
+ *       回傳 pivot index = 3（8 的位置）
+ *
+ *     接著進行：
+ *      quickSortLomuto([1, 6, 3, 8, 9], 0, 2) → 左半部
+ *      quickSortLomuto([1, 6, 3, 8, 9], 4, 4) → 右半部（已排序）
+ *
+ *  3. quickSortHoare(以中間 index 當 pivot)
+ *      start = 0, end = 4 → pivotIdx = 2 → pivot = array[2] = 6
+ *
+ *      第一輪 partition
+ *       while 迴圈開始：
+ *
+ *         start = 0, end = 4
+ *         array[start] = 8 > 6 → true → 交換 pivot (index=2) 與 start (index=0)
+ *           → [6, 9,「8」, 3, 1]，pivotIdx = 0，continue
+ *
+ *         start = 0, end = 4
+ *         array[end] = 1 < 6 → true → 交換 pivot (index=0) 與 end (index=4)
+ *           → [「1」, 9, 8, 3,「6」]，pivotIdx = 4，continue
+ *
+ *         start = 0, end = 4
+ *         array[start] = 1 < pivot → start++ → start = 1
+ *         array[start] = 9 > pivot → 交換 pivot (index=4) 與 start (index=1)
+ *           → [1,「6」, 8, 3,「9」]，pivotIdx = 1，continue
+ *
+ *         array[end] = 9 > pivot → end--
+ *         array[end] = 3 < pivot → 交換 pivot (index=1) 與 end (index=3)
+ *           → [1, 3, 8,「6」, 9]，pivotIdx = 3，continue
+ *
+ *         ...
+ *         最終 break 條件達成：start >= end
+ *         回傳 pivotIdx = 3（位置不一定等於 pivot 值）
+ *
+ *      遞迴處理左：quickSortHoare(array, 0, 2)
+ *      遞迴處理右：quickSortHoare(array, 4, 4)
  */
 
-// 簡單版很容易懂
-function quickSort2(array) {
+function quickSortSimple(array) {
   if (array.length < 2) return array;
-  const [pivot, ...ary] = array;
-  const left = [],
-    right = [];
 
-  ary.forEach((value) => {
+  const [pivot, ...rest] = array;
+  const left = [];
+  const right = [];
+
+  rest.forEach((value) => {
     if (value < pivot) left.push(value);
     else right.push(value);
   });
 
-  return [...quickSort(left), pivot, ...quickSort(right)];
+  return [...quickSortSimple(left), pivot, ...quickSortSimple(right)];
 }
 
-function quickSort(array) {
+function quickSortHoare(array, start = 0, end = array.length - 1) {
+  if (start >= end) return array;
+
+  const partition = (array, start, end) => {
+    let pivotIdx = Math.floor((start + end) / 2);
+
+    while (true) {
+      if (start >= end) break;
+
+      const pivot = array[pivotIdx];
+
+      if (start < pivotIdx) {
+        if (array[start] > pivot) {
+          [array[start], array[pivotIdx]] = [array[pivotIdx], array[start]];
+          pivotIdx = start;
+          continue;
+        }
+        start++;
+      }
+
+      if (end > pivotIdx) {
+        if (array[end] < pivot) {
+          [array[end], array[pivotIdx]] = [array[pivotIdx], array[end]];
+          pivotIdx = end;
+          continue;
+        }
+        end--;
+      }
+    }
+
+    return pivotIdx;
+  };
+
+  // 在 partition 裡面調整陣列，回傳 pivot 的 index
+  const pivotIdx = partition(array, start, end);
+  quickSortHoare(array, start, pivotIdx - 1);
+  quickSortHoare(array, pivotIdx + 1, end);
+
+  return array;
+}
+
+function quickSortLomuto(array) {
   const partition = (array, start, end) => {
     let splitIndex = start + 1;
 
@@ -94,63 +192,20 @@ function quickSort(array) {
   return _quickSort(array, 0, array.length - 1);
 }
 
-function quickSortSplitAtMiddle(array, start, end) {
-  if (start >= end) return;
+console.time("quickSortSimple");
+console.log("quickSortSimple ~ ", quickSortSimple(input, 0, input.length - 1));
+console.timeEnd("quickSortSimple");
+console.log("====================================");
 
-  const partition = (array, start, end) => {
-    let pivotIdx = Math.floor((start + end) / 2);
+console.time("quickSortHoare");
+console.log("quickSortHoare ~ ", quickSortHoare(input, 0, input.length - 1));
+console.timeEnd("quickSortHoare");
+console.log("====================================");
 
-    while (true) {
-      if (start >= end) break;
-
-      const pivot = array[pivotIdx];
-
-      if (start < pivotIdx) {
-        if (array[start] > pivot) {
-          [array[start], array[pivotIdx]] = [array[pivotIdx], array[start]];
-          pivotIdx = start;
-          continue;
-        }
-
-        start++;
-      }
-
-      if (end > pivotIdx) {
-        if (array[end] < pivot) {
-          [array[end], array[pivotIdx]] = [array[pivotIdx], array[end]];
-          pivotIdx = end;
-          continue;
-        }
-
-        end--;
-      }
-    }
-
-    return pivotIdx;
-  };
-
-  // 在 partition 裡面調整數列，並且回傳 pivot 的 index
-  const pivotIdx = partition(array, start, end);
-
-  quickSortSplitAtMiddle(array, start, pivotIdx - 1);
-  quickSortSplitAtMiddle(array, pivotIdx + 1, end);
-
-  return array;
-}
-console.time();
-console.log("quickSort2 ~ ", quickSort2(data, 0, data.length - 1));
-console.timeEnd();
-
-console.time();
-console.log("quickSort ~ ", quickSort(data, 0, data.length - 1));
-console.timeEnd();
-
-console.time();
-console.log(
-  "quickSortSplitAtMiddle ~ ",
-  quickSortSplitAtMiddle(data, 0, data.length - 1),
-);
-console.timeEnd();
+console.time("quickSortLomuto");
+console.log("quickSortLomuto ~ ", quickSortLomuto(input, 0, input.length - 1));
+console.timeEnd("quickSortLomuto");
+console.log("====================================");
 
 /**
  * For think, can be ignore
@@ -167,4 +222,3 @@ console.timeEnd();
 /**
  *  [8, 9, 10, 11, 1]
  */
-
