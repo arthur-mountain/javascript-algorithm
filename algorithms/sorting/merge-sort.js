@@ -1,7 +1,13 @@
 /**
- * 合併排序：
- * 將大陣列使用二分法拆到都只剩一個元素，再逐一比較排序合併
- * 例如： [8, 9, 2, 5, 1]
+ * # 合併排序
+ * - 將大陣列使用二分法拆到都只剩一個元素，再逐一比較排序合併
+ *
+ * # 複雜度
+ * - Time  : O(nlogn)
+ * - Space : O(n)
+ * - 穩定性: 穩定排序（相等元素不會換位置）
+ *
+ * # 範例: input -> [8, 9, 2, 5, 1]
  * 
  *  merge(mergeAndSlice([8,9,2]), mergeAndSlice([5,1]))
  * 
@@ -28,23 +34,19 @@ function merge(left, right) {
   // 兩邊陣列都有元素
   while (leftIdx < left.length && rightIdx < right.length) {
     if (left[leftIdx] < right[rightIdx]) {
-      result.push(left[leftIdx]);
-      leftIdx++;
+      result.push(left[leftIdx++]);
     } else {
-      result.push(right[rightIdx]);
-      rightIdx++;
+      result.push(right[rightIdx++]);
     }
   }
 
-  // 只會有一個 while 迴圈會被執行，不是左邊仍有元素，不然就是右邊仍有元素
+  // 只會有一個 while 迴圈會被執行，因為不是左邊仍有元素，不然就是右邊仍有元素
   while (leftIdx < left.length) {
-    result.push(left[leftIdx]);
-    leftIdx++;
+    result.push(left[leftIdx++]);
   }
 
   while (rightIdx < right.length) {
-    result.push(right[rightIdx]);
-    rightIdx++;
+    result.push(right[rightIdx++]);
   }
 
   return result;
@@ -63,4 +65,3 @@ function mergeAndSlice(array) {
 }
 
 console.log("🚀 ~ merge-sort.js ~", mergeAndSlice([8, 9, 2, 5, 1]));
-
