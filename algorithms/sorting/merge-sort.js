@@ -22,8 +22,7 @@
  *    【right recursion】:
  *      merge(mergeAndSlice([5]), mergeAndSlice([1])) // 最後 right recursion， merge 回傳 [1, 5]
  *  
- *  merge([2, 8, 9], [1, 5]) // 兩邊小陣列皆已經排序好，最後合成一個大陣列 [1,2,5,8,9]
-*/
+ *  merge([2, 8, 9], [1, 5]) // 兩邊小陣列皆已經排序好，最後合成一個大陣列 [1,2,5,8,9] */
 
 // left 和 right 各自都是已經排序好的小陣列
 function merge(left, right) {
@@ -52,14 +51,14 @@ function merge(left, right) {
   return result;
 }
 
-function mergeAndSlice(array) {
-  const length = array.length;
+function mergeAndSlice(input) {
+  const length = input.length;
 
-  if (length === 1) return array;
+  if (length === 1) return input;
 
   const midIndex = Math.floor(length / 2);
-  const leftAry = array.slice(0, midIndex);
-  const rightAry = array.slice(midIndex);
+  const leftAry = input.slice(0, midIndex);
+  const rightAry = input.slice(midIndex);
 
   return merge(mergeAndSlice(leftAry), mergeAndSlice(rightAry));
 }

@@ -12,8 +12,8 @@
  * - 第二輪，拿 9 當作最小值，一路往後比較，最小值= 2，因此把 2 跟 9 交換
  * - 第三輪，拿 9 當作最小值，...以此類推(P.S. 這裡因為第二輪的 9 和 2 交換，因此9此時會在第三個元素，所以又拿它來當作最小值)
  */
-function selectionSort(array) {
-  const length = array.length;
+function selectionSort(input) {
+  const length = input.length;
 
   // 從 i === 0 開始，往後找到最小的元素後，放到第 i 個
   // 因為前面每次都會排好第 i 個最小值，因此到最後一個元素(length - 1) 時就不用再排序了，
@@ -21,15 +21,15 @@ function selectionSort(array) {
   for (let i = 0; i < length - 1; i++) {
     let minValueIndex = i; // 初始化為，當前第 i 個元素是最小的，再往後找更小的
     for (let j = i + 1; j < length; j++) {
-      if (array[minValueIndex] > array[j]) {
+      if (input[minValueIndex] > input[j]) {
         minValueIndex = j;
       }
     }
     // 找到最小的元素後，跟當前 i 的位置進行交換，就會排好第 i 個最小值的元素
-    [array[i], array[minValueIndex]] = [array[minValueIndex], array[i]];
+    [input[i], input[minValueIndex]] = [input[minValueIndex], input[i]];
   }
 
-  return array;
+  return input;
 }
 
 console.log("selection-sort.js ~ line 30 ~ ", selectionSort([8, 9, 2, 5, 1]));

@@ -15,8 +15,8 @@
  * - 第三輪，拿 5 跟前面的比較... 以此類推
  */
 
-function insertionSort(array) {
-  const length = array.length;
+function insertionSort(input) {
+  const length = input.length;
 
   // 從第一個元素開始 ~ 到倒數第二個元素(即 i < length - 1)，
   // 如果用常見的 i < length，當在 i === length - 1(last index) 時，j + 1 會 out of bound
@@ -24,13 +24,13 @@ function insertionSort(array) {
     // 從第 i + 1 個開始往前比較，將較小的元素往前放到正確的位置
     // 因為要拿 j 跟 j - 1 兩個元素進行比較，只能取到 j > 0 而非 j >= 0，因為 j === 0 時，j - 1 會 out of bound
     for (let j = i + 1; j > 0; j--) {
-      if (array[j] < array[j - 1]) {
-        [array[j - 1], array[j]] = [array[j], array[j - 1]];
+      if (input[j] < input[j - 1]) {
+        [input[j - 1], input[j]] = [input[j], input[j - 1]];
       }
     }
   }
 
-  return array;
+  return input;
 }
 
 console.log("🚀 ~ insertion-sort.js ~", insertionSort([8, 9, 2, 5, 1]));
