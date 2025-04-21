@@ -130,15 +130,19 @@ function lowerBound(nums, target) {
 
 **核心邏輯**:
 
-1. 初始區間 `[0, nums.length]`。
+1. 初始設定區間為 `[0, nums.length)`。
 
-2. 每次比較後，嘗試找到「最後一個小於等於 `target` 的索引」。
+2. 每次比較 `nums[mid]` 與 `target`，目標是找出「**最後一個小於等於 `target` 的索引**」。
 
-   - 如果 `nums[mid] <= target`，答案可能是 `mid`，移動左邊界 `left = mid + 1`。
+   - 如果 `nums[mid] <= target`，表示目前這個位置 `mid` 符合條件，**但還可能有更後面的符合項目**，因此將左邊界右移: `left = mid + 1`。
 
-   - 如果 `nums[mid] > target`，答案一定在左側，移動右邊界 `right = mid`。
+   - 如果 `nums[mid] > target`，表示 `mid` 已超出目標範圍，**答案一定在左側**，因此縮小右邊界: `right = mid`。
 
-3. 最後返回 `left - 1`。
+3. 迴圈結束後，`left` 會落在「第一個大於 `target` 的位置」，因此最終答案為 `left - 1`，即最後一個小於等於 `target` 的索引。
+
+### 小提醒
+
+- 如果真的是在找「upper bound 的位置」(也就是第一個 > target 的索引)，那回傳 `left` 即可，不需要減 1。
 
 **區間變化圖**:
 
