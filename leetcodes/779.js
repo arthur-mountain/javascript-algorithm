@@ -63,7 +63,7 @@ let kthGrammar = function (n, k) {
   // 是否會通過： 不會通過，因為當 n = 30 時，2^29 超過5億個字符，會導致記憶體爆炸和超時
 };
 
-// 優化，次加解，Recursion
+// 優化，次佳解，Recursion
 kthGrammar = function (n, k) {
   // 規律：
   //   可以看到第 4 個 row 的
