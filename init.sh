@@ -1,28 +1,113 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-if [ -z "$1" ]; then
-  echo "Error: No filename provided. Usage: ./init.sh <filename>"
+# 讀取題號
+read -rp "Enter the question number: " question_number
+if [ -z "$question_number" ]; then
+  echo "❌ Error: Question Number is required."
   exit 1
 fi
 
-# File name
-FILE_PATH="$1.js"
+# 讀取子目錄（可選）
+read -rp "Enter the topic folder (optional): " topic
 
-# Add Topic folder to file path if exists
-if [ -n "$2" ]; then
-  FILE_PATH="$2/$FILE_PATH"
+# 設定檔案路徑
+if [ -n "$topic" ]; then
+  FILE_PATH="leetcodes/$topic/$question_number.js"
+else
+  FILE_PATH="leetcodes/$question_number.js"
 fi
 
-FILE_PATH="leetcodes/${FILE_PATH}"
-
+# 檢查檔案是否存在
 if [ -f "$FILE_PATH" ]; then
-  echo "Error: File '$FILE_PATH' already exists."
+  echo "❌ Error: File '$FILE_PATH' already exists."
   exit 1
 fi
+
+echo "🔍 Fetching question metadata from LeetCode..."
+
+# HTML 實體解碼小函式（簡單版）
+decode_html_entities() {
+  sed 's/&lt;/</g; s/&gt;/>/g; s/&amp;/\&/g; s/&quot;/"/g; s/&#39;/'"'"'/g'
+}
+
+get_title_slug() {
+  local qnum="$1"
+  http --ignore-stdin --body GET https://leetcode.com/api/problems/all/ |
+    jq -r --arg qid "$qnum" '
+      .stat_status_pairs[]
+      | select(.stat.frontend_question_id == ($qid | tonumber))
+      | .stat.question__title_slug' | head -n1
+}
+
+get_question_data() {
+  http --ignore-stdin --body POST https://leetcode.com/graphql \
+    Origin:https://leetcode.com \
+    Referer:https://leetcode.com/problems/"$1"/ \
+    User-Agent:'Mozilla/5.0' \
+    Content-Type:application/json \
+    query='query questionData($titleSlug: String!) {
+      question(titleSlug: $titleSlug) {
+        title
+        content
+        topicTags { name }
+      }
+    }' \
+    variables:="{\"titleSlug\":\"$1\"}"
+}
+
+extract_constraints() {
+  local raw
+  raw=$(echo "$1" | sed -n '/<p><strong>Constraints:<\/strong><\/p>/,/<\/ul>/p' | grep '<li>' | sed -E 's|<li><code>(.*)</code></li>|\1|' | sed 's/&lt;/</g; s/&gt;/>/g; s/&amp;/\&/g')
+
+  if [[ -z "$raw" ]]; then
+    echo " *    (Constraints not found)"
+    return
+  fi
+
+  echo "$raw" | awk '{print " *    " NR ". " $0}'
+}
+
+titleSlug=$(get_title_slug "$question_number")
+if [[ -z "$titleSlug" ]]; then
+  echo "❌ Cannot find slug for question number $question_number"
+  exit 1
+fi
+
+response=$(get_question_data "$titleSlug")
+
+title=$(echo "$response" | jq -r '.data.question.title // empty')
+topics=$(echo "$response" | jq -r '.data.question.topicTags[].name' | awk '{print " *    " NR ". " $0}')
+constraints=$(extract_constraints "$(echo "$response" | jq -r '.data.question.content // empty')")
+
+echo "==== 下面是檔案內容預覽 ===="
+cat <<EOF
+/**
+ * Status:
+ *  - [ ] Done
+ *  - [ ] Follow-up solutions
+ *
+ * Title:
+ *    $question_number. $title
+ *
+ * Topics:
+$topics
+ *
+ * Statements:
+ *    (Add problem statements here)
+ *
+ * Constraints:
+$constraints
+ **/
+EOF
+echo "==== 預覽結束 ===="
+
+exit 0
 
 # 創建檔案並插入模板內容
+mkdir -p "$(dirname "$FILE_PATH")"
+
 cat >"$FILE_PATH" <<-EOF
 /**
  * Status:
@@ -30,7 +115,6 @@ cat >"$FILE_PATH" <<-EOF
  *  - [ ] Follow-up solutions
  *
  * Title:
- *
  *
  * Topics:
  *
@@ -41,8 +125,6 @@ cat >"$FILE_PATH" <<-EOF
  *
  *
  * Constraints:
- *
- *
  *
  **/
 EOF
