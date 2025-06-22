@@ -126,12 +126,12 @@ title=$(echo "$response" | jq -r '.data.question.title // empty')
 topics=$(echo "$response" | jq -r '.data.question.topicTags[].name' | awk '{print " *    " NR ". " $0}')
 constraints=$(extract_constraints "$(echo "$response" | jq -r '.data.question.content // empty')")
 
-echo "==== 下面是檔案內容預覽 ===="
-cat <<EOF
+file_content=$(
+  cat <<EOF
 /**
  * Status:
- *  - [ ] Done
- *  - [ ] Follow-up solutions
+ *    - [ ] Done
+ *    - [ ] Follow-up solutions
  *
  * Title:
  *    $question_number. $title
@@ -146,32 +146,14 @@ $topics
 $constraints
  **/
 EOF
-echo "==== 預覽結束 ===="
+)
 
-exit 0
-
-# 創建檔案並插入模板內容
-mkdir -p "$(dirname "$FILE_PATH")"
-
-cat >"$FILE_PATH" <<-EOF
-/**
- * Status:
- *  - [ ] Done
- *  - [ ] Follow-up solutions
- *
- * Title:
- *
- * Topics:
- *
- *
- *
- * Statements:
- *
- *
- *
- * Constraints:
- *
- **/
-EOF
-
-echo "File '$FILE_PATH' created successfully."
+if [[ "${1:-}" == '--dry-run' || "${1:-}" == '--dryrun' ]]; then
+  echo "==== 下面是檔案內容預覽 ===="
+  echo "$file_content"
+  echo "==== 預覽結束 ===="
+else
+  mkdir -p "$(dirname "$FILE_PATH")"
+  echo "$file_content" >"$FILE_PATH"
+  echo "File '$FILE_PATH' created successfully."
+fi
