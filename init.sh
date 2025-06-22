@@ -149,9 +149,9 @@ EOF
 )
 
 if [[ "${1:-}" == '--dry-run' || "${1:-}" == '--dryrun' ]]; then
-  echo "==== 下面是檔案內容預覽 ===="
+  echo "==== 檔案內容預覽 ===="
   echo "$file_content"
-  echo "==== 預覽結束 ===="
+  echo "====   預覽結束   ===="
 else
   mkdir -p "$(dirname "$FILE_PATH")"
   echo "$file_content" >"$FILE_PATH"
