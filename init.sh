@@ -27,11 +27,6 @@ fi
 
 echo "🔍 Fetching question metadata from LeetCode..."
 
-# HTML 實體解碼小函式（簡單版）
-decode_html_entities() {
-  sed 's/&lt;/</g; s/&gt;/>/g; s/&amp;/\&/g; s/&quot;/"/g; s/&#39;/'"'"'/g'
-}
-
 get_title_slug() {
   local qnum="$1"
   http --ignore-stdin --body GET https://leetcode.com/api/problems/all/ |
@@ -44,8 +39,7 @@ get_title_slug() {
 get_question_data() {
   http --ignore-stdin --body POST https://leetcode.com/graphql \
     Origin:https://leetcode.com \
-    Referer:https://leetcode.com/problems/"$1"/ \
-    User-Agent:'Mozilla/5.0' \
+    Referer:https://leetcode.com/problems/"$1" \
     Content-Type:application/json \
     query='query questionData($titleSlug: String!) {
       question(titleSlug: $titleSlug) {
@@ -54,7 +48,7 @@ get_question_data() {
         topicTags { name }
       }
     }' \
-    variables:="{\"titleSlug\":\"$1\"}"
+    variables:="{\"titleSlug\":\"$1\"}" # 傳遞變數給 GraphQL 查詢，將 $1（題目 slug）放入變數 titleSlug 裡
 }
 
 extract_constraints() {
