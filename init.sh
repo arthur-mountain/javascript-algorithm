@@ -68,7 +68,8 @@ extract_constraints() {
     sed -E 's|<code>||g; s|</code>||g' |
     sed -E 's|<sup>([^<]*)</sup>|^\1|g' |
     sed 's/&lt;/</g; s/&gt;/>/g; s/&amp;/\&/g' |
-    sed -E 's/\^([0-9]+)/**\1/g')
+    sed -E 's/\^([0-9]+)/**\1/g' |
+    sed 's/^[[:space:]]*//') # <== 重點在這裡，砍掉開頭空白！
 
   if [[ -z "$constraints" ]]; then
     echo " *    (Constraints not found)"
