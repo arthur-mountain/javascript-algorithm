@@ -16,9 +16,9 @@
  *    You may assume that each input would have exactly one solution
  *
  * Constraints:
- *    1. 2 <= nums.length <= 10^4
- *    2. -10^9 <= nums[i] <= 10^9
- *    3. -10^9 <= target <= 10^9
+ *    1. 2 <= nums.length <= 10**4
+ *    2. -10**9 <= nums[i] <= 10**9
+ *    3. -10**9 <= target <= 10**9
  *    4. Only one valid answer exists.
  **/
 /**

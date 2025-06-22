@@ -17,7 +17,7 @@
  *    If the current number is even, you have to divide it by 2, otherwise, you have to subtract 1 from it.
  *
  * Constraints:
- *    1. 0 <= num <= 10^6
+ *    1. 0 <= num <= 10**6
  **/
 /**
  * @param {number} num

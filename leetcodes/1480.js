@@ -21,7 +21,7 @@
  * Constraints:
  *    1. 1 <= nums.length <= 1000
  *
- *    2. -10^6 <= nums[i] <= 10^6
+ *    2. -10**6 <= nums[i] <= 10**6
  **/
 /**
  * @param {number[]} nums

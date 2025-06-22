@@ -17,7 +17,7 @@
  *    note: each char in magazine can only be used once.
  *
  * Constraints:
- *    1. 1 <= ransomNote.length, magazine.length <= 10^5
+ *    1. 1 <= ransomNote.length, magazine.length <= 10**5
  *
  *    2. ransomNote and magazine consist of lowercase English letters.
  **/

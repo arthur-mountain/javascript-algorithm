@@ -14,7 +14,7 @@
  *    3. Simulation
  *
  * Constraints:
- *    1. 1 <= n <= 10^4
+ *    1. 1 <= n <= 10**4
  *
  * Statements:
  *    Given an integer n, return a string array answer (1-indexed) where:
