@@ -58,15 +58,24 @@ get_question_data() {
 }
 
 extract_constraints() {
-  local raw
-  raw=$(echo "$1" | sed -n '/<p><strong>Constraints:<\/strong><\/p>/,/<\/ul>/p' | grep '<li>' | sed -E 's|<li><code>(.*)</code></li>|\1|' | sed 's/&lt;/</g; s/&gt;/>/g; s/&amp;/\&/g')
+  local raw constraints
+  raw=$(echo "$1" | sed -n '/<p><strong>Constraints:<\/strong><\/p>/,/<\/ul>/p')
 
-  if [[ -z "$raw" ]]; then
+  constraints=$(echo "$raw" |
+    grep '<li>' |
+    sed -E 's|<li><code>||g; s|</code></li>||g' |
+    sed -E 's|<li>||g; s|</li>||g' |
+    sed -E 's|<code>||g; s|</code>||g' |
+    sed -E 's|<sup>([^<]*)</sup>|^\1|g' |
+    sed 's/&lt;/</g; s/&gt;/>/g; s/&amp;/\&/g' |
+    sed -E 's/\^([0-9]+)/**\1/g')
+
+  if [[ -z "$constraints" ]]; then
     echo " *    (Constraints not found)"
     return
   fi
 
-  echo "$raw" | awk '{print " *    " NR ". " $0}'
+  echo "$constraints" | awk '{printf " *    %d. %s\n", NR, $0}'
 }
 
 titleSlug=$(get_title_slug "$question_number")
