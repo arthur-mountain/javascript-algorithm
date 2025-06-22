@@ -59,24 +59,59 @@ get_question_data() {
 
 extract_constraints() {
   local raw constraints
+
+  # 從函式輸入參數 $1 (通常是整段 HTML) 中
+  # 用 sed 抓取 Constraints 區塊的起點 <p><strong>Constraints:</strong></p> 到結尾 </ul> 的所有行
   raw=$(echo "$1" | sed -n '/<p><strong>Constraints:<\/strong><\/p>/,/<\/ul>/p')
 
-  constraints=$(echo "$raw" |
-    grep '<li>' |
-    sed -E 's|<li><code>||g; s|</code></li>||g' |
-    sed -E 's|<li>||g; s|</li>||g' |
-    sed -E 's|<code>||g; s|</code>||g' |
-    sed -E 's|<sup>([^<]*)</sup>|^\1|g' |
-    sed 's/&lt;/</g; s/&gt;/>/g; s/&amp;/\&/g' |
-    sed -E 's/\^([0-9]+)/**\1/g' |
-    sed 's/^[[:space:]]*//') # <== 重點在這裡，砍掉開頭空白！
+  constraints=$(
+    echo "$raw" |
+      grep '<li>' | # 過濾出含有 <li> 標籤的行 (li 為 list item)
+
+      # 移除 <li><code> 和 </code></li>，這兩個一起出現的標籤組合
+      sed -E 's|<li><code>||g; s|</code></li>||g' |
+
+      # 移除剩餘的 <li> 和 </li> 標籤
+      sed -E 's|<li>||g; s|</li>||g' |
+
+      # 移除 <code> 和 </code> 標籤
+      sed -E 's|<code>||g; s|</code>||g' |
+
+      # 把 <sup>...</sup> 中的內容抓出來，用 \1 表示（即括號內匹配的內容）
+      # 例如：<sup>5</sup> 會被替換成 ^5
+      sed -E 's|<sup>([^<]*)</sup>|^\1|g' |
+
+      # 把 HTML 中的 escape code 轉回原始符號：
+      # &lt; 轉成 <
+      # &gt; 轉成 >
+      # &amp; 轉成 &
+      sed 's/&lt;/</g; s/&gt;/>/g; s/&amp;/\&/g' |
+
+      # 將前面變成 ^數字 的格式，再用 **數字 表示次方
+      # 例如：^5 變成 **5 (程式語言指數符號)
+      sed -E 's/\^([0-9]+)/**\1/g' |
+
+      # 移除每行開頭多餘空白，避免後續對齊錯誤
+      sed 's/^[[:space:]]*//'
+  )
 
   if [[ -z "$constraints" ]]; then
     echo " *    (Constraints not found)"
     return
   fi
 
-  echo "$constraints" | awk '{printf " *    %d. %s\n", NR, $0}'
+  # 用 awk 處理每一行，並輸出帶有編號和格式的文字
+  echo "$constraints" | awk '{
+    # NR 是 awk 內建變數，代表當前處理的行號（從 1 開始計數）
+    # $0 代表當前整行的內容（也就是 constraint 文字本體）
+
+    # printf 用來格式化輸出：
+    # " *    " 是前綴固定空白和星號
+    # %d 是輸出 NR（行號），並且是整數格式
+    # ". " 是數字後面固定的句點和一個空白
+    # %s 是輸出整行文字（$0）
+    printf " *    %d. %s\n", NR, $0
+  }'
 }
 
 titleSlug=$(get_title_slug "$question_number")
