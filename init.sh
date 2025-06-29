@@ -148,8 +148,13 @@ if [[ "${1:-}" == '--dry-run' || "${1:-}" == '--dryrun' ]]; then
   echo "$file_content"
   echo "====   預覽結束   ===="
 else
-
   mkdir -p "$(dirname "$FILE_PATH")"
   echo "$file_content" >"$FILE_PATH"
   echo "File '$FILE_PATH' created successfully."
+  # 是否要直接開啟
+  read -rp "Open directly? (y/n): " answer
+  answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
+  if [[ "$answer" == 'y' ]]; then
+    "$EDITOR" "$FILE_PATH"
+  fi
 fi
