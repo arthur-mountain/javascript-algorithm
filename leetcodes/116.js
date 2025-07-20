@@ -102,3 +102,32 @@ connect = function (root) {
   // Time : O(n)
   // Space: O(1)
 };
+
+connect = function (root) {
+  // 待複習，沒自己解出來
+  // 可以先參考 iterative 的解法概念
+
+  // Base case，「當前節點為空」或者「當前節點為葉子節點，沒有下一層了」
+  // NOTE: 也可以只判斷 root.left ，因為是 perfect binary tree，所以有左一定有右（但這樣沒這樣判斷）
+  if (root === null || (root.left === null && root.right === null)) {
+    return root;
+  }
+
+  // 如果下一層有左節點，就連接下一層左節點 next -> 當前節點的右節點
+  if (root.left !== null) {
+    root.left.next = root.right;
+  }
+
+  // 如果當前節點有右節點，就要檢查當前節點是否有 next 節點，如果都有，
+  // 那就要把當前節點的右節點 next -> 當前節點 next 的左節點
+  if (root.right !== null && root.next !== null) {
+    root.right.next = root.next.left;
+  }
+
+  connect(root.left);
+  connect(root.right);
+
+  return root;
+  // Time : O(n)
+  // Space: O(h) -> 因為 perfect binary tree 所以 O(h) 基本上等於 O(logn)
+};
