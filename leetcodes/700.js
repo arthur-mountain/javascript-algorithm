@@ -1,7 +1,7 @@
 /**
  * Status:
  *    - [x] Done
- *    - [ ] Follow-up solutions
+ *    - [x] Follow-up solutions
  *
  * Title:
  *    700. Search in a Binary Search Tree
@@ -51,3 +51,18 @@ var searchBST = function (root, val) {
   // Time : O(logn)
   // Space: O(1)
 };
+
+{
+  var searchBST = function (root, val) {
+    /* Recursion */
+    // root == null -> 葉子節點
+    if (root == null || root.val === val) {
+      return root;
+    }
+    return root.val > val
+      ? searchBST(root.left, val)
+      : searchBST(root.right, val);
+    // Time : O(logn)
+    // Space: O(logn)
+  };
+}
