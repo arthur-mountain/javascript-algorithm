@@ -31,45 +31,59 @@
  *     this.right = (right===undefined ? null : right)
  * }
  */
-/** @param {TreeNode} root
- * @param {number} key
- * @return {TreeNode}
- */
-var deleteNode = function (root, key) {
-  // recursion
-  //
-  // - 尋找要刪除的節點，沒找到，就跳過刪除的流程; 找到，有三種情境
-  //   - 沒有 children，移除掉父節點指向該節點的指針
-  //   - 有一個 children，將 children 跟要刪除的節點交換，更新父節點指針要指向 children。
-  //   - 有兩個 children，要找到右子樹最左邊的節點(succeessor)，將 succeessor 跟要刪除的節點交換，更新父節點指針要指向 succeessor。 因為只有 succeessor 是大於刪除節點的左節點和小於刪除節點的右節點
 
-  (function _deleteNode(node) {
+{
+  /*** Solution 1  ***/
+  /**
+   * @param {TreeNode} root
+   * @param {number} key
+   * @return {TreeNode}
+   */
+  var deleteNode = function (root, key) {
+    // - 尋找要刪除的節點，沒找到就跳過刪除流程；找到後有三種情況
+    //   - 沒有子節點 (children)，直接刪除該節點 (回傳 null 給父節點)
+    //   - 有一個子節點時，讓父節點指向該子節點，取代被刪除節點的位置
+    //   - 有兩個子節點時，找到右子樹中最左邊的節點（successor）
+    //     用「successor」的值替換「被刪除節點」的值，再遞迴刪除 successor 節點（因為 successor 一定沒有左子節點）
+    //     確保 BST 性質不被破壞
+    //
+    // - 在遞迴「歸」的過程中，父節點會接收「更新後子節點」作為返回值，
+    //   重新賦值父節點的 left 或 right，確保整棵樹的連結正確更新。
+    return _deleteNode(root, key);
+  };
+
+  function _deleteNode(node, currentKey) {
     if (node == null) {
       return node;
     }
 
-    if (node.val > key) {
+    if (node.val > currentKey) {
       // 如果當前節點的值大於 key，代表要往左邊找
-      node.left = _deleteNode(node.left);
+      // 接收到更新後的左子樹，重新賦值給父節點的 left
+      node.left = _deleteNode(node.left, currentKey);
       return node;
-    } else if (node.val < key) {
+    } else if (node.val < currentKey) {
       // 反之，如果當前節點的值小於 key，代表要往右邊找
-      node.right = _deleteNode(node.right);
+      // 接收到更新後的右子樹，重新賦值給父節點的 right
+      node.right = _deleteNode(node.right, currentKey);
       return node;
     } else {
       // 找到 key 節點，要判斷三種情境
       if (node.left && node.right) {
         // 有兩個 children
-        // 要找到左子樹最左邊的節點
+        // 1. 在右子樹中找到 successor (最左邊的節點)
         let successor = node.right;
-        while (successor.left && successor.left.left) {
+        while (successor.left) {
           successor = successor.left;
         }
-        // TODO: [5,3,6,2,4,null,7] 這樣的樹的話，successor 應該是 4，但卻又要找 4.left 會 null pointer error
-        successor.left.left = node.left;
-        successor.left.right = node.right;
-        successor.left = null;
-        return successor;
+
+        // 2. 將 node 的值替換為 successor 的值
+        node.val = successor.val;
+
+        // 3. 遞迴地從右子樹中刪除 successor
+        node.right = _deleteNode(node.right, successor.val); // 回傳更新後的節點
+
+        return node;
       } else if (node.left || node.right) {
         // 有一個 children
         return node.left || node.right;
@@ -78,21 +92,39 @@ var deleteNode = function (root, key) {
         return null;
       }
     }
-  })(root);
+  }
 
-  return root;
-};
-
-// Dry Run:
-//  - Input: root = [5,3,6,2,4,null,7], key = 3; Output: [5,4,6,2,null,null,7]
-//    _deleteNode(5) -> _deleteNode(3) ->
-//
-//  - Input: root = [5,3,6,2,4,null,7], key = 0; Output: [5,3,6,2,4,null,7]
-//    _deleteNode(5) -> _deleteNode(3) -> _deleteNode(2) -> _deleteNode(null)
-//    5.left = 3; return 5  <-  3.left = 2; return 3  <-  2.left = null; return 2;
-//
-//  - Input: root = [], key = 0; Output: []
-//    _deleteNode(null), return: null
-
-// Time : O()
-// Space: O()
+  // Dry Run:
+  //  - Input: root = [5,3,6,2,4,null,7], key = 3
+  //    Steps:
+  //      _deleteNode(5, 3)  // 5 > 3, go left
+  //        -> _deleteNode(3, 3)  // found node with val=3
+  //          node has two children (2,4)
+  //          find successor in right subtree: successor = 4 (leftmost of right subtree)
+  //          replace node.val = 4
+  //          delete successor node with val=4 from right subtree:
+  //            _deleteNode(4, 4) -> leaf node, no children -> return null to parent's right
+  //          updated tree after deletion:
+  //            [5,4,6,2,null,null,7]
+  //          return updated node (4) to parent (5)
+  //      return updated root (5)
+  //
+  //  - Input: root = [5,3,6,2,4,null,7], key = 0 (not found)
+  //    Steps:
+  //      _deleteNode(5, 0)  // 5 > 0, go left
+  //        -> _deleteNode(3, 0)  // 3 > 0, go left
+  //          -> _deleteNode(2, 0)  // 2 > 0, go left
+  //            -> _deleteNode(null, 0)  // reached leaf, return null
+  //          update: 2.left = null, return 2
+  //        update: 3.left = 2, return 3
+  //      update: 5.left = 3, return 5
+  //    No deletion performed, tree remains same:
+  //
+  //  - Input: root = [], key = 0
+  //    Steps:
+  //      _deleteNode(null, 0)  // empty tree, return null
+  //    Return null as tree is empty
+  //
+  // Time : O(h) -> O(log n) for balanced BST, O(n) for skewed tree
+  // Space: O(h) -> O(log n) for balanced BST, O(n) for skewed tree (due to recursion stack)
+}
