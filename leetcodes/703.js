@@ -69,3 +69,36 @@
   // Time : O((M*logk + N*logk) -> O((M+N)*logk)
   // Space: O(k)
 }
+
+/* solution2 using MinHeap 版本二，差別在 add method, 不像 Solution1 先 enqueue 再來維護 min heap size*/
+{
+  /**
+   * @param {number} k
+   * @param {number[]} nums
+   */
+  var KthLargest = function (k, nums) {
+    this.k = k;
+    this.minHeap = MinPriorityQueue.fromArray(nums);
+  };
+
+  /**
+   * @param {number} val
+   * @return {number}
+   */
+  KthLargest.prototype.add = function (val) {
+    this.minHeap.enqueue(val);
+    while (this.minHeap.size() > this.k) {
+      this.minHeap.dequeue();
+    }
+    return this.minHeap.front();
+  };
+
+  /**
+   * Your KthLargest object will be instantiated and called as such:
+   * var obj = new KthLargest(k, nums)
+   * var param_1 = obj.add(val)
+   */
+
+  // Time : O((M*logk + N*logk) -> O((M+N)*logk)
+  // Space: O(k)
+}
