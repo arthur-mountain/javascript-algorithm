@@ -1,9 +1,9 @@
-const MinHeap = require("./min-heap");
+const Heap = require("./heap");
 
 /**
- * MaxHeap 實作 - 基本上同 MinHeap，只需要改變 hipifyUp 和 heapifyDown 的比較邏輯
+ * MaxHeap 實作 - 基本上同 MinHeap，只需要改變 heapifyUp 和 heapifyDown 的比較邏輯
  */
-class MaxHeap extends MinHeap {
+class MaxHeap extends Heap {
   heapifyUp(index = this.heap.length - 1) {
     if (index === 0) return;
 
@@ -46,8 +46,13 @@ class MaxHeap extends MinHeap {
     if (this.heap.length === 0) return null;
     if (this.heap.length === 1) return this.heap.pop();
 
+    // 1. 保存要返回的最大值（根節點）
     const max = this.heap[0];
+
+    // 2. 將最後一個元素移到根節點
     this.heap[0] = this.heap.pop();
+
+    // 3. 向下調整維護heap性質
     this.heapifyDown();
 
     console.log(`提取最大值 ${max} 後: [${this.heap.join(", ")}]`);
