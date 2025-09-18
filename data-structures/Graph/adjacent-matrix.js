@@ -16,7 +16,7 @@
  *  Graph 常用在社交網絡、路徑尋找演算法、網路路徑分析等應用。
  */
 
-// Adjacent matrix
+// TODO: Adjacent matrix
 class AdjacentMatrixGraph {
   constructor() {
     this.adjacencyMatrix = [];
