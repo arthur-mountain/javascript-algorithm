@@ -1,7 +1,7 @@
 /**
  * Status:
  *    - [x] Done
- *    - [ ] Follow-up solutions
+ *    - [x] Follow-up solutions
  *
  * Title:
  *    235. Lowest Common Ancestor of a Binary Search Tree
@@ -120,4 +120,49 @@
   // Time : O(h) -> 最好情況（平衡樹）：O(log n); 最壞情況（退化成鏈表）：O(n)
   //                造成此成本的原因：每次遞迴只走一條路徑（左或右），不會訪問所有節點
   // Space: O(1)
+}
+
+/*
+ * Solution3: 通用 lowestCommonAncestor 解
+ * 思路講解
+ *  這個方法適用於普通二元樹(不一定要是 BST)。但在這題中不是最優解。
+ * 核心思想：
+ *
+ * - 如果當前節點是 p 或 q，返回當前節點
+ * - 分別在左右子樹尋找 p 和 q
+ * - 如果 p 和 q 分別在左右子樹，當前節點就是 LCA; 否則如果都在一側，返回該側的結果
+ * */
+{
+  /**
+   * Definition for a binary tree node.
+   * function TreeNode(val) {
+   *     this.val = val;
+   *     this.left = this.right = null;
+   * }
+   */
+
+  /**
+   * @param {TreeNode} root
+   * @param {TreeNode} p
+   * @param {TreeNode} q
+   * @return {TreeNode}
+   */
+  var lowestCommonAncestor = function (root, p, q) {
+    // Recursion Postorder
+
+    // Base Case：空節點或找到目標節點
+    if (root == null || root == p || root == q) {
+      return root;
+    }
+    // 往左子樹尋找
+    const left = lowestCommonAncestor(root.left, p, q);
+    // 往右子樹尋找
+    const right = lowestCommonAncestor(root.right, p, q);
+    // 如果 left and right 不等於 null，代表 p 和 q 分別在左右子樹，當前節點是 LCA
+    // 否則，返回非空的那一側(或都為空時返回 null)
+    return left && right ? root : left || right;
+  };
+
+  // Time : O(n) -> 最壞得情況需要遍歷全部節點
+  // Space: O(h) -> 遞迴調用
 }
