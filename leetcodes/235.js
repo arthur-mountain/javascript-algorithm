@@ -74,3 +74,50 @@
   //                造成此成本的原因：每次遞迴只走一條路徑（左或右），不會訪問所有節點
   // Space: O(h) -> 遞迴的深度等於樹的高度
 }
+/*
+ * 同 Solution1，迭代版本，減少遞迴空間使用
+ **/
+{
+  /**
+   * Definition for a binary tree node.
+   * function TreeNode(val) {
+   *     this.val = val;
+   *     this.left = this.right = null;
+   * }
+   */
+
+  /**
+   * @param {TreeNode} root
+   * @param {TreeNode} p
+   * @param {TreeNode} q
+   * @return {TreeNode}
+   */
+  var lowestCommonAncestor = function (root, p, q) {
+    let current = root;
+
+    while (root != null) {
+      // 利用 BST 特性，判斷 p and q 的位置
+      // 1. 當前節點的值大於 p and q，因此 p and q 在左子樹
+      if (current.val > p.val && current.val > q.val) {
+        current = current.left; // 往左走
+        continue;
+      }
+      // 2. 當前節點的值小於 p and q，因此 p and q 在右子樹
+      if (current.val < p.val && current.val < q.val) {
+        current = current.right; // 往右走
+        continue;
+      }
+
+      // 情況 3：當前節點就是 LCA
+      // 這包含三種情況：
+      // 1. p 在左，q 在右
+      // 2. q 在左，p 在右
+      // 3. 當前節點是 p 或 q 之一
+      return current;
+    }
+  };
+
+  // Time : O(h) -> 最好情況（平衡樹）：O(log n); 最壞情況（退化成鏈表）：O(n)
+  //                造成此成本的原因：每次遞迴只走一條路徑（左或右），不會訪問所有節點
+  // Space: O(1)
+}
