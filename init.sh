@@ -3,7 +3,10 @@
 set -euo pipefail
 
 # 讀取題號
-read -rp "Enter the question number: " question_number
+question_number="$1"
+if [ -z "$question_number" ]; then
+  read -rp "Enter the question number: " question_number
+fi
 if [ -z "$question_number" ]; then
   echo "❌ Error: Question Number is required."
   exit 1
@@ -14,6 +17,7 @@ read -rp "Enter the topic folder (optional): " topic
 
 # 設定檔案路徑
 if [ -n "$topic" ]; then
+  mkdir -p "leetcodes/$topic"
   FILE_PATH="leetcodes/$topic/$question_number.js"
 else
   FILE_PATH="leetcodes/$question_number.js"
