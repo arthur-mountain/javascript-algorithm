@@ -29,6 +29,33 @@
    *     this.right = (right===undefined ? null : right)
    * }
    */
+
+  /**
+   * 計算高度並同時檢查平衡性
+   * @param {TreeNode} node
+   * @return {number} 回傳高度，如果不平衡則回傳 -1
+   */
+  const getHeightAndCheck = (node) => {
+    // 基本情況：空節點高度為 0
+    if (!node) return 0;
+
+    // 遞歸計算左子樹高度，如果左子樹不平衡，直接回傳 -1
+    const leftHeight = getHeightAndCheck(node.left);
+    if (leftHeight === -1) return -1;
+
+    // 遞歸計算右子樹高度，如果右子樹不平衡，直接回傳 -1
+    const rightHeight = getHeightAndCheck(node.right);
+    if (rightHeight === -1) return -1;
+
+    // 檢查當前節點是否平衡
+    if (Math.abs(leftHeight - rightHeight) > 1) {
+      return -1; // 不平衡，回傳特殊值 -1
+    }
+
+    // 當前節點平衡，回傳當前節點的高度
+    return 1 + Math.max(leftHeight, rightHeight);
+  };
+
   /**
    * @param {TreeNode} root
    * @return {boolean}
@@ -43,34 +70,6 @@
     //
     // Solutions:
     //  1. 遞：走到最底，葉子節點為 balanced，迴：根據左、右子樹是否為 balanced 計算出當前節點是否 balanced
-    //
-
-    /**
-     * 計算高度並同時檢查平衡性
-     * @param {TreeNode} node
-     * @return {number} 回傳高度，如果不平衡則回傳 -1
-     */
-    const getHeightAndCheck = (node) => {
-      // 基本情況：空節點高度為 0
-      if (!node) return 0;
-
-      // 遞歸計算左子樹高度，如果左子樹不平衡，直接回傳 -1
-      const leftHeight = getHeightAndCheck(node.left);
-      if (leftHeight === -1) return -1;
-
-      // 遞歸計算右子樹高度，如果右子樹不平衡，直接回傳 -1
-      const rightHeight = getHeightAndCheck(node.right);
-      if (rightHeight === -1) return -1;
-
-      // 檢查當前節點是否平衡
-      if (Math.abs(leftHeight - rightHeight) > 1) {
-        return -1; // 不平衡，回傳特殊值 -1
-      }
-
-      // 當前節點平衡，回傳當前節點的高度
-      return 1 + Math.max(leftHeight, rightHeight);
-    };
-
     return getHeightAndCheck(root) !== -1;
   };
 
