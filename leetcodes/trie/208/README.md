@@ -53,6 +53,10 @@ date_solved: "2025-10-05"
   - 實作優化建議：目前使用 `__isEnd` 屬性直接標記在 Map 上，雖然可行但不符合資料結構設計原則。
     建議建立獨立的 TrieNode 類別，將 children 和 isEnd 封裝為節點屬性，讓結構更清晰且易於維護。
 
+### Solution1-2：Map 實作 Trie（前綴樹）
+
+同 solution1，修正直接在 Map 標記 \_\_isEnd 屬性的問題
+
 ## 測試案例
 
 - 案例 A:
