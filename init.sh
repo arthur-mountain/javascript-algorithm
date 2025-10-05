@@ -15,17 +15,16 @@ fi
 # 讀取子目錄（可選）
 read -rp "Enter the topic folder (optional): " topic
 
-# 設定檔案路徑
+# 設定目錄路徑
 if [ -n "$topic" ]; then
-  mkdir -p "leetcodes/$topic"
-  FILE_PATH="leetcodes/$topic/$question_number.js"
+  DIR_PATH="leetcodes/$topic/$question_number"
 else
-  FILE_PATH="leetcodes/$question_number.js"
+  DIR_PATH="leetcodes/$question_number"
 fi
 
-# 檢查檔案是否存在
-if [ -f "$FILE_PATH" ]; then
-  echo "❌ Error: File '$FILE_PATH' already exists."
+# 檢查目錄是否存在
+if [ -d "$DIR_PATH" ]; then
+  echo "❌ Error: Directory '$DIR_PATH' already exists."
   exit 1
 fi
 
@@ -48,6 +47,7 @@ get_question_data() {
     query='query questionData($titleSlug: String!) {
       question(titleSlug: $titleSlug) {
         title
+        difficulty
         content
         topicTags { name }
       }
@@ -94,21 +94,17 @@ extract_constraints() {
   )
 
   if [[ -z "$constraints" ]]; then
-    echo " *    (Constraints not found)"
+    echo ""
     return
   fi
 
-  # 用 awk 處理每一行，並輸出帶有編號和格式的文字
+  # 用 awk 處理每一行，並輸出帶有格式的 Markdown 列表
   echo "$constraints" | awk '{
     # NR 是 awk 內建變數，代表當前處理的行號（從 1 開始計數）
     # $0 代表當前整行的內容（也就是 constraint 文字本體）
 
-    # printf 用來格式化輸出：
-    # " *    " 是前綴固定空白和星號
-    # %d 是輸出 NR（行號），並且是整數格式
-    # ". " 是數字後面固定的句點和一個空白
-    # %s 是輸出整行文字（$0）
-    printf " *    %d. %s\n", NR, $0
+    # printf 用來格式化輸出為 Markdown 列表格式
+    printf "- %s\n", $0
   }'
 }
 
@@ -121,44 +117,80 @@ fi
 response=$(get_question_data "$titleSlug")
 
 title=$(echo "$response" | jq -r '.data.question.title // empty')
-topics=$(echo "$response" | jq -r '.data.question.topicTags[].name' | awk '{print " *    " NR ". " $0}')
+difficulty=$(echo "$response" | jq -r '.data.question.difficulty // empty')
+topics=$(echo "$response" | jq -r '.data.question.topicTags[].name' | awk '{printf "  - %s\n", $0}')
 constraints=$(extract_constraints "$(echo "$response" | jq -r '.data.question.content // empty')")
 
-file_content=$(
-  cat <<EOF
-/**
- * Status:
- *    - [ ] Done
- *    - [ ] Follow-up solutions
- *
- * Title:
- *    $question_number. $title
- *
- * Topics:
-$topics
- *
- * Statements:
- *    (Add problem statements here)
- *
- * Constraints:
-$constraints
- **/
+# 獲取當前日期
+current_date=$(date +%Y-%m-%d)
 
+# 生成 README.md 內容
+readme_content=$(
+  cat <<EOF
+---
+title: "$question_number. $title"
+tags:
+$topics
+difficulty: "$difficulty"
+date_solved: "$current_date"
+---
+
+## 問題描述
+
+
+
+## Constraints
+
+$constraints
+
+## 解法總覽
+
+### Solution1：
+
+- 思路說明：
+- 時間複雜度：O()
+- 空間複雜度：O()
+- 程式碼說明：
+
+## 測試案例
+
+- 案例 A:
+
+## 其他備註
+
+- 優化方向、特殊限制、問題延伸討論。
 EOF
 )
 
-if [[ "${1:-}" == '--dry-run' || "${1:-}" == '--dryrun' ]]; then
-  echo "==== 檔案內容預覽 ===="
-  echo "$file_content"
+# 預覽模式
+if [[ "${2:-}" == '--dry-run' || "${2:-}" == '--dryrun' ]]; then
+  echo "==== 目錄結構預覽 ===="
+  echo "Directory: $DIR_PATH"
+  echo "  ├── README.md"
+  echo "  └── solution1.js"
+  echo ""
+  echo "==== README.md 內容預覽 ===="
+  echo "$readme_content"
+  echo ""
   echo "====   預覽結束   ===="
 else
-  mkdir -p "$(dirname "$FILE_PATH")"
-  echo "$file_content" >"$FILE_PATH"
-  echo "File '$FILE_PATH' created successfully."
+  # 建立目錄結構
+  mkdir -p "$DIR_PATH"
+
+  # 寫入 README.md
+  echo "$readme_content" >"$DIR_PATH/README.md"
+
+  # 寫入 solution1.js
+  echo "" >"$DIR_PATH/solution1.js"
+
+  echo "✅ Directory '$DIR_PATH' created successfully."
+  echo "   ├── README.md"
+  echo "   └── solution1.js"
+
   # 是否要直接開啟
-  read -rp "Open directly? (y/n): " answer
+  read -rp "Open README.md directly? (y/n): " answer
   answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
   if [[ "$answer" == 'y' ]]; then
-    "$EDITOR" "$FILE_PATH"
+    "$EDITOR" "$DIR_PATH/README.md"
   fi
 fi
