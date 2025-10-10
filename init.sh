@@ -122,7 +122,7 @@ topics=$(echo "$response" | jq -r '.data.question.topicTags[].name' | awk '{prin
 constraints=$(extract_constraints "$(echo "$response" | jq -r '.data.question.content // empty')")
 
 # 獲取當前日期
-current_date=$(date +%Y-%m-%d)
+current_date="$(date +%Y-%m-%d)"
 
 # 生成 README.md 內容
 readme_content=$(
@@ -132,7 +132,7 @@ title: "$question_number. $title"
 tags:
 $topics
 difficulty: "$difficulty"
-date_solved: "$current_date"
+date_solved: ""
 ---
 
 ## 問題描述
@@ -143,29 +143,41 @@ date_solved: "$current_date"
 
 $constraints
 
+## 解題思路
+
+### 初步分析
+- 關鍵觀察：
+- 適用 Pattern：
+- 可能的陷阱：
+
 ## 解法總覽
 
 ### Solution1：
 
-- 思路說明：
+- **思路說明**：
 
 
-
-- 時間複雜度：O()
-
-- 空間複雜度：O()
-
-- 程式碼說明：
+- **複雜度分析**：
+  - 時間複雜度：O()
+  - 空間複雜度：O()
+  - 通過狀態：⬜️ AC / ❌ TLE / ❌ MLE / ❌ WA
 
 
-
-- 其他備註(優化方向、特殊限制、問題延伸討論)：
-
+- **其他備註\(優化方向、特殊限制、問題延伸討論\)**：
 
 
-- 測試案例
+- **測試案例**：
 
   - 案例 A:
+
+---
+
+## 學習記錄
+
+- 首次解題：$current_date | 耗時：分鐘 | 獨立完成：□ 是 □ 否
+- 複習 1：____ | 順暢度：□ 流暢 □ 卡頓 □ 忘記
+- 複習 2：____ | 順暢度：□ 流暢 □ 卡頓 □ 忘記
+- 複習 3：____ | 順暢度：□ 流暢 □ 卡頓 □ 忘記
 EOF
 )
 
