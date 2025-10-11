@@ -77,6 +77,11 @@ link: "https://leetcode.com/problems/design-add-and-search-words-data-structure/
 
 - **其他備註\(優化方向、特殊限制、問題延伸討論\)**：
 
+  - 三種不同的 search 的實作
+    1. \_search: 遞迴 + some()
+    2. \_searchFromNodeDFS: DFS 遞迴（標準）
+    3. \_searchFromNodeIter: DFS 迭代（堆疊）
+
 - **測試案例**：
 
   - 案例 A: 簡單得測試案例
