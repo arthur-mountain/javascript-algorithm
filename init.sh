@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # 讀取題號
-question_number="$1"
+question_number="${1:-}"
 if [ -z "$question_number" ]; then
   read -rp "Enter the question number: " question_number
 fi
@@ -169,8 +169,6 @@ $constraints
 - **測試案例**：
 
   - 案例 A:
-
----
 
 ## 學習記錄
 
