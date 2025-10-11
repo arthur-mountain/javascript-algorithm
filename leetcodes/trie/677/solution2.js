@@ -98,6 +98,74 @@ MapSum.prototype.deleteLazy = function (key) {
 
   return true;
 };
+
+/**
+ * 刪除 key，帶記憶體回收(Eager Deletion)
+ * @param {string} key
+ * @return {boolean}
+ */
+MapSum.prototype.deleteImmediate = function (key) {
+  // 步驟 1：檢查 key 是否存在
+  if (!this.map.has(key)) {
+    return false; // key 不存在
+  }
+
+  // 步驟 2：使用 delta 更新所有路徑節點
+  const oldVal = this.map.get(key);
+  const delta = -oldVal;
+
+  this.map.delete(key);
+
+  let current = this.root;
+  current.sum += delta;
+
+  for (let i = 0; i < key.length; i++) {
+    const char = key[i];
+    current = current.children.get(char);
+    current.sum += delta;
+  }
+
+  // 步驟 3：遞迴刪除不需要的節點
+  const deleteRecur = (node, key, depth) => {
+    // Base Case
+    if (depth === key.length) {
+      // 判斷當前節點是否可以刪除
+      return node.sum === 0 && node.children.size === 0;
+    }
+
+    // 取出當前的遞迴遍歷得 char 和 CharNode
+    const char = key[depth];
+    const childNode = node.children.get(char);
+
+    // 如果路徑不存在則不存在刪除，返回 false
+    if (!childNode) {
+      return false;
+    }
+
+    // DFS 遞迴處理子節點，確保子節點處理完畢後
+    // 才知道子節點有無 children(是否可以刪除子節點)
+    // 並且回傳當前節點是否可以被刪除
+    const shouldDeleteChild = deleteRecur(childNode, key, depth + 1);
+
+    if (shouldDeleteChild) {
+      node.children.delete(char);
+
+      // 當前節點可刪除的條件：
+      // 1. sum === 0（沒有任何 key 經過）
+      // 2. 沒有子節點
+      return node.sum === 0 && node.children.size === 0;
+    }
+
+    // 如果子節點沒被刪除，代表當前節點也不應該被刪除
+    // 因為當前節點有子節點，因此不屬於要被刪除的範疇
+    return false;
+  };
+
+  // 因為前面已經檢查過 key 存在，因此遞迴後直接回傳 true 即可
+  deleteRecur(this.root, key, 0);
+  return true;
+};
+
 /**
  * Your MapSum object will be instantiated and called as such:
  * var obj = new MapSum()
