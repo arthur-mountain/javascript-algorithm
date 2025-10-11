@@ -42,7 +42,7 @@ MapSum.prototype.sum = function (prefix) {
     return 0; // 或回傳所有 key 的總和，取決於題目定義
   }
 
-  // 先找到 prefix
+  // 先找到 prefix 節點
   let current = this.root;
   for (let i = 0; i < prefix.length; i++) {
     // O(p)，p = prefix.length
@@ -61,7 +61,7 @@ MapSum.prototype.sum = function (prefix) {
         sumRecur(value);
       }
     }
-    if (current.value == null) return;
+    if (current.value == null) return; // 如果值為 null 代表節點被刪除，就跳過累加
     sum += current.value;
   };
   sumRecur(current);
@@ -71,6 +71,33 @@ MapSum.prototype.sum = function (prefix) {
   //   - n: number of nodes in the subtree rooted at prefix
   // Space Complexity: O(h)
   //   - h: height of the subtree (recursion call stack)
+};
+
+/**
+ * 刪除 key(Lazy Deletion)
+ * @param {string} key
+ * @return {boolean} 是否成功刪除（key 是否存在）
+ */
+MapSum.prototype.deleteLazy = function (key) {
+  let current = this.root;
+
+  // 步驟 1：找到 key 的結尾節點
+  for (let i = 0; i < key.length; i++) {
+    if (!current.children.get(key[i])) {
+      return false;
+    }
+    current = current.children.get(key[i]);
+  }
+
+  // 步驟 2：檢查該節點是否真的是一個 key 的結尾
+  if (current.value === null) {
+    return false; // 該路徑存在，但不是一個有效的 key
+  }
+
+  // 步驟 3：標記為刪除(設為 null)
+  current.value = null;
+
+  return true;
 };
 
 /**

@@ -45,7 +45,19 @@ date_solved: "2025-10-10"
   1. insert and sum 時，key, prefix 為空時的情境要做處理，不然可能會不合預期。（雖然題目有說 key, prefix 不得為空）
 
   2. 問題延伸討論：如果 sum 重複被喊多次導致重複計算，怎麼處理？
+
      - 參考 solution2
+
+  3. 問題延伸討論：如果要支援 delete 方法？
+
+     - lazy deletion: 將 value 設值為 null，只標記 key 已刪除，不移除節點
+
+       優點：實作簡單，delete 操作快速
+
+       缺點：記憶體無法回收，空間浪費，因此若如果頻繁插入和刪除，會有記憶體洩漏
+
+       - 時間複雜度：O(k) -> k 是 key 的長度，只需要遍歷到結尾節點，設為 null
+         空間複雜度：O(1)
 
 ### Solution2
 
