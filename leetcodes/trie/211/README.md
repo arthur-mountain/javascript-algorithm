@@ -78,9 +78,26 @@ link: "https://leetcode.com/problems/design-add-and-search-words-data-structure/
 - **其他備註\(優化方向、特殊限制、問題延伸討論\)**：
 
   - 三種不同的 search 的實作
+
     1. \_search: 遞迴 + some()
     2. \_searchFromNodeDFS: DFS 遞迴（標準）
     3. \_searchFromNodeIter: DFS 迭代（堆疊）
+
+  - 問題延伸討論：如果 . 可以匹配 0 到多個字母呢？
+
+    方向：需要更複雜的狀態機或動態規劃
+
+  - 問題延伸討論：如何支援刪除單詞？
+
+    方向：引用計數或標記刪除
+
+  - 問題延伸討論：如果記憶體有限，如何優化？
+
+    方向：壓縮 Trie、共用節點
+
+  - 問題延伸討論：如何實作 wildcard 的優先級匹配？
+
+    方向：BFS + 優先隊列
 
 - **測試案例**：
 
