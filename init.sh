@@ -125,6 +125,7 @@ code_snippet=$(echo "$response" | jq -r '.data.question.codeSnippets[] | select(
 
 # 獲取當前日期
 current_date="$(date +%Y-%m-%d)"
+current_time="$(date +%r)"
 
 # 生成 README.md 內容
 readme_content=$(
@@ -177,6 +178,7 @@ $constraints
 
 ## 學習記錄
 
+首次開始：$current_date $current_time
 - 首次解題：$current_date | 耗時：分鐘 | 獨立完成：□ 是 □ 否
 - 複習 1：____ | 順暢度：□ 流暢 □ 卡頓 □ 忘記
 EOF
