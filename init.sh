@@ -44,14 +44,15 @@ get_question_data() {
     Origin:https://leetcode.com \
     Referer:https://leetcode.com/problems/"$1" \
     Content-Type:application/json \
-    query='query questionData($titleSlug: String!) {
-      question(titleSlug: $titleSlug) {
+    query="query questionData(\$titleSlug: String!) {
+      question(titleSlug: \$titleSlug) {
         title
         difficulty
         content
         topicTags { name }
+        codeSnippets { langSlug code }
       }
-    }' \
+    }" \
     variables:="{\"titleSlug\":\"$1\"}" # 傳遞變數給 GraphQL 查詢，將 $1（題目 slug）放入變數 titleSlug 裡
 }
 
@@ -120,6 +121,7 @@ title=$(echo "$response" | jq -r '.data.question.title // empty')
 difficulty=$(echo "$response" | jq -r '.data.question.difficulty // empty')
 topics=$(echo "$response" | jq -r '.data.question.topicTags[].name' | awk '{printf "  - %s\n", $0}')
 constraints=$(extract_constraints "$(echo "$response" | jq -r '.data.question.content // empty')")
+code_snippet=$(echo "$response" | jq -r '.data.question.codeSnippets[] | select(.langSlug == "javascript") | .code')
 
 # 獲取當前日期
 current_date="$(date +%Y-%m-%d)"
@@ -133,6 +135,7 @@ tags:
 $topics
 difficulty: "$difficulty"
 date_solved: ""
+link: "https://leetcode.com/problems/$titleSlug/description/"
 ---
 
 ## 問題描述
@@ -170,26 +173,32 @@ $constraints
 
   - 案例 A:
 
+  ---
+
 ## 學習記錄
 
 - 首次解題：$current_date | 耗時：分鐘 | 獨立完成：□ 是 □ 否
 - 複習 1：____ | 順暢度：□ 流暢 □ 卡頓 □ 忘記
-- 複習 2：____ | 順暢度：□ 流暢 □ 卡頓 □ 忘記
-- 複習 3：____ | 順暢度：□ 流暢 □ 卡頓 □ 忘記
 EOF
 )
 
 # 預覽模式
 if [[ "${2:-}" == '--dry-run' || "${2:-}" == '--dryrun' ]]; then
-  echo "==== 目錄結構預覽 ===="
+  # 定義顏色
+  BOLD_PURPLE='\033[1;35m'
+  RESET='\033[0m'
+  echo -e "${BOLD_PURPLE}==== 目錄結構預覽 ====${RESET}"
   echo "Directory: $DIR_PATH"
   echo "  ├── README.md"
   echo "  └── solution1.js"
   echo ""
-  echo "==== README.md 內容預覽 ===="
+  echo -e "${BOLD_PURPLE}==== README.md 內容預覽 ====${RESET}"
   echo "$readme_content"
   echo ""
-  echo "====   預覽結束   ===="
+  echo -e "${BOLD_PURPLE}==== code snippet 內容預覽 ====${RESET}"
+  echo "$code_snippet"
+  echo ""
+  echo -e "${BOLD_PURPLE}====   預覽結束   ====${RESET}"
 else
   # 建立目錄結構
   mkdir -p "$DIR_PATH"
@@ -198,7 +207,7 @@ else
   echo "$readme_content" >"$DIR_PATH/README.md"
 
   # 寫入 solution1.js
-  echo "" >"$DIR_PATH/solution1.js"
+  echo "$code_snippet" >"$DIR_PATH/solution1.js"
 
   echo "✅ Directory '$DIR_PATH' created successfully."
   echo "   ├── README.md"
