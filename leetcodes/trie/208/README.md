@@ -7,6 +7,7 @@ tags:
   - Trie
 difficulty: "Medium"
 date_solved: "2025-10-05"
+link: "https://leetcode.com/problems/implement-trie-prefix-tree/description/"
 ---
 
 ## 問題描述

@@ -7,6 +7,7 @@ tags:
   - Trie
 difficulty: "Medium"
 date_solved: "2025-10-10"
+link: "https://leetcode.com/problems/map-sum-pairs/description/"
 ---
 
 ## 問題描述
