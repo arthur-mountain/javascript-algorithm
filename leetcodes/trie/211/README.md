@@ -31,7 +31,11 @@ link: "https://leetcode.com/problems/design-add-and-search-words-data-structure/
 
 ### 初步分析
 
-- 關鍵觀察：查詢時遇到「.」時只要當前節點的子節點存在 end of word flag 則代表符合
+- 關鍵觀察：
+  - 查詢時遇到「.」時，只要當前節點下的子節點存在 end of word flag 則代表符合(可以提前返回)
+  - 這不是簡單的字串查找（HashSet 不適用）
+  - 需要支援部分匹配（萬用字元）
+  - 需要高效的前綴搜尋結構 → Trie（字典樹）
 - 適用 Pattern：建立 WordDictionary trie，在查詢時遇到「.」要遍歷底下全部 children，而不是只找單一路徑
 - 可能的陷阱：
   - 如果「.」在第一個字符，會不會直接導致底下子節點全部都要遍歷？
