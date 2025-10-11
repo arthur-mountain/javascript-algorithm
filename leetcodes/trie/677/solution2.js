@@ -68,6 +68,37 @@ MapSum.prototype.sum = function (prefix) {
 };
 
 /**
+ * 刪除 key(Lazy Deletion)
+ * @param {string} key
+ * @return {boolean} 是否成功刪除（key 是否存在）
+ */
+MapSum.prototype.deleteLazy = function (key) {
+  // 步驟 1：檢查 key 是否存在
+  if (!this.map.has(key)) {
+    return false; // key 不存在
+  }
+
+  // 步驟 2：計算 delta（刪除 = 減去舊值）
+  const oldVal = this.map.get(key);
+  const delta = -oldVal; // delta 即原本 key 的值，取負值進行累加，即代表刪除
+
+  // 步驟 3：從 map 中移除
+  this.map.delete(key);
+
+  // 步驟 4：更新路徑上所有節點的 sum
+  let current = this.root;
+  current.sum += delta; // root 也要更新
+
+  for (let i = 0; i < key.length; i++) {
+    const char = key[i];
+    // 這裡假設路徑一定存在（因為我們前面已經確認 key 存在）
+    current = current.children.get(char);
+    current.sum += delta;
+  }
+
+  return true;
+};
+/**
  * Your MapSum object will be instantiated and called as such:
  * var obj = new MapSum()
  * obj.insert(key,val)
