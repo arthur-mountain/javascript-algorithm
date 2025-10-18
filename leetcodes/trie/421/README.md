@@ -142,9 +142,15 @@ link: "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/desc
 
 - **複雜度分析**：
 
-  - 時間複雜度：O(n) -> 建立 trie + 每個數字 32bits 要走 nums 次，複雜度為 O(n \+ n \* 32)
+  - 時間複雜度：O(n \* 32 + n \* 32) -> O(n)
 
-  - 空間複雜度：O(n) -> 每個數字 32bits，每一個 bit 會建立長度為 2 的陣列，總共 n 次，複雜度為 O(n \* 32 \* 2)
+    - 建立 Trie：插入 n 個數字，每個數字需要處理 32 位元 → O(n \* 32)
+
+    - 查找最大 OR：對 n 個數字進行查找，每次查找遍歷 32 位元 → O(n \* 32)
+
+  - 空間複雜度：O(n \* 32) -> O(n)
+
+    - n 個數字，每個數字要建立 32bits 個節點 -> O(n \* 32)
 
   - 通過狀態：❌ TLE
 

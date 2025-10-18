@@ -16,8 +16,11 @@ var findMaximumXOR = function (nums) {
   }
 
   return max;
-  // Time : O(n + n * 32) -> 建立 trie + 每個數字 32bits 要走 nums 次，扣掉常數為 O(n)
-  // Space: O(n * 32 * 2) -> 每個數字 32bits，每一個 bit 會建立長度為 2 的陣列，總共 n 次，扣掉常數為 O(n)
+  // Time : O(n * 32 + n * 32)
+  //    - 建立 Trie：插入 n 個數字，每個數字需要處理 32 位元 → O(n * 32)
+  //    - 查找最大 OR：對 n 個數字進行查找，每次查找遍歷 32 位元 → O(n * 32)
+  //
+  // Space: O(n * 32) -> n 個數字，每個數字要建立 32bits 個節點
 };
 
 class BinaryTrieNode {
