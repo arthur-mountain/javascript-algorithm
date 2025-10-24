@@ -6,7 +6,7 @@ tags:
   - Bit Manipulation
   - Trie
 difficulty: "Medium"
-date_solved: ""
+date_solved: "2025-10-24"
 link: "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/description/"
 ---
 
@@ -234,6 +234,55 @@ link: "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/desc
       - `| bit`：將新的 bit 填入最右邊
 
       就像在寫數字：從左到右寫 "25"，實際是 `2*10 + 5`，位元操作也是同樣邏輯！
+
+- **測試案例**：同 solution1 測試範例
+
+  ***
+
+### Solution3
+
+- **思路說明**：
+
+  同 solution2 的 Trie 架構和位元操作優化，但進一步優化節點結構：
+
+  1. **節點結構優化**：
+
+     - Solution2：使用陣列 `children = [null, null]`，需要索引存取
+     - Solution3：使用物件屬性 `zero` 和 `one`，直接屬性存取效能更佳
+
+  2. **效能提升原因**：
+
+     - JavaScript 引擎對物件屬性存取有優化（hidden class）
+     - 避免陣列索引的邊界檢查和間接尋址
+     - 程式碼語意更清晰（`current.zero` vs `current.children[0]`）
+
+  核心演算法保持不變：使用位元操作從高位到低位建立 Trie，查找時優先選擇相反位元以最大化 XOR 結果。
+
+- **複雜度分析**：
+
+  - 時間複雜度：O(n \* 32 + n \* 32) → O(n)
+
+    - 建立 Trie：插入 n 個數字，每個數字需要處理 32 位元 → O(n \* 32)
+    - 查找最大 XOR：對 n 個數字進行查找，每次查找遍歷 32 位元 → O(n \* 32)
+
+  - 空間複雜度：O(n \* 32) → O(n)
+
+    - Trie 結構：最壞情況下（所有數字完全不同）需要建立 n \* 32 個節點
+    - 實際情況通常更小，因為相同前綴會共享節點路徑
+
+  - 通過狀態：✅ Accepted
+
+- **其他備註（優化方向、特殊限制、問題延伸討論）**：
+
+  - **JavaScript 物件屬性 vs 陣列效能**：
+
+    - V8 引擎對固定結構物件（如只有 `zero` 和 `one` 屬性）使用 hidden class 優化
+    - 屬性存取可直接計算記憶體位址，而陣列需要額外的索引運算
+    - 對於只有兩個固定子節點的二元 Trie，屬性寫法更符合語意且效能更優
+
+  - **適用場景**：
+    - 適合固定分支數（binary trie、ternary tree 等）的樹狀結構
+    - 不適合子節點數量動態變化的場景（如一般 Trie，26 個字母）
 
 - **測試案例**：同 solution1 測試範例
 
