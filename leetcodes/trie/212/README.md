@@ -73,7 +73,7 @@ link: "https://leetcode.com/problems/word-search-ii/description/"
 
 - **其他備註\(優化方向、特殊限制、問題延伸討論\)**：
 
-  -
+  - 觀察 hints 後得思路: 應該要反過來針對 words 做 trie，結合 backtracking 遍歷 board，如果發現路不通就直接 early return
 
 - **測試案例**：
 
