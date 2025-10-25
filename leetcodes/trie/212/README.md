@@ -69,7 +69,7 @@ link: "https://leetcode.com/problems/word-search-ii/description/"
 
   - 通過狀態：❌ WA
 
-    - 案例D，如果相鄰得兩個 character 都是 a，相鄰得兩個 node circular 重複尋找，會找到答案，但實際上一個 node 只能用一次
+    - 案例D，如果相鄰得兩個 character 都是 a，相鄰得兩個 node circular 重複尋找，會找到答案，但實際上一個 node 只能用一次。即使加上 set 紀錄是否重複會遇到其他問題，目前整個方向應該不太對
 
 - **其他備註\(優化方向、特殊限制、問題延伸討論\)**：
 

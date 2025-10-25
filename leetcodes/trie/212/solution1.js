@@ -40,6 +40,7 @@ var findWords = function (board, words) {
   const answers = [];
   for (let i = 0; i < words.length; i++) {
     const current = roots.get(words[i][0]) ? [[roots.get(words[i][0]), 1]] : [];
+    const used = new Set();
     while (current.length > 0) {
       const [neighbors, nextIndex] = current.pop();
       if (nextIndex < words[i].length) {
@@ -47,34 +48,41 @@ var findWords = function (board, words) {
         for (let j = 0; j < neighbors.length; j++) {
           if (
             neighbors[j].top &&
+            !used.has(neighbors[j].top) &&
             neighbors[j].top.char === words[i][nextIndex]
           ) {
             nextNeighbors.push(neighbors[j].top);
           }
           if (
             neighbors[j].right &&
+            !used.has(neighbors[j].right) &&
             neighbors[j].right.char === words[i][nextIndex]
           ) {
             nextNeighbors.push(neighbors[j].right);
           }
           if (
             neighbors[j].bottom &&
+            !used.has(neighbors[j].bottom) &&
             neighbors[j].bottom.char === words[i][nextIndex]
           ) {
             nextNeighbors.push(neighbors[j].bottom);
           }
           if (
             neighbors[j].left &&
+            !used.has(neighbors[j].left) &&
             neighbors[j].left.char === words[i][nextIndex]
           ) {
             nextNeighbors.push(neighbors[j].left);
           }
           if (nextNeighbors.length > 0) {
             current.push([nextNeighbors, nextIndex + 1]);
+            for (let k = 0; k < nextNeighbors.length; k++)
+              used.add(nextNeighbors[k]);
           }
         }
       } else {
         answers.push(words[i]);
+        break;
       }
     }
   }
