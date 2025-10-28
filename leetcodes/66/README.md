@@ -35,6 +35,7 @@ link: "https://leetcode.com/problems/plus-one/description/"
   初始化 carry 變數為零，用來紀錄進位的資訊，
 
   將當前最後一個 digit + 1，如果仍小於 10 可以直接回傳，不用因為進位處理前面的 digits，
+
   要進位的話，從後往前遍歷， 如果數字 + carry 超過 10，就要記錄 carry 變數，並更新當前 digit
 
   若數字 + 1 + carry 超過 10：
@@ -42,9 +43,9 @@ link: "https://leetcode.com/problems/plus-one/description/"
   1. 數字 + 1 + carry 除以 10 的商，是下一個 carry 變數
   1. 數字 + 1 + carry 除以 10 的餘數，是當前的 digit
 
-  > 進位處理，可以用 Math.floor 涵蓋大於 10 和小於 10 的情境
+  > 進位處理，可以用 Math.floor 同時處理大於 10 和小於 10 的情境
 
-  最後回傳 digits 時，要判斷當前 carry 是否大於 0，如果是要在 digits 前方補上 carry
+  最後回傳 digits 時，要判斷當前 carry 是否大於 0，如果 carry 大於 0 就要在 digits 前方補上 carry
 
 - **複雜度分析**：
 
@@ -53,10 +54,6 @@ link: "https://leetcode.com/problems/plus-one/description/"
   - 空間複雜度：O(1)
 
   - 通過狀態：✅ AC
-
-- **其他備註\(優化方向、特殊限制、問題延伸討論\)**：
-
-  - 最後的 unshift 會造成整個陣列都往後推，可以怎麼優化？
 
 - **測試案例**：
 
@@ -97,6 +94,31 @@ link: "https://leetcode.com/problems/plus-one/description/"
     Ouput: [1, 0, 0, 0]
 
     Expected: [1, 0, 0, 0]
+
+### Solution2(最佳解)
+
+- **思路說明**：
+
+  從尾巴開始遍歷，再遍歷每個 digit 當下，就知道要不要進到下一輪迴圈繼續進位了
+
+  如果當前遍歷到的 digit 是 9，就把當前的 digit 更新為 0
+  (高位的 digits 需要進位，就把當前 digit 更新為 0，繼續進到下一輪迴圈)
+
+  如果當前遍歷到的 digit 不是 9，就把數字 + 1，然後直接 return digits
+  (高位的 digits 已經不需要再進位，直接在這輪 + 1 後 return 了)
+
+  如果遍歷到最後，沒有被 early return，就要 digits.unshift(1)
+  (最高位的數字被更新為 0 退出迴圈，因此仍需要再進位)
+
+- **複雜度分析**：
+
+  - 時間複雜度：O(n)
+
+  - 空間複雜度：O(1)
+
+  - 通過狀態：✅ AC
+
+- **測試案例**： 同 solution1
 
 ## 學習記錄
 
