@@ -27,7 +27,7 @@ link: "https://leetcode.com/problems/symmetric-tree/description/"
 
 ## 解法總覽
 
-### Solution1
+### Solution1(最佳解，DFS)
 
 - **思路說明**：
 
@@ -82,6 +82,27 @@ link: "https://leetcode.com/problems/symmetric-tree/description/"
     Ouput: true
 
     Expected: true
+
+### Solution2(最佳解，BFS)
+
+- **思路說明**：
+
+  使用 BFS 按照每一層節點鏡像順序放入 queue，
+  放入節點要按照鏡像節點順序，遍歷一次比較兩個節點
+
+  當都沒有提前返回 false 的話，就回傳 true，代表為鏡像樹
+
+  題目確保一定會有一個節點，因此不用擔心 root 等於 null 的情況
+
+- **複雜度分析**：
+
+  - 時間複雜度：O(n)
+
+  - 空間複雜度：O(w)
+
+  - 通過狀態：✅ AC
+
+- **測試案例**： 同 solution1 測試案例
 
 ## 學習記錄
 
