@@ -14,17 +14,8 @@ fi
 
 # 讀取子目錄（可選）
 read -rp "Enter the topic folder (optional): " topic
-
-# 設定目錄路徑
-if [ -n "$topic" ]; then
-  DIR_PATH="leetcodes/$topic/$question_number"
-else
-  DIR_PATH="leetcodes/$question_number"
-fi
-
-# 檢查目錄是否存在
-if [ -d "$DIR_PATH" ]; then
-  echo "❌ Error: Directory '$DIR_PATH' already exists."
+if [ -z "$topic" ]; then
+  echo "❌ Error: Topic is required."
   exit 1
 fi
 
@@ -112,6 +103,15 @@ extract_constraints() {
 titleSlug=$(get_title_slug "$question_number")
 if [[ -z "$titleSlug" ]]; then
   echo "❌ Cannot find slug for question number $question_number"
+  exit 1
+fi
+
+# 設定目錄路徑
+DIR_PATH="leetcodes/${topic}/$(printf "%04d" "$question_number")_${titleSlug}"
+
+# 檢查目錄是否存在
+if [ -d "$DIR_PATH" ]; then
+  echo "❌ Error: Directory '$DIR_PATH' already exists."
   exit 1
 fi
 
