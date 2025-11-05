@@ -93,7 +93,7 @@ link: "https://leetcode.com/problems/word-search-ii/description/"
     board = \[["a"]\]
     words = \["a"\]
 
-    Ouput: \["a"\]
+    Output: \["a"\]
 
     Expected: \["a"\]
 
@@ -103,7 +103,7 @@ link: "https://leetcode.com/problems/word-search-ii/description/"
     board = \[["o","a","b","n"],["o","t","a","e"],["a","h","k","r"],["a","f","l","v"]\]
     words = \["oa","oaa"\]
 
-    Ouput: \["oa","oaa"\]
+    Output: \["oa","oaa"\]
 
     Expected: \["oa","oaa"\]
 
@@ -114,7 +114,7 @@ link: "https://leetcode.com/problems/word-search-ii/description/"
     board = \[["a","a"]\]
     words = \["aaa"\]
 
-    Ouput: \["aaa"\]
+    Output: \["aaa"\]
 
     Expected: \[\]
 

@@ -61,7 +61,7 @@ link: "https://leetcode.com/problems/plus-one/description/"
 
     Input: digits = [1]
 
-    Ouput: [2]
+    Output: [2]
 
     Expected: [2]
 
@@ -71,7 +71,7 @@ link: "https://leetcode.com/problems/plus-one/description/"
 
     Input: digits = [8, 9]
 
-    Ouput: [9, 0]
+    Output: [9, 0]
 
     Expected: [9, 0]
 
@@ -81,7 +81,7 @@ link: "https://leetcode.com/problems/plus-one/description/"
 
     Input: digits = [1, 8, 9, 9, 9]
 
-    Ouput: [1, 9, 0, 0, 0]
+    Output: [1, 9, 0, 0, 0]
 
     Expected: [1, 9, 0, 0, 0]
 
@@ -91,7 +91,7 @@ link: "https://leetcode.com/problems/plus-one/description/"
 
     Input: digits = [9, 9, 9]
 
-    Ouput: [1, 0, 0, 0]
+    Output: [1, 0, 0, 0]
 
     Expected: [1, 0, 0, 0]
 

@@ -84,7 +84,7 @@ link: "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/desc
 
     Input: [3,10,5,25,2,8]
 
-    Ouput: 28
+    Output: 28
 
     Expected: 28
 
@@ -92,7 +92,7 @@ link: "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/desc
 
     Input: [14,70,53,83,49,91,36,80,92,51,66,70]
 
-    Ouput: 127
+    Output: 127
 
     Expected: 127
 
@@ -100,7 +100,7 @@ link: "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/desc
 
     Input: [3,10,5,25,2,8, 25]
 
-    Ouput: 28
+    Output: 28
 
     Expected: 28
 
@@ -108,7 +108,7 @@ link: "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/desc
 
     Input: [3,10,5,25,2,8, 25, 0]
 
-    Ouput: 28
+    Output: 28
 
     Expected: 28
 
@@ -116,7 +116,7 @@ link: "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/desc
 
     Input: [0]
 
-    Ouput: 0
+    Output: 0
 
     Expected: 0
 

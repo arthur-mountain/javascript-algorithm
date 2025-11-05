@@ -60,7 +60,7 @@ link: "https://leetcode.com/problems/same-tree/description/"
 
     Input: p = [], q = []
 
-    Ouput: false
+    Output: false
 
     Expected: false
 
@@ -70,7 +70,7 @@ link: "https://leetcode.com/problems/same-tree/description/"
 
     Input: p = [], q = []
 
-    Ouput: false
+    Output: false
 
     Expected: false
 
@@ -80,7 +80,7 @@ link: "https://leetcode.com/problems/same-tree/description/"
 
     Input: p = [1,2], q = [1,null,2]
 
-    Ouput: false
+    Output: false
 
     Expected: false
 
@@ -90,7 +90,7 @@ link: "https://leetcode.com/problems/same-tree/description/"
 
     Input: p = [1,2,1], q = [1,1,2]
 
-    Ouput: false
+    Output: false
 
     Expected: false
 

@@ -58,7 +58,7 @@ link: "https://leetcode.com/problems/longest-substring-without-repeating-charact
 
     Input: "abcabcbb"
 
-    Ouput: 3
+    Output: 3
 
     Expected: 3
 
@@ -68,7 +68,7 @@ link: "https://leetcode.com/problems/longest-substring-without-repeating-charact
 
     Input: "ssss"
 
-    Ouput: 1
+    Output: 1
 
     Expected: 1
 
@@ -78,7 +78,7 @@ link: "https://leetcode.com/problems/longest-substring-without-repeating-charact
 
     Input: "Abc123 567abC"
 
-    Ouput: 11
+    Output: 11
 
     Expected: 11
 
@@ -88,7 +88,7 @@ link: "https://leetcode.com/problems/longest-substring-without-repeating-charact
 
     Input: "Abc123 567abC"
 
-    Ouput: 7
+    Output: 7
 
     Expected: 7
 
@@ -98,7 +98,7 @@ link: "https://leetcode.com/problems/longest-substring-without-repeating-charact
 
     Input: ""
 
-    Ouput: 0
+    Output: 0
 
     Expected: 0
 

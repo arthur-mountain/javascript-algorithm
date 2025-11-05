@@ -55,7 +55,7 @@ link: "https://leetcode.com/problems/two-sum/description/"
 
     Input: nums = [3,2,4]; target = 6
 
-    Ouput: [1, 2]
+    Output: [1, 2]
 
     Expected: [1, 2]
 
@@ -63,7 +63,7 @@ link: "https://leetcode.com/problems/two-sum/description/"
 
     Input: nums = [2,7]; target = 9
 
-    Ouput: [0, 1]
+    Output: [0, 1]
 
     Expected: [0, 1]
 

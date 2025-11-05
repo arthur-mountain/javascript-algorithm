@@ -59,7 +59,7 @@ link: "https://leetcode.com/problems/symmetric-tree/description/"
 
     Input: root = [1,2,2,3,4,4,3]
 
-    Ouput: true
+    Output: true
 
     Expected: true
 
@@ -69,7 +69,7 @@ link: "https://leetcode.com/problems/symmetric-tree/description/"
 
     Input: root = [1,2,2,null,3,null,3]
 
-    Ouput: false
+    Output: false
 
     Expected: false
 
@@ -79,7 +79,7 @@ link: "https://leetcode.com/problems/symmetric-tree/description/"
 
     Input: root = [1]
 
-    Ouput: true
+    Output: true
 
     Expected: true
 
