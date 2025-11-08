@@ -116,7 +116,29 @@ island 的定義為：相鄰的水平 land 和垂直 land 被 water 包圍稱作
 
     Expected: 1
 
-  ***
+### Solution2(BFS)
+
+- **思路說明**：
+
+  遍歷 grid 的每一個 cell，當遍歷到 land 時，進入 BFS 流程。將當前 land 立即標記為 '0' 並放進 queue。
+
+  當 queue 有值時，dequeue 取出 cell，檢查其四個方向的相鄰位置。
+
+  若相鄰 cell 為 land，則先標記為 '0' 再放進 queue(先標記可避免同一個 cell 被重複加入 queue)。
+
+  重複上述流程直到 queue 為空，代表此次 BFS 流程結束，當前 island 遍歷完畢，islands 總數加一。
+
+  繼續遍歷下一個 cell，直到整個 grid 遍歷結束後回傳 islands 總數。
+
+- **複雜度分析**：
+
+  - 時間複雜度：O(m x n) -> 每一個 cell 最多只被訪問一次
+
+  - 空間複雜度：O(min(m, n)) -> BFS 是層層往外擴散，queue 中最多會同時存在一整層的 cell。在最壞情況下(整個 grid 都是 1)，當 BFS 擴散到對角線附近時 queue 會達到最大長度，約為 min(m, n)
+
+  - 通過狀態：✅ AC
+
+- **測試案例**： 同 solution1 測試案例
 
 ## 學習記錄
 
