@@ -12,12 +12,13 @@ link: "https://leetcode.com/problems/clone-graph/description/"
 
 ## 問題描述
 
-給予一個無向圖(undirected graph)節點，回傳深複製後的 graph。
+給定一個無向圖(undirected graph)的某個節點，要求回傳該圖的深複製(deep copy)版本。
 
-每個節點包含
+圖中的每個節點包含：
 
-- 「一個 int val」
-- 「一個 list 包含所有當前節點的鄰居節點」
+- 一個整數值 `val`
+
+- 一個 list，包含所有與當前節點相連的鄰居節點
 
 ## Constraints
 
@@ -31,9 +32,15 @@ link: "https://leetcode.com/problems/clone-graph/description/"
 
 ### 初步分析(觀察與發想)
 
-- 我們可能需要一個 hashmap 紀錄 origin node 所對應到的 cloned node，再遍歷每一個 node 的時候先查看該節點是否有複製過
-  - 如果有，則跳過複製流程，因為該自身及其 neighbors 應該已經處理過了。
-  - 如果沒有，複製該節點並存進 hashmap 中，繼續遍歷該節點的鄰居節點進行複製，最後更新 cloned node 的 neighbors
+在複製圖的過程中，需要避免重複複製同一個節點。
+
+使用 hashmap 紀錄「原節點 → 複製節點」的映射關係。在遍歷每個節點時：
+
+- 如果該節點已經複製過(存在於 hashmap 中)，則直接使用已複製的節點，避免重複處理
+
+- 如果該節點尚未複製，則建立新節點並存入 hashmap，接著繼續處理其鄰居節點
+
+這樣的設計可以確保每個節點只被複製一次，同時正確建立節點之間的連接關係。
 
 ## 解法總覽
 
@@ -41,27 +48,39 @@ link: "https://leetcode.com/problems/clone-graph/description/"
 
 - **思路說明**：
 
-  建立一個 hashmap，紀錄原節點與複製節點的映射，
+  建立一個 hashmap，用於紀錄原節點與複製節點的映射關係。
 
-  建立一個 clone function 遞迴調用，一個參數只有當前的 origin node，
+  建立一個 clone function 進行遞迴複製，函式參數為當前的原節點。
 
-  若 hashmap 已存在該原節點時，則不需遞迴複製，直接返回其複製節點
+  遞迴邏輯如下：
 
-  否則，複製新的節點，將原節點與複製節點加入到 hashmap 中，遍歷原節點中的 neighbors 遞迴複製每一個 neighbor，
+  - 若 hashmap 中已存在該原節點，預設該節點及其鄰居已經處理過，直接返回對應的複製節點
+  - 否則，建立新的複製節點，將「原節點 → 複製節點」的映射存入 hashmap
+  - 遍歷原節點的所有鄰居節點，遞迴呼叫 clone function 複製每個鄰居，並將複製後的鄰居節點加入到複製節點的 neighbors 中
 
-  最後返回，最根本的原節點其複製節點(即 hashmap.get(cloneGraph 的參數 node))
+  最後返回根節點對應的複製節點（即 hashmap.get(node)）。
 
 - **複雜度分析**：
 
-  - 時間複雜度：O(n) -> 每個節點只會遍歷一次進行複製
+  - 時間複雜度：O(V + E)。其中 V 為圖中的節點數量，E 為邊的數量。
 
-  - 空間複雜度：O(n) -> call stack + hashmap 紀錄全部節點的映射
+    - 圖中的每個節點需要訪問一次進行複製，這部分的成本是 O(V)。
+
+    - 在訪問每個節點的過程中，需要遍歷該節點的所有鄰居來建立連接關係。
+
+      由於每條邊會在其兩個端點各被檢查一次(無向圖的特性)，因此遍歷所有邊的總成本是 O(E)。
+
+  - 空間複雜度：O(V)。包含兩個主要部分：
+
+    - HashMap 儲存所有節點的映射關係，需要 O(V) 的空間
+
+    - 遞迴 call stack，在最壞情況下(例如圖退化成一條鏈)深度可達 O(V)。
 
   - 通過狀態：✅ AC
 
-- **其他備註\(優化方向、特殊限制、問題延伸討論\)**：
+- **其他備註(優化方向、特殊限制、問題延伸討論)**：
 
-  - Iteration dfs -> solution1-iter.js
+  - 迭代版本的 DFS 實作：使用 stack 取代遞迴 → solution1-iter.js
 
 - **測試案例**：
 
@@ -69,7 +88,7 @@ link: "https://leetcode.com/problems/clone-graph/description/"
 
     Input: adjList = [[2,4],[1,3],[2,4],[1,3]]
 
-    Ouput: [[2,4],[1,3],[2,4],[1,3]]
+    Output: [[2,4],[1,3],[2,4],[1,3]]
 
     Expected: [[2,4],[1,3],[2,4],[1,3]]
 
@@ -79,7 +98,7 @@ link: "https://leetcode.com/problems/clone-graph/description/"
 
     Input: adjList = [[]]
 
-    Ouput: [[]]
+    Output: [[]]
 
     Expected: [[]]
 
@@ -89,7 +108,7 @@ link: "https://leetcode.com/problems/clone-graph/description/"
 
     Input: adjList = []
 
-    Ouput: []
+    Output: []
 
     Expected: []
 
@@ -97,39 +116,49 @@ link: "https://leetcode.com/problems/clone-graph/description/"
 
 - **思路說明**：
 
-  建立一個 hashmap，紀錄原節點與複製節點的映射，
+  建立一個 hashmap，用於紀錄原節點與複製節點的映射關係。
 
-  建立一個 queue 放當前所有節點的鄰居節點，並將根節點放進初始化 queue 中，
+  建立一個 queue，用於 BFS 層級遍歷，並將根節點作為初始節點放入 queue。同時，先複製根節點並將映射關係存入 hashmap。
 
-  同時也先處理根節點的複製並放入 hashmap 映射，
+  進入 BFS 流程：
 
-  進到 BFS 流程：
+  - 從 queue 中取出當前原節點(此時該節點本身已複製完成，但其鄰居節點可能尚未處理)
 
-  - 取出當前 queue 中的當前原始節點，雖然當前原始節點已經複製完畢，因此需要處理其 neighbors 原始節點
+  - 遍歷當前節點的所有鄰居節點：
 
-  - 遍歷 neighbors，檢查 neighbor 原始節點是否存在於 hashmap 中，
+    - 檢查該鄰居節點是否已存在於 hashmap 中
 
-    - 如果沒有，則複製 neighbor 原始節點並存進 hashmap 映射，再將 neighbor 原始節點放進 queue 中等待後續處理
+    - 若不存在，表示該鄰居節點尚未複製，則建立複製節點並存入 hashmap，同時將該鄰居節點加入 queue 等待後續處理
 
-      - 為什麼要把 neighbor 原始節點放進 queue 中? 因為雖然 neighbor 原始節點已經複製完畢，但其鄰居節點可能還尚未複製
+      - 為什麼要把鄰居節點放進 queue 中? 因為雖然鄰居節點已經複製完畢，但其鄰居節點的鄰居節點可能還尚未複製
 
-    - 如果有，則無需(重複)複製該 neighbor 節點
+    - 若已存在，則無需重複複製
 
-    - 最後，因為當前原始節點的複製節點 neighbors 尚未處理，
+    - 將鄰居的複製節點加入到當前節點的複製節點的 neighbors 中，建立節點間的連接
 
-      因此每複製完一個 neighbor 原始節點，就將 neighbor 複製節點放進當前原始節點的複製節點 neighbors 中建立連接
+  重複以上步驟直到 queue 為空。
 
-  最後返回，最根本的原節點其複製節點(即 hashmap.get(cloneGraph 的參數 node))
+  最後返回根節點對應的複製節點（即 hashmap.get(node)）。
 
 - **複雜度分析**：
 
-  - 時間複雜度：O(n) -> 每個節點都只處理一次
+  - 時間複雜度：O(V + E)。其中 V 為圖中的節點數量，E 為邊的數量。
 
-  - 空間複雜度：O(n) -> 整個 neighbors 都會被放進 queue
+    - 每個節點只被訪問一次進行複製，成本為 O(V)。
+
+    - 在處理每個節點時，需要檢查其所有鄰居節點來建立連接關係。因此會遍歷圖中的每條邊來建立節點之間的連接，這部分的成本是 O(E)。
+
+  - 空間複雜度：O(V)。同樣包含兩個部分：
+
+    - HashMap 儲存所有節點映射需要 O(V) 的空間
+
+    - Queue 在最壞情況下可能需要同時儲存某一層的所有節點。
+
+      在極端情況下(例如星型圖或完全圖)，某一層可能包含接近 O(V) 個節點，因此queue的空間需求也是 O(V)。
 
   - 通過狀態：✅ AC
 
-- **測試案例**： 同 solution1 測試範例
+- **測試案例**：同 Solution1 測試範例
 
 ## 學習記錄
 
