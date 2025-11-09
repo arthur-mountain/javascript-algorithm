@@ -93,7 +93,46 @@ link: "https://leetcode.com/problems/clone-graph/description/"
 
     Expected: []
 
+### Solution2(BFS)
+
+- **思路說明**：
+
+  建立一個 hashmap，紀錄原節點與複製節點的映射，
+
+  建立一個 queue 放當前所有節點的鄰居節點，並將根節點放進初始化 queue 中，
+
+  同時也先處理根節點的複製並放入 hashmap 映射，
+
+  進到 BFS 流程：
+
+  - 取出當前 queue 中的當前原始節點，雖然當前原始節點已經複製完畢，因此需要處理其 neighbors 原始節點
+
+  - 遍歷 neighbors，檢查 neighbor 原始節點是否存在於 hashmap 中，
+
+    - 如果沒有，則複製 neighbor 原始節點並存進 hashmap 映射，再將 neighbor 原始節點放進 queue 中等待後續處理
+
+      - 為什麼要把 neighbor 原始節點放進 queue 中? 因為雖然 neighbor 原始節點已經複製完畢，但其鄰居節點可能還尚未複製
+
+    - 如果有，則無需(重複)複製該 neighbor 節點
+
+    - 最後，因為當前原始節點的複製節點 neighbors 尚未處理，
+
+      因此每複製完一個 neighbor 原始節點，就將 neighbor 複製節點放進當前原始節點的複製節點 neighbors 中建立連接
+
+  最後返回，最根本的原節點其複製節點(即 hashmap.get(cloneGraph 的參數 node))
+
+- **複雜度分析**：
+
+  - 時間複雜度：O(n) -> 每個節點都只處理一次
+
+  - 空間複雜度：O(n) -> 整個 neighbors 都會被放進 queue
+
+  - 通過狀態：✅ AC
+
+- **測試案例**： 同 solution1 測試範例
+
 ## 學習記錄
 
 - 首次解題：2025-11-09 | 耗時：15分鐘(DFS) | 獨立完成：是
+- 首次解題：2025-11-09 | 耗時：N/A分鐘(BFS) | 獨立完成：否，參考 AI 解答。待複習，對於該題 BFS 沒有很熟悉
 - 複習1：<!-- 日期 --> | 耗時：分鐘 | 獨立完成：□ 是 □ 否 | 順暢度：□ 流暢 □ 卡頓 □ 忘記
