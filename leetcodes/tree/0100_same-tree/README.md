@@ -50,7 +50,7 @@ link: "https://leetcode.com/problems/same-tree/description/"
 
 - **其他備註\(優化方向、特殊限制、問題延伸討論\)**：
 
-  - 遞迴改用 iterative 寫？
+  - 遞迴改用 iterative 寫？ See isSameTreeIteration
 
   - 改用 BFS 解？
 
