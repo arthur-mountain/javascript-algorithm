@@ -52,7 +52,7 @@ link: "https://leetcode.com/problems/same-tree/description/"
 
   - 遞迴改用 iterative 寫？ See isSameTreeIteration
 
-  - 改用 BFS 解？
+  - 改用 BFS 解？ See Solution2
 
 - **測試案例**：
 
