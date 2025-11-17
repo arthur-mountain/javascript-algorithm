@@ -182,6 +182,8 @@ $constraints
 
     Expected: 
 
+    Explain: 
+
   ---
 
 ## 學習記錄
