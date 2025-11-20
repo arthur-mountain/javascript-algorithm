@@ -21,9 +21,9 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 ## Constraints
 
 - m == image.length
-- n == image[i].length
+- n == image\[i\].length
 - 1 <= m, n <= 50
-- 0 <= image[i][j], color < 2\*\*16
+- 0 <= image\[i\]\[j\], color < 2\*\*16
 - 0 <= sr < m
 - 0 <= sc < n
 
@@ -35,6 +35,8 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
   為了避免重複訪問同一個 pixel 造成無限迴圈，需要一個資料結構來記錄已訪問過的 pixel。
 
+  **優化觀察**：實際上可以不需要額外的 Set 來記錄訪問狀態。只要在開始前檢查 `start === color` 的情況，就可以利用「已更新的 pixel 值不等於 start」來自然防止重複訪問。
+
 ## 解法總覽
 
 ### Solution1(BFS)
@@ -43,11 +45,11 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
   **初始化**：
 
+  - 提前判斷：若起始值已經等於目標 color，直接返回 image
+
   - 紀錄 image\[sr\]\[sc\] 的初始值，作為後續比較的基準
 
   - 將 sr, sc 放入 queue 作為 BFS 起點
-
-  - 建立一個 Set 用於紀錄訪問過的 pixel indices，key 格式：`${rowIndex}-${colIndex}`
 
   **進入 BFS 流程**：
 
@@ -55,13 +57,8 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
   - 檢查 indices 是否符合以下任一條件，若符合則跳過此 pixel：
 
-    - 已經訪問過（在 Set 中）
-
     - 越界（超出 grid 範圍）
-
-    - 當前 pixel 的值不等於初始值
-
-  - 將當前 indices 組成的 key 加入 Set 標記為已訪問
+    - 當前 pixel 的值不等於初始值（此條件同時防止重複訪問，因為已更新的 pixel 值為 color ≠ start）
 
   - 將當前 pixel 的值更新為 color
 
@@ -75,15 +72,21 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
   - 時間複雜度：O(m × n) -> 最壞情況下每個 pixel 都需要訪問一次
 
-  - 空間複雜度：O(m × n) -> queue 與 Set 所需的空間，最壞情況下 Set 會存滿所有 m × n 個 pixel 的 keys
+  - 空間複雜度：O(m × n) -> 僅需 queue 的空間，最壞情況下 queue 會包含 O(m × n) 個元素
 
   - 通過狀態：✅ AC
+
+- **其他備註(優化方向、特殊限制、問題延伸討論)**：
+
+  - 原先解法，使用額外的 Set 空間來追蹤訪問狀態，確保每個 pixel 只被處理一次
+
+    - **優化版本**：透過提前檢查 `start === color` 並利用已更新的 pixel 值作為訪問標記，節省了 Set 的空間開銷
 
 - **測試案例**：
 
   - 案例 A: 當起始 pixel 已經等於 color
 
-    Input: image = \[\[0,0,0],[0,0,0\]\], sr = 0, sc = 0, color = 0
+    Input: image = \[\[0,0,0\],\[0,0,0\]\], sr = 0, sc = 0, color = 0
 
     Output: \[\[0,0,0\],\[0,0,0\]\]
 
@@ -91,19 +94,15 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
     Explain: 當起始 pixel 的值已經等於 color 時，則無需有任何變動
 
-  ***
-
-  - 案例 B: 基本 flood fill（LeetCode 範例）
+  - 案例 B: 基本 flood fill\(LeetCode 範例\)
 
     Input: image = \[\[1,1,1\],\[1,1,0\],\[1,0,1\]\], sr = 1, sc = 1, color = 2
 
-    Output: \[\[2,2,2],[2,2,0],[2,0,1\]\]
+    Output: \[\[2,2,2\],\[2,2,0\],\[2,0,1\]\]
 
-    Expected: \[\[2,2,2],[2,2,0],[2,0,1\]\]
+    Expected: \[\[2,2,2\],\[2,2,0\],\[2,0,1\]\]
 
-    Explain: 從 (1,1) 開始，所有相連的值為 1 的 pixel 都被填充為 2
-
-  ***
+    Explain: 從 \(1,1\) 開始，所有相連的值為 1 的 pixel 都被填充為 2
 
   - 案例 C: 單一 pixel 的 image
 
@@ -115,65 +114,57 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
     Explain: 只有一個 pixel 時，直接將其更新為目標顏色
 
-  ***
-
   - 案例 D: 整個 image 都是同一顏色
 
-    Input: image = \[\[0,0,0],[0,0,0],[0,0,0\]\], sr = 1, sc = 1, color = 2
+    Input: image = \[\[0,0,0\],\[0,0,0\],\[0,0,0\]\], sr = 1, sc = 1, color = 2
 
-    Output: \[\[2,2,2],[2,2,2],[2,2,2\]\]
+    Output: \[\[2,2,2\],\[2,2,2\],\[2,2,2\]\]
 
-    Expected: \[\[2,2,2],[2,2,2],[2,2,2\]\]
+    Expected: \[\[2,2,2\],\[2,2,2\],\[2,2,2\]\]
 
     Explain: 所有 pixel 都相連且值相同，全部被填充
 
-  ***
+  - 案例 E: 孤立的 pixel\(無相鄰相同顏色\)
 
-  - 案例 E: 孤立的 pixel（無相鄰相同顏色）
+    Input: image = \[\[1,0,1\],\[0,1,0\],\[1,0,1\]\], sr = 1, sc = 1, color = 3
 
-    Input: image = \[\[1,0,1],[0,1,0],[1,0,1\]\], sr = 1, sc = 1, color = 3
+    Output: \[\[1,0,1\],\[0,3,0\],\[1,0,1\]\]
 
-    Output: \[\[1,0,1],[0,3,0],[1,0,1\]\]
-
-    Expected: \[\[1,0,1],[0,3,0],[1,0,1\]\]
+    Expected: \[\[1,0,1\],\[0,3,0\],\[1,0,1\]\]
 
     Explain: 起始 pixel 四周都是不同顏色，只更新自己
 
-  ***
-
   - 案例 F: 複雜邊界形狀
 
-    Input: image = \[\[0,0,0],[0,1,1\]\], sr = 1, sc = 1, color = 1
+    Input: image = \[\[0,0,0\],\[0,1,1\]\], sr = 1, sc = 1, color = 1
 
-    Output: \[\[0,0,0],[0,1,1\]\]
+    Output: \[\[0,0,0\],\[0,1,1\]\]
 
-    Expected: \[\[0,0,0],[0,1,1\]\]
+    Expected: \[\[0,0,0\],\[0,1,1\]\]
 
     Explain: 起始 pixel 已經是目標顏色，測試不同 row 長度的情況
 
-  ***
-
   - 案例 G: 不規則連通區域
 
-    Input: image = \[\[1,1,1\],\[1,1,0\],[1,0,1\]\], sr = 0, sc = 0, color = 2
+    Input: image = \[\[1,1,1\],\[1,1,0\],\[1,0,1\]\], sr = 0, sc = 0, color = 2
 
-    Output: \[\[2,2,2],[2,2,0],[2,0,1\]\]
+    Output: \[\[2,2,2\],\[2,2,0\],\[2,0,1\]\]
 
-    Expected: \[\[2,2,2],[2,2,0],[2,0,1\]\]
+    Expected: \[\[2,2,2\],\[2,2,0\],\[2,0,1\]\]
 
     Explain: 測試 L 形狀的連通區域，確保正確處理四個方向的鄰居
 
-  ***
-
   - 案例 H: 邊角起始點
 
-    Input: image = \[\[1,1,1],[1,1,0],[1,0,1\]\], sr = 0, sc = 0, color = 2
+    Input: image = \[\[1,1,1\],\[1,1,0\],\[1,0,1\]\], sr = 0, sc = 0, color = 2
 
-    Output: \[\[2,2,2],[2,2,0],[2,0,1\]\]
+    Output: \[\[2,2,2\],\[2,2,0\],\[2,0,1\]\]
 
-    Expected: \[\[2,2,2],[2,2,0],[2,0,1\]\]
+    Expected: \[\[2,2,2\],\[2,2,0\],\[2,0,1\]\]
 
     Explain: 從左上角開始，測試邊界處理邏輯
+
+---
 
 ### Solution2(DFS)
 
@@ -181,9 +172,9 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
   **初始化**：
 
-  - 紀錄 image\[sr\]\[sc\] 的初始值，作為後續比較的基準
+  - 提前判斷：若起始值已經等於目標 color，直接返回 image
 
-  - 建立一個 Set 用於紀錄訪問過的 pixel indices，key 格式：`${rowIndex}-${colIndex}`
+  - 紀錄 image\[sr\]\[sc\] 的初始值，作為後續比較的基準
 
   - 將 sr, sc 作為起點傳入 DFS 參數，開始 DFS 流程
 
@@ -191,13 +182,9 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
   - 檢查 indices 是否符合以下任一條件，若符合則直接 return 終止此次遞迴：
 
-    - 已經訪問過（在 Set 中）
-
     - 越界（超出 grid 範圍）
 
-    - 當前 pixel 的值不等於初始值
-
-  - 將當前 indices 組成的 key 加入 Set 標記為已訪問
+    - 當前 pixel 的值不等於初始值（此條件同時防止重複訪問，因為已更新的 pixel 值為 color !== start）
 
   - 將當前 pixel 的值更新為 color
 
@@ -211,14 +198,23 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
   - 時間複雜度：O(m × n) -> 最壞情況下每個 pixel 都需要訪問一次
 
-  - 空間複雜度：O(m × n) -> 遞迴 call stack 與 Set 所需的空間，最壞情況下遞迴深度為 m × n（整個 grid 連通），Set 會存滿所有 m × n 個 pixel 的 keys
+  - 空間複雜度：O(m × n) -> 遞迴 call stack 的空間，最壞情況下遞迴深度為 m × n（整個 grid 連通）
 
   - 通過狀態：✅ AC
 
+- **其他備註(優化方向、特殊限制、問題延伸討論)**：
+
+  - 原先解法，使用額外的 Set 空間來追蹤訪問狀態，確保每個 pixel 只被處理一次
+
+    - **優化版本**：透過提前檢查 `start === color` 並利用已更新的 pixel 值作為訪問標記，節省了 Set 的空間開銷
+
 - **測試案例**： 同 Solution1 測試案例
+
+---
 
 ## 學習記錄
 
 - 首次解題(BFS)：2025-11-20 | 耗時：不紀錄(重理解思路) | 獨立完成：是
 - 首次解題(DFS)：2025-11-20 | 耗時：不紀錄(重理解思路) | 獨立完成：是
+- 優化版本(移除 Set)：2025-11-20 | 發現：透過提前檢查 `start === color` 可以節省使用 set 的空間
 - 複習1：<!-- 日期 --> | 耗時：分鐘 | 獨立完成：□ 是 □ 否 | 順暢度：□ 流暢 □ 卡頓 □ 忘記
