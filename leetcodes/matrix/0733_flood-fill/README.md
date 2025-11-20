@@ -175,7 +175,50 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
     Explain: 從左上角開始，測試邊界處理邏輯
 
+### Solution2(DFS)
+
+- **思路說明**：
+
+  **初始化**：
+
+  - 紀錄 image\[sr\]\[sc\] 的初始值，作為後續比較的基準
+
+  - 建立一個 Set 用於紀錄訪問過的 pixel indices，key 格式：`${rowIndex}-${colIndex}`
+
+  - 將 sr, sc 作為起點傳入 DFS 參數，開始 DFS 流程
+
+  **進入 DFS 流程**：
+
+  - 檢查 indices 是否符合以下任一條件，若符合則直接 return 終止此次遞迴：
+
+    - 已經訪問過（在 Set 中）
+
+    - 越界（超出 grid 範圍）
+
+    - 當前 pixel 的值不等於初始值
+
+  - 將當前 indices 組成的 key 加入 Set 標記為已訪問
+
+  - 將當前 pixel 的值更新為 color
+
+  - 將當前 pixel 四個方向的鄰居座標（上、右、下、左）依序進入遞迴流程，
+
+    直到當前 pixel 最後一個鄰居處理完畢，此次 call stack 才算結束
+
+  最後返回更改過後的 image
+
+- **複雜度分析**：
+
+  - 時間複雜度：O(m × n) -> 最壞情況下每個 pixel 都需要訪問一次
+
+  - 空間複雜度：O(m × n) -> 遞迴 call stack 與 Set 所需的空間，最壞情況下遞迴深度為 m × n（整個 grid 連通），Set 會存滿所有 m × n 個 pixel 的 keys
+
+  - 通過狀態：✅ AC
+
+- **測試案例**： 同 Solution1 測試案例
+
 ## 學習記錄
 
 - 首次解題(BFS)：2025-11-20 | 耗時：不紀錄(重理解思路) | 獨立完成：是
+- 首次解題(DFS)：2025-11-20 | 耗時：不紀錄(重理解思路) | 獨立完成：是
 - 複習1：<!-- 日期 --> | 耗時：分鐘 | 獨立完成：□ 是 □ 否 | 順暢度：□ 流暢 □ 卡頓 □ 忘記
