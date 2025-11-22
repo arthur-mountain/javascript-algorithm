@@ -94,6 +94,8 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
     Explain: 當起始 pixel 的值已經等於 color 時，則無需有任何變動
 
+  ***
+
   - 案例 B: 基本 flood fill\(LeetCode 範例\)
 
     Input: image = \[\[1,1,1\],\[1,1,0\],\[1,0,1\]\], sr = 1, sc = 1, color = 2
@@ -103,6 +105,8 @@ link: "https://leetcode.com/problems/flood-fill/description/"
     Expected: \[\[2,2,2\],\[2,2,0\],\[2,0,1\]\]
 
     Explain: 從 \(1,1\) 開始，所有相連的值為 1 的 pixel 都被填充為 2
+
+  ***
 
   - 案例 C: 單一 pixel 的 image
 
@@ -114,6 +118,8 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
     Explain: 只有一個 pixel 時，直接將其更新為目標顏色
 
+  ***
+
   - 案例 D: 整個 image 都是同一顏色
 
     Input: image = \[\[0,0,0\],\[0,0,0\],\[0,0,0\]\], sr = 1, sc = 1, color = 2
@@ -123,6 +129,8 @@ link: "https://leetcode.com/problems/flood-fill/description/"
     Expected: \[\[2,2,2\],\[2,2,2\],\[2,2,2\]\]
 
     Explain: 所有 pixel 都相連且值相同，全部被填充
+
+  ***
 
   - 案例 E: 孤立的 pixel\(無相鄰相同顏色\)
 
@@ -134,6 +142,8 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
     Explain: 起始 pixel 四周都是不同顏色，只更新自己
 
+  ***
+
   - 案例 F: 複雜邊界形狀
 
     Input: image = \[\[0,0,0\],\[0,1,1\]\], sr = 1, sc = 1, color = 1
@@ -143,6 +153,8 @@ link: "https://leetcode.com/problems/flood-fill/description/"
     Expected: \[\[0,0,0\],\[0,1,1\]\]
 
     Explain: 起始 pixel 已經是目標顏色，測試不同 row 長度的情況
+
+  ***
 
   - 案例 G: 不規則連通區域
 
@@ -154,6 +166,8 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
     Explain: 測試 L 形狀的連通區域，確保正確處理四個方向的鄰居
 
+  ***
+
   - 案例 H: 邊角起始點
 
     Input: image = \[\[1,1,1\],\[1,1,0\],\[1,0,1\]\], sr = 0, sc = 0, color = 2
@@ -163,8 +177,6 @@ link: "https://leetcode.com/problems/flood-fill/description/"
     Expected: \[\[2,2,2\],\[2,2,0\],\[2,0,1\]\]
 
     Explain: 從左上角開始，測試邊界處理邏輯
-
----
 
 ### Solution2(DFS)
 
@@ -210,11 +222,9 @@ link: "https://leetcode.com/problems/flood-fill/description/"
 
 - **測試案例**： 同 Solution1 測試案例
 
----
-
 ## 學習記錄
 
 - 首次解題(BFS)：2025-11-20 | 耗時：不紀錄(重理解思路) | 獨立完成：是
 - 首次解題(DFS)：2025-11-20 | 耗時：不紀錄(重理解思路) | 獨立完成：是
 - 優化版本(移除 Set)：2025-11-20 | 發現：透過提前檢查 `start === color` 可以節省使用 set 的空間
-- 複習1：<!-- 日期 --> | 耗時：分鐘 | 獨立完成：□ 是 □ 否 | 順暢度：□ 流暢 □ 卡頓 □ 忘記
+- 複習1：2025-11-21 | 耗時：9分鐘 | 獨立完成：是 | 順暢度：流暢
