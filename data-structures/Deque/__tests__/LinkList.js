@@ -1,4 +1,4 @@
-const { Deque } = require("..");
+const { Deque } = require("../LinkList");
 const assert = require("node:assert/strict");
 
 // Default size and capacity
@@ -8,3 +8,5 @@ assert.strictEqual(
   100,
   "Default minimum capacity should be 100",
 );
+
+console.log("All passed");
