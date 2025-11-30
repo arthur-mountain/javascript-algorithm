@@ -29,11 +29,23 @@ link: "https://leetcode.com/problems/word-search/description/"
 
 ### 初步分析(觀察與發想)
 
-- 可以使用 DFS，起始點可以遇到 word[0] 才開始 dfs，
+- 可以使用 DFS，起始點可以遇到 word\[0\] 才開始 DFS，當 DFS 連接起來的字串長度等於 word 時作為 base case。
 
-  當 dfs 連接起來的字串長度等於 word 實作為 base case
+  初步複雜度分析：
 
-  初步複雜度分析：時間 O(W \* m \* n) 空間 O(W \* m \* n)
+  - 時間 O(m \* n \* 4^L)：每個格子都可能作為起點，從每個起點出發最壞情況下探索 4^L 個節點（L 為 word 長度，每層最多 4 個方向）
+
+  - 空間 O(L)：遞迴深度最多為 word 長度
+
+- 適合使用 **Backtracking**（基於 DFS）：
+
+  - 從符合 word\[0\] 的格子開始嘗試
+
+  - 遞迴搜尋四個方向，匹配下一個字元
+
+  - 若當前路徑失敗，撤銷選擇（回溯取消標記）後嘗試其他方向
+
+  - 當匹配完整個 word 時返回 true
 
 ## 解法總覽
 
@@ -43,7 +55,7 @@ link: "https://leetcode.com/problems/word-search/description/"
 
   遍歷 board，若當前格子符合第一個 character 則嘗試開始 DFS。
 
-  **DFS 流程：**
+  **DFS 流程（以寫法三為例）：**
 
   1. 進入函數後，先檢查當前位置是否已訪問過（透過 `used` Set 記錄）
   2. 檢查當前位置的字元是否等於 `word[wordIndex]`
@@ -77,15 +89,15 @@ link: "https://leetcode.com/problems/word-search/description/"
 
   - **三種實作寫法比較：** 三種寫法時間空間複雜度相同，實務上效能差異可忽略，選擇寫法三主要考量程式碼可維護性
 
-    - **寫法一（外層預檢查）**：每次進入 dfs 前都先檢查 `board[newRow][newCol] === word[newWordIndex]`
+    - **寫法一（外層預檢查）**：每次進入 DFS 前先檢查 `board[newRow][newCol] === word[newWordIndex]`
 
       - 優點：提早過濾不匹配的位置，減少函數呼叫次數
 
       - 缺點：檢查邏輯分散在外層和內層，可讀性稍差
 
-    - **寫法二（內層首行檢查）**：進入 dfs 後立即檢查 `board[row][col] !== word[wordIndex]`
+    - **寫法二（內層首行檢查）**：進入 DFS 後立即檢查 `board[row][col] !== word[wordIndex]`
 
-      - 優點：所有邏輯統一在 dfs 內部，整體寫法一致
+      - 優點：所有邏輯統一在 DFS 內部，整體寫法一致
       - 缺點：相比寫法一多了一次函數呼叫開銷
 
     - **寫法三（guard clauses 模式，當前採用）**：在函數開頭依序檢查 `used.has(key)` 和字元匹配
