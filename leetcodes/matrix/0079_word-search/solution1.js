@@ -164,7 +164,7 @@ var exist = function (board, word) {
 
   for (let row = 0; row < ROW; row++) {
     for (let col = 0; col < COL; col++) {
-      if (board[row][col] && bfs(row, col, 0, new Set())) {
+      if (board[row][col] === word[0] && bfs(row, col, 0, new Set())) {
         return true;
       }
     }
