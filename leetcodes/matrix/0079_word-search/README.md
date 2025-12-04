@@ -179,3 +179,4 @@ link: "https://leetcode.com/problems/word-search/description/"
 
 - 首次解題(DFS+Backtracking)：2025-11-29 | 耗時：不紀錄(重理解思路) | 獨立完成：否
 - 複習1(DFS+Backtracking)：2025-11-29 | 耗時：20分鐘 | 獨立完成：否 | 順暢度：流暢。整體流暢，中間因為一個 typo 沒注意到，所以有研究答案，但整體邏輯都有寫出來
+- 複習2(DFS,Backtracking)：2025-12-03 | 耗時：10分鐘 | 獨立完成：是 | 順暢度：流暢。整體流暢，沒有錯誤和卡頓。實作一版 Solution1 中沒有的，但邏輯清晰可通過
