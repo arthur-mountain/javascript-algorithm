@@ -38,3 +38,35 @@ var countPartitions = function (nums) {
   }
   return evenCount;
 };
+
+/**
+ * 完整 Prefix Sum 陣列的版本解法
+ * @param {number[]} nums
+ * @return {number}
+ */
+var countPartitions = function (nums) {
+  const n = nums.length;
+
+  // Step 1: 建立 prefix sum 陣列
+  // prefix[i] 表示 nums[0..i-1] 的總和
+  const prefix = new Array(n + 1).fill(0);
+  for (let i = 0; i < n; i++) {
+    prefix[i + 1] = prefix[i] + nums[i];
+  }
+
+  // Step 2: 枚舉每個分割點
+  let count = 0;
+  for (let i = 0; i < n - 1; i++) {
+    // 左子陣列：nums[0..i]，和為 prefix[i+1]
+    const leftSum = prefix[i + 1];
+    // 右子陣列：nums[i+1..n-1]，和為 total - leftSum
+    const rightSum = prefix[n] - leftSum;
+    // 檢查差值是否為偶數
+    const diff = leftSum - rightSum;
+    if (diff % 2 === 0) {
+      count++;
+    }
+  }
+
+  return count;
+};
