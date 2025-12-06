@@ -234,4 +234,4 @@ link: "https://leetcode.com/problems/count-partitions-with-even-sum-difference/d
 
 - 首次解題（PrefixSum）：2025-12-05 | 耗時：不紀錄（重理解思路） | 獨立完成：是。無意識寫出 prefix sum，其概念待複習仍不熟
 - 首次解題（Math）：2025-12-05 | 耗時：不紀錄（重理解思路） | 獨立完成：否
-- 複習1：<!-- 日期 --> | 耗時：分鐘 | 獨立完成：□ 是 □ 否 | 順暢度：□ 流暢 □ 卡頓 □ 忘記
+- 複習1(PrefixSum)：2025-12-06 | 耗時：7分鐘 | 獨立完成：是 | 順暢度：流暢。雖然有判斷出 Math 奇偶特性，但當下沒能想出代數邏輯，因此先實作 prefix sum 確保有寫出來
