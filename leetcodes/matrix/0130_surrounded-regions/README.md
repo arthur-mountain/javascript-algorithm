@@ -287,6 +287,205 @@ link: "https://leetcode.com/problems/surrounded-regions/description/"
 
 - **測試案例**：同 Solution1 測試案例
 
+### Solution4 - UnionFind
+
+- **思路說明**：
+
+  **核心概念：**
+
+  UnionFind 擅長維護元素間的連通性關係。本題的關鍵在於：**與邊界 'O' 連通的格子不能被替換**。
+
+  因此引入一個**虛擬根節點** `edgeIdOfO`(值為 `ROW * COL`，因為有效索引範圍是 `0` 到 `ROW * COL - 1`)，代表「邊界連通區域」。
+
+  所有邊界上的 'O' 初始時直接指向這個虛擬根節點，這樣任何與邊界 'O' 連通的格子，其根節點最終都會是 `edgeIdOfO`。
+
+  **演算法流程：**
+
+  **階段 1：初始化 UnionFind**
+
+  - 建立 `parent` 陣列（大小 `ROW * COL + 1`）：記錄每個格子的父節點
+
+    - **關鍵設定**：`parent[edgeIdOfO] = edgeIdOfO`(虛擬根節點必須滿足「根節點指向自己」的規則)
+
+    - 二維座標 `(row, col)` 映射為一維 ID：`row * COL + col`
+
+    - 邊界上的 'O'：`parent[id] = edgeIdOfO`
+
+    - 其他格子：`parent[id] = id`
+
+  - 建立 `height` 陣列(大小 `ROW * COL + 1`)：記錄每棵樹的高度，用於按秩合併優化，統一初始化為 `1`
+
+  **階段 2：建立連通關係**
+
+  遍歷整個 board，對每個 'O' 格子：
+
+  - 檢查**右邊**格子：如果也是 'O'，則執行 `union(當前ID, 右邊ID)`
+
+  - 檢查**下邊**格子：如果也是 'O'，則執行 `union(當前ID, 下邊ID)`
+
+  **優化技巧**：只需檢查「右」和「下」兩個方向，避免重複處理
+
+  - 左、上方向在之前的迭代中已被處理（當時的「右」和「下」）
+
+  - 這樣每對相鄰 'O' 格子只會執行一次 `union` 操作
+
+  **階段 3：標記與替換**
+
+  再次遍歷 board，對每個 'O' 格子：
+
+  - 使用 `findRoot(id)` 找到其根節點
+
+  - 若根節點**不是** `edgeIdOfO` → 未與邊界連通 → 翻轉成 'X'
+
+  - 若根節點**是** `edgeIdOfO` → 與邊界連通 → 保持 'O'
+
+  **UnionFind 核心操作詳解：**
+
+  **1. `findRoot(id)`：路徑壓縮優化**
+
+  ```javascript
+  // 遞迴追溯到根節點，同時將路徑上所有節點直接指向根
+  if (this.parent[id] === id) return this.parent[id];
+  return (this.parent[id] = this.findRoot(this.parent[id]));
+  ```
+
+  - **作用**：降低樹的高度，加速後續查詢
+
+  - **時間複雜度**：攤銷 O(α(n))，α 為反阿克曼函數，實際應用中 < 5
+
+  **2. `union(id1, id2)`：按秩合併優化**
+
+  ```javascript
+  // 找到兩個節點的根
+  const root1 = this.findRoot(id1);
+  const root2 = this.findRoot(id2);
+
+  // 將較矮的樹接到較高的樹下，平衡樹高
+  if (height[root1] > height[root2]) {
+    parent[root2] = root1;
+  } else if (height[root1] < height[root2]) {
+    parent[root1] = root2;
+  } else {
+    parent[root1] = root2;
+    height[root2]++; // 高度相同時，新根的高度 +1
+  }
+  ```
+
+  - **作用**：控制樹的高度，避免退化成鏈表
+
+  - **關鍵**：更新的是**新根**的高度，而非被合併的節點
+
+  **3. `isConnectedToEdgeO(id)`：連通性判斷**
+
+  ```javascript
+  // 必須使用 findRoot 追溯到真正的根節點
+  return this.findRoot(id) === this.edgeIdOfO;
+  ```
+
+  - **為何不能直接用 `parent[id]`？**
+
+    - 路徑壓縮是「惰性」的，只在調用 `findRoot()` 時觸發
+
+    - 直接訪問 `parent[id]` 可能得到中間節點，而非根節點
+
+    - 使用 `findRoot()` 確保追溯到真正的根，同時觸發路徑壓縮
+
+  **虛擬根節點設計的關鍵細節：**
+
+  - **為何 `parent` 陣列大小是 `ROW * COL + 1`？**
+
+    - 索引 `0` 到 `ROW * COL - 1` 用於實際格子
+
+    - 索引 `ROW * COL` 用於虛擬根節點 `edgeIdOfO`
+
+    - 必須為虛擬節點分配空間，否則訪問 `parent[edgeIdOfO]` 會越界(undefined)
+
+  - **為何需要 `parent[edgeIdOfO] = edgeIdOfO`？**
+
+    - UnionFind 的核心鐵律：根節點必須滿足 `parent[root] = root`，所以一開始才初始化為 `ROW * COL + 1` 就是為了虛擬節點
+
+    - 如果不設定，`findRoot(edgeIdOfO)` 會因 `parent[edgeIdOfO] = undefined` 而出錯
+
+    - 進而導致遞迴傳入 `findRoot(undefined)`，返回錯誤結果
+
+- **複雜度分析**：
+
+  - **時間複雜度**：**O(m × n × α(m × n))**
+
+    - 初始化：O(m × n)
+
+    - 建立連通關係：每個格子最多進行 2 次 `union` 操作 → O(m × n × α(m × n))
+
+    - 後處理遍歷：每個格子進行 1 次 `findRoot` 操作 → O(m × n × α(m × n))
+
+    - α 是反阿克曼函數，實際應用中可視為常數（< 5）
+
+  - **空間複雜度**：**O(m × n)**
+
+    - `parent` 陣列：O(m × n + 1) ≈ O(m × n)
+
+    - `height` 陣列：O(m × n + 1) ≈ O(m × n)
+
+    - 遞迴呼叫堆疊：O(α(m × n)) ≈ O(1)
+
+  - 通過狀態：✅ AC
+
+- **其他備註（優化方向、特殊限制、問題延伸討論）**：
+
+  - **UnionFind vs DFS/BFS 選擇：**
+
+  | 特性           | UnionFind                  | DFS/BFS               |
+  | -------------- | -------------------------- | --------------------- |
+  | **適用場景**   | 多次查詢連通性、動態連接   | 單次遍歷、路徑搜尋    |
+  | **時間複雜度** | O(m × n × α)               | O(m × n)              |
+  | **空間複雜度** | O(m × n)                   | O(m × n)              |
+  | **代碼複雜度** | 較高（需實現完整資料結構） | 較低（遞迴/迭代）     |
+  | **本題推薦度** | ⭐⭐⭐ 學習價值高          | ⭐⭐⭐⭐⭐ 更簡潔高效 |
+
+  > **本題中 DFS/BFS 更優**：因為只需單次遍歷判斷連通性，不涉及動態查詢或修改。
+
+  - **UnionFind 經典應用場景：**
+
+    - **動態連通性問題**：Kruskal 最小生成樹（LC 1584）
+    - **區域合併**：LC 200. Number of Islands 變形（需要合併操作）
+    - **社交網絡分析**：LC 547. Number of Provinces
+    - **環檢測**：LC 684. Redundant Connection
+
+  - **實作陷阱總結：**
+
+    1. **虛擬根節點的完整設定**：
+
+       - ❌ 只設定 `edgeIdOfO = ROW * COL`（不夠）
+       - ✅ 必須設定 `parent[edgeIdOfO] = edgeIdOfO` (滿足根節點規則)
+
+       - ✅ `parent` 陣列大小必須是 `ROW * COL + 1` (為虛擬節點分配空間)
+
+    2. **連通性判斷必須用 findRoot()**：
+
+       - ❌ `return this.parent[id] === edgeIdOfO` (可能得到中間節點)
+
+       - ✅ `return this.findRoot(id) === edgeIdOfO` (確保追溯到根)
+
+  - **Pattern：虛擬節點技巧**
+
+    - **何時使用虛擬節點？**
+
+      - 需要將多個元素統一視為「同一類」時
+
+      - 邊界、特殊狀態需要特殊處理時
+
+      - 簡化判斷邏輯 (本題中，不需要遍歷所有邊界格子，只需判斷根節點)
+
+    - **虛擬節點設計要點：**
+
+      - 選擇不與實際索引衝突的 ID (本題用 `ROW * COL`)
+
+      - 必須滿足根節點的規則：`parent[virtual] = virtual`
+
+      - 陣列大小要包含虛擬節點的空間
+
+- **測試案例**：同 Solution1 測試案例
+
 ## 學習記錄
 
 - 首次解題(DFS正向思考)：2025-12-07 | 耗時：不紀錄(重理解思路) | 獨立完成：是
@@ -294,6 +493,8 @@ link: "https://leetcode.com/problems/surrounded-regions/description/"
 - 首次解題(DFS反向思考)：2025-12-07 | 耗時：不紀錄(重理解思路) | 獨立完成：否
 
 - 首次解題(多源BFS)：2025-12-13 | 耗時：不紀錄(重理解思路) | 獨立完成：是
+
+- 首次解題(UnionFindBFS)：2025-12-13 | 耗時：不紀錄(重理解思路) | 獨立完成：否
 
 - 複習1(DFS反向思考)：2025-12-08 | 耗時：13分鐘 | 獨立完成：是 | 順暢度：流暢。
 
