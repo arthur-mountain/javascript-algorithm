@@ -28,6 +28,9 @@ class UnionFind {
    *
    * 優化技巧：路徑壓縮(Path Compression)
    * 在查找過程中，把路徑上所有節點直接連到根，讓樹變扁平，後續查找更快
+   *
+   * 時間複雜度：O(α(n)) - 反阿克曼函數,實務上視為常數
+   * 空間複雜度：O(1)    - 不考慮遞迴呼叫堆疊
    */
   findRoot(x) {
     // Base case：如果 x 自己就是根，直接返回
@@ -49,6 +52,9 @@ class UnionFind {
    *
    * 優化技巧：按秩合併(Union by Rank)
    * 總是把矮的樹接到高的樹下面，避免樹退化成鏈表
+   *
+   * 時間複雜度：O(α(n)) - 主要是兩次 find 操作
+   * 空間複雜度：O(1)
    */
   union(x, y) {
     // 第一步：找到兩個節點各自的根
@@ -86,8 +92,12 @@ class UnionFind {
    * @return {boolean} 是否連通
    *
    * 這是一個輔助方法，讓程式碼更具可讀性
+   *
+   * 時間複雜度：O(α(n))
+   * 空間複雜度：O(1)
    */
   isConnected(x, y) {
+    // 只需比較兩個元素的根是否相同
     return this.findRoot(x) === this.findRoot(y);
   }
 }
