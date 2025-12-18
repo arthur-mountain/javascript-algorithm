@@ -240,3 +240,11 @@ link: "https://leetcode.com/problems/count-partitions-with-even-sum-difference/d
   - 完全沒印象，某種程度也算當場解題，有判斷出 prefix sum 和奇偶特性
 
   - 雖然自己從題目推敲寫出 Math 解法，但其中代數邏輯是不清楚得
+
+- 複習3(Math)：2025-12-16 | 耗時：10分鐘 | 獨立完成：是 | 順暢度：還算流暢。
+
+  - 一開始是沒印象得，再判斷出 prefix sum 和奇偶特性時，開始有數學解法的印象，但不是很清晰
+
+  - 以及雖然知道要用奇偶特性，但一開始是沒方向的，開始試著代數推理，後來有成功推理出來
+
+    但對於當 total 是偶數時可以拆分出 n - 1 個 partition 這段，為什麼是 n - 1 還沒想很清楚
