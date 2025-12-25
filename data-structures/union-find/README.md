@@ -245,3 +245,33 @@ union(x, y) {
 ```
 
 這種方法在某些場景下更直觀(例如需要知道集合大小時)。
+
+### Union 順序不影響最終連通結果
+
+Union-Find 核心特性：
+
+1. union 建立的是「指針關係」，不是「當下的根」
+2. find 才是「追溯當下真正的根」
+3. 因此 union 順序不影響最終連通結果
+
+**具體例子**：假設 A、B、C 三個節點最終都應該連通到 C
+
+```plaintext
+場景：A 先 union 到 B，但此時 B 尚未 union 到 C
+
+步驟 1: union(A, B)
+  當前狀態: parent[A]=A, parent[B]=B, parent[C]=C
+  結果    : parent[A]=B
+            A → B
+
+步驟 2: union(B, C)
+  當前狀態: parent[A]=B, parent[B]=B, parent[C]=C
+  結果    : parent[B]=C
+            B → C
+
+此時 find(A) 的過程：
+  A → B → C → C(根)
+  路徑壓縮後: A → C, B → C
+
+結論：即使 union(A,B) 時 B 還不是最終的根，後續 B 連到 C 時，A 也「自動」屬於 C 的集合
+```
