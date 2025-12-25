@@ -41,8 +41,8 @@ var closedIsland = function (grid) {
   };
 
   let count = 0;
-  for (let col = 0; col < COL; col++) {
-    for (let row = 0; row < ROW; row++) {
+  for (let row = 0; row < ROW; row++) {
+    for (let col = 0; col < COL; col++) {
       if (grid[row][col] === 0 && bfs(row, col)) {
         count++;
       }
