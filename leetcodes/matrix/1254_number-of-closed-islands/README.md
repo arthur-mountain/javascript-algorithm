@@ -35,7 +35,7 @@ link: "https://leetcode.com/problems/number-of-closed-islands/description/"
 
 ## 解法總覽
 
-### Solution 1 (DFS - 單次遍歷)
+### Solution 1 (DFS)
 
 - **思路說明**：
 
@@ -212,7 +212,7 @@ link: "https://leetcode.com/problems/number-of-closed-islands/description/"
 
     Explain: 內部看似封閉但 (3,4) 是邊界陸地且與內部相連，專門測試避免短路求值的邏輯是否正確
 
-### Solution 2 (BFS - 單次遍歷)
+### Solution 2 (BFS)
 
 - **思路說明**：
 
@@ -278,6 +278,6 @@ link: "https://leetcode.com/problems/number-of-closed-islands/description/"
 
 ## 學習記錄
 
-- 首次解題(DFS - 單次遍歷)：2025-12-21 | 耗時：不紀錄(重理解思路) | 獨立完成：否
-- 首次解題(BFS - 單次遍歷)：2025-12-25 | 耗時：不紀錄(重理解思路) | 獨立完成：否
+- 首次解題(DFS)：2025-12-21 | 耗時：不紀錄(重理解思路) | 獨立完成：否
+- 首次解題(BFS)：2025-12-25 | 耗時：不紀錄(重理解思路) | 獨立完成：否
 - 複習1：<!-- 日期 --> | 耗時：分鐘 | 獨立完成：□ 是 □ 否 | 順暢度：□ 流暢 □ 卡頓 □ 忘記
