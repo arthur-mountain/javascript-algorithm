@@ -360,6 +360,46 @@ link: "https://leetcode.com/problems/number-of-closed-islands/description/"
 
 - **測試案例**：同 Solution 1 測試案例
 
+### Solution 4-1 (通用型 UnionFind)
+
+- **核心策略**：
+
+  同 Solution 4，但此為通用型 UnionFind，不針對虛擬節點特殊處理、不在 union 時維護島嶼數量。
+
+  因此需要額外遍歷並使用 Set 計算封閉島嶼數量。效率上 Solution 4 較佳。
+
+- **思路說明**：
+
+  **UnionFind 實作**：[參考 union-find 資料結構](../../../data-structures/union-find/README.md)
+
+  **第一次遍歷 2D grid：建立連通關係**
+
+  - 若當前節點是邊界陸地 → union 虛擬節點(VIRTUAL_IDX)
+
+  - 若當前節點是陸地 → 與右、下方向的陸地進行 union(需檢查邊界避免越界)
+
+    因為遍歷方向是左上至右下，當前節點的左、上方向已在先前處理過。
+
+  **第二次遍歷 2D grid：計算封閉島嶼數量**
+
+  使用 Set 記錄封閉島嶼的根節點(避免同一島嶼重複計數)：
+
+  - 對每個陸地找其 root
+
+  - 若 root 不等於虛擬節點的 root(即不與邊界連通) -> 將 root 加入 Set
+
+  **最終結果**：Set.size 即為封閉島嶼數量。
+
+- **複雜度分析**：
+
+  - 時間複雜度：O(m × n × α(m × n))，其中 α 是反阿克曼函數，實務上視為常數
+
+  - 空間複雜度：O(m × n)，建立 UnionFind 需要 parent、height 陣列，另需 Set 存放根節點
+
+  - 通過狀態：✅ AC
+
+- **測試案例**：同 Solution 1 測試案例
+
 ## 學習記錄
 
 - 首次解題(DFS)：2025-12-21 | 耗時：不紀錄(重理解思路) | 獨立完成：否
