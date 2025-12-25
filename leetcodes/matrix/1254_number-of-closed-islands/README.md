@@ -314,8 +314,55 @@ link: "https://leetcode.com/problems/number-of-closed-islands/description/"
 
 - **測試案例**：同 Solution 1 測試案例
 
+### Solution 4 (UnionFind)
+
+- **核心策略**：建立連通關係，將邊界陸地連通至虛擬節點。任何與虛擬節點連通的陸地都不是封閉島嶼。
+
+- **思路說明**：
+
+  **UnionFind 概念**：[參考 union-find 資料結構](../../../data-structures/union-find/README.md)
+
+  **擴展 UnionFind 實作**：
+
+  將二維陣列轉換為一維索引，其中 `ROW * COL` 作為虛擬節點(virtualId)。
+
+  **初始化**：
+
+  1. 邊界陸地：parent 直接指向 virtualId(不計入 count)
+
+  2. 非邊界陸地：parent 指向自己，count++(每個視為獨立島嶼)
+
+  3. 水域：不處理
+
+  **遍歷 2D grid**：
+
+  遇到陸地時，與右、下方向的陸地進行 union(需檢查邊界避免越界)。
+
+  因為遍歷方向是左上至右下，當前節點的左、上方向已在先前處理過。
+
+  **union 特殊處理**：
+
+  - 若任一方的 root 是 virtualId → 另一方也連到 virtualId，count--(原本的獨立島嶼被「汙染」)
+
+  - 若雙方都不是 virtualId → 按 rank 合併，count--(兩座島嶼合併為一座)
+
+  - 若雙方已同 root → 不處理
+
+  **最終結果**：count 即為封閉島嶼數量。
+
+- **複雜度分析**：
+
+  - 時間複雜度：O(m × n × α(m × n))，其中 α 是反阿克曼函數，實務上視為常數
+
+  - 空間複雜度：O(m × n)，建立 UnionFind 需要 parent、height 陣列
+
+  - 通過狀態：✅ AC
+
+- **測試案例**：同 Solution 1 測試案例
+
 ## 學習記錄
 
 - 首次解題(DFS)：2025-12-21 | 耗時：不紀錄(重理解思路) | 獨立完成：否
 - 首次解題(BFS)：2025-12-25 | 耗時：不紀錄(重理解思路) | 獨立完成：否
+- 首次解題(UnionFind)：2025-12-25 | 耗時：不紀錄(重理解思路) | 獨立完成：否
 - 複習1：<!-- 日期 --> | 耗時：分鐘 | 獨立完成：□ 是 □ 否 | 順暢度：□ 流暢 □ 卡頓 □ 忘記
