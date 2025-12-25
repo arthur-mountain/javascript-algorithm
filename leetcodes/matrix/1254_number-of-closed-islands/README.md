@@ -212,7 +212,72 @@ link: "https://leetcode.com/problems/number-of-closed-islands/description/"
 
     Explain: 內部看似封閉但 (3,4) 是邊界陸地且與內部相連，專門測試避免短路求值的邏輯是否正確
 
+### Solution 2 (BFS - 單次遍歷)
+
+- **思路說明**：
+
+  遍歷整個 2D grid，當遇到陸地(0)時進入 BFS 流程，BFS 回傳布林值表示「從這個格子出發的探索是否封閉」。
+
+  **BFS 流程**：
+
+  初始化 `isClosed = true`，將起始格子加入 queue。當 queue 不為空時，取出格子並依序判斷：
+
+  1. **越界或水域** → 跳過（continue）
+     這個方向已經碰到邊界外或水域，代表這個方向是「安全的」（被水包圍）
+
+  2. **位於 grid 邊界上的陸地** → 標記 `isClosed = false`，但不中斷遍歷
+     此時格子一定是陸地（水域在步驟 1 已跳過），而邊界上的陸地代表這個島嶼不封閉
+
+  3. **內部陸地** → 標記為已訪問，繼續探索四個方向
+     - 標記當前格子為 `1`（水域），避免重複遍歷
+     - 將上、右、下、左四個方向加入 queue
+
+  當 queue 清空後，回傳 `isClosed`。
+
+  **⚠️ 關鍵陷阱：不可提前中斷遍歷**
+
+  即使當前島嶼已確定不封閉，也必須繼續遍歷完整個連通區域。
+
+  原因：其他方向的陸地仍需被標記為已訪問，否則後續會被誤判為新島嶼。
+
+  ```javascript
+  // ✅ 正確：標記後繼續遍歷，不中斷
+  if (row === 0 || col === 0 || row === ROW - 1 || col === COL - 1) {
+    isClosed = false;
+  }
+
+  grid[row][col] = 1;
+  queue.push([row - 1, col]); // 上
+  queue.push([row, col + 1]); // 右
+  queue.push([row + 1, col]); // 下
+  queue.push([row, col - 1]); // 左
+  ```
+
+  ```javascript
+  // ❌ 錯誤：提前 return 導致相鄰陸地未被標記
+  if (row === 0 || col === 0 || row === ROW - 1 || col === COL - 1) {
+    return false;
+  }
+
+  grid[row][col] = 1;
+  queue.push([row - 1, col]); // 上
+  queue.push([row, col + 1]); // 右
+  queue.push([row + 1, col]); // 下
+  queue.push([row, col - 1]); // 左
+  ```
+
+- **複雜度分析**：
+
+  - 時間複雜度：O(m × n)，每個格子最多訪問一次
+
+  - 空間複雜度：O(m × n)，最壞情況下 queue 存放整個 grid（全是陸地時）
+
+  - 通過狀態：✅ AC
+
+- **測試案例**：同 Solution 1 測試案例
+
 ## 學習記錄
 
 - 首次解題(DFS - 單次遍歷)：2025-12-21 | 耗時：不紀錄(重理解思路) | 獨立完成：否
+- 首次解題(BFS - 單次遍歷)：2025-12-25 | 耗時：不紀錄(重理解思路) | 獨立完成：否
 - 複習1：<!-- 日期 --> | 耗時：分鐘 | 獨立完成：□ 是 □ 否 | 順暢度：□ 流暢 □ 卡頓 □ 忘記
