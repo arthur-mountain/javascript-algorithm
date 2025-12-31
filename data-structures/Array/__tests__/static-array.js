@@ -1,157 +1,175 @@
 const { StaticArray } = require("../static-array");
 const assert = require("node:assert/strict");
 
-// Default size and capacity
-assert.strictEqual(new StaticArray().size(), 0, "Default size should be 0");
-assert.strictEqual(
-  new StaticArray().capacity(),
-  100,
-  "Default minimum capacity should be 100",
+/* ========== 建構子測試 ========== */
+
+// 必須提供 capacity
+assert.throws(
+  () => new StaticArray(),
+  "Should throw when capacity is not provided",
+);
+assert.throws(
+  () => new StaticArray(0),
+  RangeError,
+  "Should throw when capacity is 0",
+);
+assert.throws(
+  () => new StaticArray(-1),
+  RangeError,
+  "Should throw when capacity is negative",
 );
 
-/* Create Instance */
-const capacity = 1000;
+/* ========== 基本狀態測試 ========== */
+
+const capacity = 10; // 使用小容量便於測試
 const instance = new StaticArray(capacity);
 
-//  Default values
-assert.strictEqual(instance.size(), 0, "Default size should be 0");
+assert.strictEqual(instance.size(), 0, "Initial size should be 0");
 assert.strictEqual(
   instance.capacity(),
   capacity,
-  "Default capacity should be 1000",
+  "Capacity should match input",
 );
-assert.strictEqual(
-  instance.isFull(),
-  false,
-  "Array should not be full when init",
-);
-assert.strictEqual(instance.isEmpty(), true, "Array should be empty when init");
+assert.strictEqual(instance.isFull(), false, "Should not be full when empty");
+assert.strictEqual(instance.isEmpty(), true, "Should be empty on init");
 
-// Insert element at start
-instance.insert(0, 1);
+/* ========== push / pop 測試 ========== */
+
+instance.push(10);
+assert.strictEqual(instance.size(), 1, "Size should be 1 after push");
+assert.strictEqual(instance.get(0), 10, "Should get pushed element");
+assert.strictEqual(instance.isEmpty(), false, "Should not be empty after push");
+
+instance.push(20);
+instance.push(30);
+assert.strictEqual(instance.size(), 3, "Size should be 3 after 3 pushes");
+assert.strictEqual(instance.get(2), 30, "Should get last pushed element");
+
+const popped = instance.pop();
+assert.strictEqual(popped, 30, "Pop should return last element");
+assert.strictEqual(instance.size(), 2, "Size should decrease after pop");
+
+// pop 到空
+instance.pop();
+instance.pop();
 assert.strictEqual(
   instance.isEmpty(),
-  false,
-  "Array should not be empty after insert element",
-);
-assert.strictEqual(instance.size(), 1, "Increase size after insert element");
-assert.strictEqual(instance.get(0), 1, "Get element by index ");
-
-// update element at start
-instance.set(0, 100);
-assert.strictEqual(instance.get(0), 100, "Get element by index after updated");
-
-// Insert element at middle
-instance.insert(500, 5);
-assert.strictEqual(instance.size(), 2, "Increase size after insert element");
-assert.strictEqual(instance.get(500), 5, "Get element by index ");
-
-// update element at middle
-instance.set(500, 50);
-assert.strictEqual(instance.get(500), 50, "Get element by index after updated");
-
-// Insert element at end
-instance.insert(999, 9);
-assert.strictEqual(instance.size(), 3, "Increase size after insert element");
-assert.strictEqual(instance.get(999), 9, "Get element by index ");
-
-// update element at end
-instance.set(999, 99);
-assert.strictEqual(instance.get(999), 99, "Get element by index after updated");
-
-// find the element
-assert.strictEqual(
-  instance.find(1),
-  undefined,
-  "Element not found return undefined",
-);
-assert.strictEqual(instance.findIndex(1), -1, "Element not found return -1");
-assert.strictEqual(instance.find(100), 100, "Found the element");
-assert.strictEqual(instance.findIndex(100), 0, "Found the element index");
-
-// is contains element
-assert.strictEqual(
-  instance.contains(1),
-  false,
-  "Element not contains return false",
-);
-assert.strictEqual(
-  instance.contains(100),
   true,
-  "Element is contains return true",
+  "Should be empty after popping all",
+);
+assert.throws(() => instance.pop(), "Pop on empty array should throw");
+
+/* ========== insert 測試 ========== */
+
+// insert 是基於 length，不是 capacity
+instance.insert(0, "a"); // length: 0 -> 1, data: [a]
+assert.strictEqual(instance.get(0), "a", "Insert at 0");
+assert.strictEqual(instance.size(), 1);
+
+instance.insert(1, "c"); // length: 1 -> 2, data: [a, c]
+assert.strictEqual(instance.get(1), "c", "Insert at end (index = length)");
+
+instance.insert(1, "b"); // length: 2 -> 3, data: [a, b, c]
+assert.strictEqual(instance.get(0), "a", "Element at 0 unchanged");
+assert.strictEqual(instance.get(1), "b", "New element at 1");
+assert.strictEqual(instance.get(2), "c", "Original element shifted to 2");
+assert.strictEqual(instance.size(), 3);
+
+// 邊界錯誤測試
+assert.throws(
+  () => instance.insert(-1, "x"),
+  RangeError,
+  "Insert at negative index should throw",
+);
+assert.throws(
+  () => instance.insert(100, "x"),
+  RangeError,
+  "Insert beyond length should throw",
 );
 
-// clear the array
+/* ========== get / set 測試 ========== */
+
+instance.set(1, "B");
+assert.strictEqual(instance.get(1), "B", "Set should update element");
+
+// 邊界錯誤測試
+assert.throws(
+  () => instance.get(-1),
+  RangeError,
+  "Get negative index should throw",
+);
+assert.throws(
+  () => instance.get(100),
+  RangeError,
+  "Get beyond length should throw",
+);
+assert.throws(
+  () => instance.set(100, "x"),
+  RangeError,
+  "Set beyond length should throw",
+);
+
+/* ========== delete 測試 ========== */
+
+// 目前: [a, B, c], length: 3
+const deleted = instance.delete(1); // 刪除 "B"
+assert.strictEqual(deleted, "B", "Delete should return removed element");
+assert.strictEqual(instance.size(), 2, "Size should decrease");
+assert.strictEqual(instance.get(0), "a", "First element unchanged");
+assert.strictEqual(instance.get(1), "c", "Element shifted after delete");
+
+// 邊界錯誤測試
+assert.throws(
+  () => instance.delete(-1),
+  RangeError,
+  "Delete negative index should throw",
+);
+assert.throws(
+  () => instance.delete(100),
+  RangeError,
+  "Delete beyond length should throw",
+);
+
+/* ========== findIndex / contains 測試 ========== */
+
+// 目前: [a, c], length: 2
+assert.strictEqual(instance.findIndex("a"), 0, "Find existing element");
+assert.strictEqual(instance.findIndex("c"), 1, "Find existing element");
+assert.strictEqual(instance.findIndex("z"), -1, "Not found returns -1");
+
+assert.strictEqual(instance.contains("a"), true, "Contains existing");
+assert.strictEqual(instance.contains("z"), false, "Not contains");
+
+/* ========== clear 測試 ========== */
+
 instance.clear();
-assert.strictEqual(instance.size(), 0, "Default size should be 0");
+assert.strictEqual(instance.size(), 0, "Size should be 0 after clear");
 assert.strictEqual(
   instance.capacity(),
   capacity,
-  "Default capacity should be 1000",
+  "Capacity unchanged after clear",
 );
-assert.strictEqual(
-  instance.isFull(),
-  false,
-  "Array should not be full when init",
-);
-assert.strictEqual(instance.isEmpty(), true, "Array should be empty when init");
+assert.strictEqual(instance.isEmpty(), true, "Should be empty after clear");
+assert.strictEqual(instance.findIndex("a"), -1, "Elements should be gone");
 
-// Insert at the full array
+/* ========== 容量上限測試 ========== */
+
 for (let i = 0; i < capacity; i++) {
-  instance.insert(i, i + 1);
+  instance.push(i);
 }
+assert.strictEqual(instance.isFull(), true, "Should be full");
+assert.throws(() => instance.push(999), "Push on full array should throw");
 assert.throws(
-  () => instance.insert(0, 0),
-  "Insert at full array should throw error",
+  () => instance.insert(0, 999),
+  "Insert on full array should throw",
 );
 
-// Delete element at start
-let snapshotSize = instance.size();
-let newValueAtZeroIndex = instance.get(1);
-instance.delete(0);
-assert.strictEqual(
-  instance.get(0),
-  newValueAtZeroIndex,
-  "Get element by index after delete",
-);
-assert.strictEqual(
-  instance.size(),
-  snapshotSize - 1,
-  "Decrease size after delete element",
-);
+/* ========== toString 測試 ========== */
 
-// Delete element at middle
-for (let i = 0; i < capacity; i++) {
-  instance.set(i, i + 1);
-}
-snapshotSize = instance.size();
-newValueAtZeroIndex = instance.get(501);
-instance.delete(500);
-assert.strictEqual(
-  instance.get(500),
-  newValueAtZeroIndex,
-  "Get element by index after delete",
-);
-assert.strictEqual(
-  instance.size(),
-  snapshotSize - 1,
-  "Decrease size after delete element",
-);
+instance.clear();
+instance.push(1);
+instance.push(2);
+instance.push(3);
+assert.strictEqual(instance.toString(), "[1, 2, 3]", "toString format");
 
-// Delete element at end
-for (let i = 0; i < capacity; i++) {
-  instance.set(i, i + 1);
-}
-snapshotSize = instance.size();
-newValueAtZeroIndex = undefined;
-instance.delete(999);
-assert.strictEqual(
-  instance.get(999),
-  newValueAtZeroIndex,
-  "Get element by index after delete",
-);
-assert.strictEqual(
-  instance.size(),
-  snapshotSize - 1,
-  "Decrease size after delete element",
-);
+console.log("All tests passed!");
