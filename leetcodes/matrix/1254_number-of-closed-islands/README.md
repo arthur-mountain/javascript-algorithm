@@ -411,3 +411,9 @@ link: "https://leetcode.com/problems/number-of-closed-islands/description/"
 - 首次解題(UnionFind)：2025-12-25 | 耗時：不紀錄(重理解思路) | 獨立完成：否
 
 - 複習1(BFS)：2025-12-26 | 耗時：10分鐘 | 獨立完成：是 | 順暢度：流暢
+
+- 複習2(DFS iteration)：2025-01-01 | 耗時：10分鐘 | 獨立完成：是 | 順暢度：流暢
+
+  - 整體有分析出來，實作上中途有個地方寫錯但也能快速 debug
+
+  - 但腦海中是有印象的，知道這題細節，所以寫很快。待複習
