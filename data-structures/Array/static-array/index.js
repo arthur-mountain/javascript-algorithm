@@ -17,9 +17,10 @@
  * 空間複雜度：O(capacity)
  */
 class StaticArray {
-  #data;
-  #length;
-  #capacity;
+  /** @protected 允許子類別存取 */
+  _data;
+  _length;
+  _capacity;
 
   /**
    * 建構子：初始化固定容量的陣列
@@ -29,10 +30,12 @@ class StaticArray {
     if (capacity <= 0) {
       throw new RangeError("Capacity must be positive");
     }
-    this.#capacity = capacity;
-    this.#data = new Array(capacity);
-    this.#length = 0;
+    this._capacity = capacity;
+    this._data = new Array(capacity);
+    this._length = 0;
   }
+
+  // ==================== 基礎存取操作 ====================
 
   /**
    * 隨機存取讀取
@@ -43,10 +46,10 @@ class StaticArray {
    */
   get(index) {
     // 關鍵：檢查 length 而非 capacity
-    if (index < 0 || index >= this.#length) {
-      throw new RangeError(`Index ${index} out of bounds [0, ${this.#length})`);
+    if (index < 0 || index >= this._length) {
+      throw new RangeError(`Index ${index} out of bounds [0, ${this._length})`);
     }
-    return this.#data[index];
+    return this._data[index];
   }
 
   /**
@@ -58,11 +61,13 @@ class StaticArray {
    */
   set(index, element) {
     // 只能覆蓋已存在的有效元素
-    if (index < 0 || index >= this.#length) {
-      throw new RangeError(`Index ${index} out of bounds [0, ${this.#length})`);
+    if (index < 0 || index >= this._length) {
+      throw new RangeError(`Index ${index} out of bounds [0, ${this._length})`);
     }
-    this.#data[index] = element;
+    this._data[index] = element;
   }
+
+  // ==================== 修改操作 ====================
 
   /**
    * 在指定位置插入元素
@@ -74,22 +79,23 @@ class StaticArray {
    * 時間複雜度：O(n) - 最壞情況需移動所有元素
    */
   insert(index, element) {
-    // 檢查是否還有空間
-    if (this.#length >= this.#capacity) {
-      throw new Error("Array is full");
+    // Static Array 滿了就無法插入
+    if (this._length >= this._capacity) {
+      throw new Error("Array is full, cannot insert");
     }
-    // 注意：允許 index === length（等同 append）
-    if (index < 0 || index > this.#length) {
-      throw new RangeError(`Index ${index} out of bounds [0, ${this.#length}]`);
-    }
-
-    // 關鍵：從後往前移動，避免覆蓋
-    for (let i = this.#length; i > index; i--) {
-      this.#data[i] = this.#data[i - 1];
+    // 允許 index === length，相當於 append
+    if (index < 0 || index > this._length) {
+      throw new RangeError(`Index ${index} out of bounds [0, ${this._length}]`);
     }
 
-    this.#data[index] = element;
-    this.#length++;
+    // 關鍵：從 length 開始往前移動（不是從 capacity！）
+    // 這樣才能避免覆蓋尚未移動的元素
+    for (let i = this._length; i > index; i--) {
+      this._data[i] = this._data[i - 1];
+    }
+
+    this._data[index] = element;
+    this._length++;
   }
 
   /**
@@ -97,68 +103,41 @@ class StaticArray {
    * @param {number} index - 要刪除的位置
    * @returns {*} 被刪除的元素
    *
+   * 關鍵技巧：從前往後移動，將後面的元素依序前移覆蓋被刪除的位置
+   *
    * 時間複雜度：O(n) - 最壞情況需移動所有元素
    */
   delete(index) {
-    if (index < 0 || index >= this.#length) {
-      throw new RangeError(`Index ${index} out of bounds [0, ${this.#length})`);
+    if (index < 0 || index >= this._length) {
+      throw new RangeError(`Index ${index} out of bounds [0, ${this._length})`);
     }
 
-    const deleted = this.#data[index];
+    const element = this._data[index];
 
-    // 從前往後移動（與 insert 相反）
-    for (let i = index; i < this.#length - 1; i++) {
-      this.#data[i] = this.#data[i + 1];
+    // 關鍵：移動範圍是 [index, length-1)，將後面的元素往前移
+    for (let i = index; i < this._length - 1; i++) {
+      this._data[i] = this._data[i + 1];
     }
 
-    // 清理最後位置，避免 memory leak
-    this.#data[this.#length - 1] = undefined;
-    this.#length--;
+    // 清理最後一個位置，幫助垃圾回收
+    this._data[--this._length] = undefined;
 
-    return deleted;
-  }
-
-  /**
-   * 在尾端新增元素（特化的 insert）
-   * @param {*} element - 要新增的元素
-   *
-   * 時間複雜度：O(1) - 不需要移動任何元素
-   */
-  push(element) {
-    if (this.#length >= this.#capacity) {
-      throw new Error("Array is full");
-    }
-    this.#data[this.#length] = element;
-    this.#length++;
-  }
-
-  /**
-   * 移除並回傳尾端元素（特化的 delete）
-   * @returns {*} 被移除的元素
-   *
-   * 時間複雜度：O(1) - 不需要移動任何元素
-   */
-  pop() {
-    if (this.#length === 0) {
-      throw new Error("Array is empty");
-    }
-    const element = this.#data[this.#length - 1];
-    this.#data[this.#length - 1] = undefined;
-    this.#length--;
     return element;
   }
 
+  // ==================== 查詢操作 ====================
+
   /**
-   * 線性搜尋元素的位置
+   * 線性搜尋元素的索引
    * @param {*} element - 要搜尋的元素
-   * @returns {number} 元素的 index，找不到回傳 -1
+   * @returns {number} 索引位置，找不到回傳 -1
    *
-   * 時間複雜度：O(n) - 必須逐一檢查
+   * 時間複雜度：O(n)
    */
   findIndex(element) {
-    // 關鍵：只搜尋有效資料區域
-    for (let i = 0; i < this.#length; i++) {
-      if (this.#data[i] === element) {
+    // 關鍵：遍歷 length，不是 capacity！
+    for (let i = 0; i < this._length; i++) {
+      if (this._data[i] === element) {
         return i;
       }
     }
@@ -166,7 +145,17 @@ class StaticArray {
   }
 
   /**
-   * 檢查元素是否存在
+   * 搜尋並回傳元素
+   * @param {*} element - 要搜尋的元素
+   * @returns {*} 找到的元素，找不到回傳 undefined
+   */
+  find(element) {
+    const index = this.findIndex(element);
+    return index === -1 ? undefined : this._data[index];
+  }
+
+  /**
+   * 檢查是否包含某元素
    * @param {*} element - 要檢查的元素
    * @returns {boolean}
    */
@@ -174,49 +163,67 @@ class StaticArray {
     return this.findIndex(element) !== -1;
   }
 
-  /** @returns {number} 目前元素數量 */
+  // ==================== 狀態查詢 ====================
+
   size() {
-    return this.#length;
+    return this._length;
   }
 
-  /** @returns {number} 最大容量 */
   capacity() {
-    return this.#capacity;
+    return this._capacity;
   }
 
-  /** @returns {boolean} 是否已滿 */
-  isFull() {
-    return this.#length === this.#capacity;
-  }
-
-  /** @returns {boolean} 是否為空 */
   isEmpty() {
-    return this.#length === 0;
+    return this._length === 0;
   }
+
+  isFull() {
+    return this._length === this._capacity;
+  }
+
+  // ==================== 工具方法 ====================
 
   /**
-   * 清空陣列
-   * 注意：只重設 length，不實際清理記憶體（效能考量）
-   * 如果元素持有大量記憶體引用，應該逐一設為 undefined
+   * 清空陣列（重置 length，不重新分配記憶體）
    */
   clear() {
-    // 清理所有引用，避免 memory leak
-    for (let i = 0; i < this.#length; i++) {
-      this.#data[i] = undefined;
+    // 清理所有有效元素的引用，幫助 GC
+    for (let i = 0; i < this._length; i++) {
+      this._data[i] = undefined;
     }
-    this.#length = 0;
+    this._length = 0;
   }
 
   /**
-   * 轉換為字串表示（只顯示有效資料）
-   * @returns {string}
+   * 轉換為字串表示（只顯示有效元素）
    */
   toString() {
     const elements = [];
-    for (let i = 0; i < this.#length; i++) {
-      elements.push(this.#data[i]);
+    for (let i = 0; i < this._length; i++) {
+      elements.push(this._data[i]);
     }
-    return "[" + elements.join(", ") + "]";
+    return `[${elements.join(", ")}]`;
+  }
+
+  /**
+   * 支援 for...of 迭代
+   *
+   * JavaScript 的 for...of 語法會尋找物件的 Symbol.iterator 方法。
+   * 這是 JavaScript 的「迭代器協議（Iterator Protocol）」：
+   * - 當執行 for (const item of array) 時，JS 引擎會呼叫 array[Symbol.iterator]()
+   * - 該方法必須回傳一個「迭代器物件」，具有 next() 方法
+   * - 使用 function* 語法（Generator Function）可以自動產生符合協議的迭代器
+   * - yield 關鍵字會暫停執行並回傳值，下次呼叫 next() 時從暫停處繼續
+   *
+   * 為什麼需要自訂？
+   * 因為我們的 _data 陣列可能有未使用的空間（capacity > length），
+   * 直接迭代 _data 會包含 undefined 的空槽位。
+   * 自訂迭代器確保只遍歷 [0, length) 範圍內的有效元素。
+   */
+  *[Symbol.iterator]() {
+    for (let i = 0; i < this._length; i++) {
+      yield this._data[i];
+    }
   }
 }
 
