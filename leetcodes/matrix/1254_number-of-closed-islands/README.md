@@ -412,7 +412,7 @@ link: "https://leetcode.com/problems/number-of-closed-islands/description/"
 
 - 複習1(BFS)：2025-12-26 | 耗時：10分鐘 | 獨立完成：是 | 順暢度：流暢
 
-- 複習2(DFS iteration)：2025-01-01 | 耗時：10分鐘 | 獨立完成：是 | 順暢度：流暢
+- 複習2(DFS iteration)：2026-01-01 | 耗時：10分鐘 | 獨立完成：是 | 順暢度：流暢
 
   - 整體有分析出來，實作上中途有個地方寫錯但也能快速 debug
 
