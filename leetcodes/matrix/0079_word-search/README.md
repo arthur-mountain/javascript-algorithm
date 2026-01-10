@@ -178,7 +178,11 @@ link: "https://leetcode.com/problems/word-search/description/"
 ## 學習記錄
 
 - 首次解題(DFS+Backtracking)：2025-11-29 | 耗時：不紀錄(重理解思路) | 獨立完成：否
-- 複習1(DFS+Backtracking)：2025-11-29 | 耗時：20分鐘 | 獨立完成：否 | 順暢度：流暢。整體流暢，中間因為一個 typo 沒注意到，所以有研究答案，但整體邏輯都有寫出來
+
+- 複習1(DFS+Backtracking)：2025-11-29 | 耗時：20分鐘 | 獨立完成：否 | 順暢度：流暢。
+
+  - 整體流暢，中間因為一個 typo 沒注意到，所以有研究答案，但整體邏輯都有寫出來
+
 - 複習2(DFS,Backtracking)：2025-12-03 | 耗時：10分鐘 | 獨立完成：是 | 順暢度：流暢。
 
   - 整體流暢，沒有錯誤和卡頓。實作不同於 Solution1 中有的方式，但邏輯清晰可通過
@@ -186,3 +190,9 @@ link: "https://leetcode.com/problems/word-search/description/"
 - 複習3(DFS,Backtracking)：2025-12-10 | 耗時：8分鐘 | 獨立完成：是 | 順暢度：流暢。整體流暢，沒有錯誤和卡頓。
 
   - 同樣實作不同於 Solution1 中有的方式，但邏輯清晰可通過。(直接對 board 做標記表示訪問過)
+
+- 複習4(DFS,Backtracking)：2026-01-09 | 耗時：8分鐘 | 獨立完成：是 | 順暢度：小卡。
+
+  - 一開始試圖使用 iteration 的方式實作 backtracking，導致狀態的標記與返回一直卡住
+
+  - 後來改用遞迴實作 backtarcking，並且是每次都進到 backtracking 判斷(包含邊界、值是否合法等)，而非判斷合法才進到 backtracking
