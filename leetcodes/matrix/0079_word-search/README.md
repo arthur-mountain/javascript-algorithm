@@ -175,9 +175,67 @@ link: "https://leetcode.com/problems/word-search/description/"
 
   Explain: 邊界條件測試
 
+### Solution1 - Iterative backtracking
+
+- **思路說明**：
+
+  使用 **stack 模擬遞迴呼叫堆疊**，完全取代 backtracking 遞迴，完全避免遞迴深度問題。
+
+  **Iteration DFS 核心流程：**
+
+  1. **起點標記**：找到 `word[0]` 匹配的格子，立即標記為 `#`
+  2. **狀態初始化**：stack push `{row, col, wordIndex: 0, directionIndex: 0}`
+  3. **主迴圈**：
+
+     ```plaintext
+     👁️ PEEK 當前狀態（不 pop）
+     ├── wordIndex === len-1 → return true ✓
+     ├── 遍歷未試方向（從 directionIndex 開始）：
+     │   ├── 找到可行路徑 → 標記 + push 新狀態 + 更新 directionIndex + break
+     │   └── 所有方向試完仍無路 → pop + 恢復標記
+     ```
+
+  4. **防 TLE**：`directionIndex` 記錄每個格子已試的方向，避免重複遍歷
+  5. **防 WA**：起點預標記，避免 `["a","a"]` 無限循環
+
+  **關鍵設計：**
+
+  - `directionIndex`：每個格子只試 4 次方向，等價 recursive 效能
+  - `foundNext`：判斷「當前節點是否還有子路徑」
+  - peek + push/pop：完美模擬 DFS 遞迴行為
+
+- **複雜度分析**：
+
+  - 時間複雜度：**O(m*n*4^L)**，與 recursive **完全相同**
+
+    - `directionIndex` 確保每個格子只試 4 次方向
+    - 每個起點最多探索 4^L 條路徑
+
+  - 空間複雜度：**O(L)**
+
+    - stack 深度最多 L（word 長度）
+    - 每個元素存 `{row, col, wordIndex, directionIndex}`
+
+  - 通過狀態：✅ **AC**
+
+- **其他備註(優化方向、特殊限制、問題延伸討論)**：
+
+  **與 Recursive 對比：**
+
+  ```javascript
+  // Recursive: 呼叫堆疊自動管理
+  backtracking(row, col, wordIndex);
+
+  // Iterative: 手動管理堆疊
+  stack.push({ row, col, wordIndex, directionIndex });
+  // peek → 試方向 → push / pop
+  ```
+
 ## 學習記錄
 
 - 首次解題(DFS+Backtracking)：2025-11-29 | 耗時：不紀錄(重理解思路) | 獨立完成：否
+
+- 首次解題(Iterative Backtracking)：2026-01-10 | 耗時：不紀錄(重理解思路) | 獨立完成：否
 
 - 複習1(DFS+Backtracking)：2025-11-29 | 耗時：20分鐘 | 獨立完成：否 | 順暢度：流暢。
 
