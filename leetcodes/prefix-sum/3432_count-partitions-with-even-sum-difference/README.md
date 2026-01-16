@@ -233,8 +233,13 @@ link: "https://leetcode.com/problems/count-partitions-with-even-sum-difference/d
 ## 學習記錄
 
 - 首次解題（PrefixSum）：2025-12-05 | 耗時：不紀錄（重理解思路） | 獨立完成：是。無意識寫出 prefix sum，其概念待複習仍不熟
+
 - 首次解題（Math）：2025-12-05 | 耗時：不紀錄（重理解思路） | 獨立完成：否
-- 複習1(PrefixSum)：2025-12-06 | 耗時：7分鐘 | 獨立完成：是 | 順暢度：流暢。雖然有判斷出 Math 奇偶特性，但當下沒能想出代數邏輯，因此先實作 prefix sum 確保有寫出來
+
+- 複習1(PrefixSum)：2025-12-06 | 耗時：7分鐘 | 獨立完成：是 | 順暢度：流暢。
+
+  - 雖然有判斷出 Math 奇偶特性，但當下沒能想出代數邏輯，因此先實作 prefix sum 確保有寫出來
+
 - 複習2(Math)：2025-12-09 | 耗時：7分鐘 | 獨立完成：是 | 順暢度：卡頓。
 
   - 完全沒印象，某種程度也算當場解題，有判斷出 prefix sum 和奇偶特性
@@ -248,3 +253,7 @@ link: "https://leetcode.com/problems/count-partitions-with-even-sum-difference/d
   - 以及雖然知道要用奇偶特性，但一開始是沒方向的，開始試著代數推理，後來有成功推理出來
 
     但對於當 total 是偶數時可以拆分出 n - 1 個 partition 這段，為什麼是 n - 1 還沒想很清楚
+
+- 複習4(PrefixSum)：2026-01-16 | 耗時：15分鐘 | 獨立完成：是 | 順暢度：流暢。
+
+  - 同樣雖然有判斷出 Math 奇偶特性，但當下沒能想出代數邏輯，因此先實作 prefix sum 確保有寫出來
