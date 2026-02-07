@@ -6,7 +6,7 @@
  * 固定容量適用於記憶體受限或需要可預測行為的場景。
  *
  * 狀態設計：
- * - front = rear = -1 表示空佇列
+ * - front = rear = -1 表示空佇列（哨兵值設計）
  * - front 指向第一個元素（dequeue 位置）
  * - rear 指向最後一個元素（最近 enqueue 的位置）
  * - 滿的判斷：(rear + 1) % capacity === front
