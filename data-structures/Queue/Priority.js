@@ -1,4 +1,6 @@
 //@ts-check
+//
+// NOTE: 舊有實作，後續再建立 priority queue 的時候再考慮怎麼合併，因為預期是使用 heap 來實作
 class PriorityNode {
   constructor(value, priority) {
     this.value = value;
