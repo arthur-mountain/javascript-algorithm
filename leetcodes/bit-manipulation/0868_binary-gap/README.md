@@ -3,7 +3,7 @@ title: "868. Binary Gap"
 tags:
   - Bit Manipulation
 difficulty: "Easy"
-date_solved: ""
+date_solved: "2026-02-22"
 link: "https://leetcode.com/problems/binary-gap/description/"
 ---
 
@@ -103,12 +103,44 @@ link: "https://leetcode.com/problems/binary-gap/description/"
 
     Explain: 只有一個 1，`l` 始終為 `-1`，無法構成兩兩相鄰的 1，因此沒辦法計算最長距離，結果為 0。
 
+### Solution 2：Bit Manipulation
+
+- **核心策略**：
+
+  核心 sliding window 邏輯與 Solution 1 完全一致
+
+  差異只在資料讀取方式， Solution 1 讀取的是字串索引，
+
+  此解法，讀取的是右移後的整數狀態，因此省去了字串轉換所需的額外空間。
+
+- **思路說明**：
+
+  不將整數轉為 binary string，改用右移(`>>`)直接逐位檢查。每次將 `n` 右移一位，等同於從最低有效位(LSB)開始依序讀取每一個 bit。
+
+  用 `position` 追蹤當前 bit 的索引，`l` 同樣記錄上一個 `1` 的位置。當 `n & 1` 為真(最低位為 `1`)且 `l !== -1` 時，計算最長距離並更新 `l`。右移一位後 `position` 遞增，直到 `n` 為 `0` 為止。
+
+- **複雜度分析**：
+
+  - 時間複雜度：O(log n)，即 n 的二進制位數
+
+  - 空間複雜度：O(1)，無額外空間，直接對整數做位元運算
+
+  - 通過狀態：✅ AC
+
+- **測試案例**：
+
+  (與 Solution 1 共用，測試案例 A–E 皆適用)
+
 ## 學習記錄
 
 首次開始：2026-02-22 02:40:53 PM
 
-- 首次解題：2026-02-22 | 耗時：不紀錄(重理解思路)| 獨立完成：否
+- 首次解題(solution1)：2026-02-22 | 耗時：不紀錄(重理解思路) | 獨立完成：一半
 
   - 有參考解答，原本是透過 sliding window，但 l 指針的更新邏輯，一直想成標準的 sliding window 更新邏輯，導致卡住
+
+- 首次解題(solution2)：2026-02-22 | 耗時：不紀錄(重理解思路) | 獨立完成：否
+
+  - 完全請教 AI
 
 - 複習 1：<!-- 日期 --> | 耗時：分鐘 | 獨立完成：□ 是 □ 否 | 順暢度：□ 流暢 □ 卡頓 □ 忘記
