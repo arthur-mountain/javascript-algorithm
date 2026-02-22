@@ -6,92 +6,73 @@ var pacificAtlantic = function (heights) {
   const ROW = heights.length;
   const COL = heights[0].length;
   const DIRECTION = [
-    [0, -1], // 上
-    [1, 0], // 右
-    [-1, 0], // 左
-    [0, 1], // 下
+    [-1, 0], // 上
+    [1, 0], // 下
+    [0, -1], // 左
+    [0, 1], // 右
   ];
 
-  // 左上 -> 右下
-  const v1 = new Set(); // 拜訪過的節點，同時也作為結果集
-  const q1 = []; // 待處理的節點
-  for (let row = 0; row < ROW; row++) {
-    q1.push([row, 0]);
-    v1.add(row * COL);
-  }
-  for (let col = 0; col < COL; col++) {
-    q1.push([0, col]);
-    v1.add(col);
-  }
-  while (q1.length > 0) {
-    const [row, col] = q1.shift();
+  /**
+   * 從給定的起點集合出發，進行 BFS 反向擴散。
+   *
+   * 反向邏輯：正向是水往低處流，反向是從邊界逆流往高處爬。
+   * 因此鄰居節點的高度必須 >= 當前節點，才允許加入 queue。
+   *
+   * reachable 同時作為 visited set 與結果集，
+   * 避免建立兩個語意重複的資料結構。
+   *
+   * @param {number[][]} queue - 初始邊界節點（已轉為 [row, col] 格式）
+   * @returns {Set<number>} 所有可逆流回出發邊界的節點（以 row * COL + col 作為 key）
+   */
+  const bfs = (queue) => {
+    const reachable = new Set(queue.map(([r, c]) => r * COL + c));
 
-    for (const [nr, nc] of DIRECTION) {
-      const newRow = row + nr;
-      const newCol = col + nc;
-      const key = newRow * COL + newCol;
+    while (queue.length > 0) {
+      const [row, col] = queue.shift();
 
-      if (
-        newRow < 0 ||
-        newRow >= ROW ||
-        newCol < 0 ||
-        newCol >= COL ||
-        v1.has(key) ||
-        // 如果新的島嶼高度比鄰居小，代表沒辦法回到出發的邊界，所以跳過
-        heights[newRow][newCol] < heights[row][col]
-      ) {
-        continue;
+      for (const [nr, nc] of DIRECTION) {
+        const newRow = row + nr;
+        const newCol = col + nc;
+        const key = newRow * COL + newCol;
+
+        if (
+          newRow < 0 ||
+          newRow >= ROW ||
+          newCol < 0 ||
+          newCol >= COL ||
+          reachable.has(key) ||
+          // 鄰居高度 < 當前高度，代表水無法逆流到該鄰居，跳過
+          heights[newRow][newCol] < heights[row][col]
+        ) {
+          continue;
+        }
+
+        reachable.add(key);
+        queue.push([newRow, newCol]);
       }
-
-      v1.add(key);
-      q1.push([newRow, newCol]);
     }
-  }
 
-  // 右下 -> 左上
-  const v2 = new Set(); // 拜訪過的節點，同時也作為結果集
-  const q2 = []; // 待處理的節點
-  for (let row = ROW - 1; row >= 0; row--) {
-    q2.push([row, COL - 1]);
-    v2.add(row * COL + COL - 1);
-  }
-  for (let col = COL - 1; col >= 0; col--) {
-    q2.push([ROW - 1, col]);
-    v2.add((ROW - 1) * COL + col);
-  }
-  while (q2.length > 0) {
-    const [row, col] = q2.shift();
+    return reachable;
+  };
 
-    for (const [nr, nc] of DIRECTION) {
-      const newRow = row + nr;
-      const newCol = col + nc;
-      const key = newRow * COL + newCol;
+  // Pacific 起點：左緣（整行）+ 上緣（整列，排除左上角避免重複）
+  const pacificQueue = [];
+  for (let row = 0; row < ROW; row++) pacificQueue.push([row, 0]);
+  for (let col = 1; col < COL; col++) pacificQueue.push([0, col]);
 
-      if (
-        newRow < 0 ||
-        newRow >= ROW ||
-        newCol < 0 ||
-        newCol >= COL ||
-        v2.has(key) ||
-        // 如果新的島嶼高度比鄰居小，代表沒辦法回到出發的邊界，所以跳過
-        heights[newRow][newCol] < heights[row][col]
-      ) {
-        continue;
-      }
+  // Atlantic 起點：右緣（整行）+ 下緣（整列，排除右下角避免重複）
+  const atlanticQueue = [];
+  for (let row = 0; row < ROW; row++) atlanticQueue.push([row, COL - 1]);
+  for (let col = 0; col < COL - 1; col++) atlanticQueue.push([ROW - 1, col]);
 
-      v2.add(key);
-      q2.push([newRow, newCol]);
-    }
-  }
+  const pacific = bfs(pacificQueue);
+  const atlantic = bfs(atlanticQueue);
 
-  // 收集兩個交集(代表可以同時回到兩個邊界的節點)
+  // 取兩個結果集的交集，即同時可抵達 Pacific 與 Atlantic 的節點
   const answers = [];
-
-  for (const key of v1) {
-    if (v2.has(key)) {
-      const row = Math.floor(key / COL);
-      const col = key % COL;
-      answers.push([row, col]);
+  for (const key of pacific) {
+    if (atlantic.has(key)) {
+      answers.push([Math.floor(key / COL), key % COL]);
     }
   }
 
