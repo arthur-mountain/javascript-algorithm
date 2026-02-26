@@ -146,3 +146,5 @@ link: "https://leetcode.com/problems/binary-gap/description/"
 - 複習1(solution2)：2026-02-23 | 耗時：5分鐘 | 獨立完成：是 | 順暢度：卡頓
 
   - 沒有到非常卡頓，但每一步都有自己仔細思考出來
+
+- 複習2(solution2)：2026-02-26 | 耗時：7分鐘 | 獨立完成：是 | 順暢度：流暢
