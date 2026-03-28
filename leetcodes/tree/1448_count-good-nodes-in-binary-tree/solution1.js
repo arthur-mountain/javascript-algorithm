@@ -49,3 +49,29 @@ var goodNodesIteration = function (root) {
 
   return goodNodeCount;
 };
+
+// 2026-03-28 新增中序解法：左右中間判斷
+var goodNodesInorder = function (root) {
+  const helper = (node, max) => {
+    if (node == null) return 0;
+    const leftCount = helper(node.left, Math.max(max, node.val));
+    const currentCount = node.val >= max ? 1 : 0;
+    const rightCount = helper(node.right, Math.max(max, node.val));
+    return leftCount + currentCount + rightCount;
+  };
+
+  return helper(root, -Infinity);
+};
+
+// 2026-03-28 新增後序解法：子樹算完再判斷
+var goodNodesPostorder = function (root) {
+  // postorder count good nodes
+  const helper = (node, max) => {
+    if (node == null) return 0;
+    const leftCount = helper(node.left, Math.max(max, node.val));
+    const rightCount = helper(node.right, Math.max(max, node.val));
+    const currentCount = node.val >= max ? 1 : 0;
+    return leftCount + rightCount + currentCount;
+  };
+  return helper(root, -Infinity);
+};
