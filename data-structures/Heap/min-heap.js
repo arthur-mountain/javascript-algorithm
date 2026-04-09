@@ -54,7 +54,7 @@ class MinHeap extends Heap {
   /**
    * 移除並返回最小元素 - O(log n)
    */
-  extractMin() {
+  extract() {
     if (this.heap.length === 0) return null;
     if (this.heap.length === 1) return this.heap.pop();
 

@@ -42,7 +42,7 @@ class MaxHeap extends Heap {
     }
   }
 
-  extractMax() {
+  extract() {
     if (this.heap.length === 0) return null;
     if (this.heap.length === 1) return this.heap.pop();
 
