@@ -10,7 +10,7 @@
 
   - `searching` - 搜索演算法
 
-  - `sorting` - 排序演算法
+  - `sorting` - 排序演算法。總覽見 [`README.md`](./algorithms/sorting/README.md)；每種排序拆到各自的 `{algo}/` 子目錄（`index.js` 為實作、`README.md` 為講解），統一入口為 [`index.js`](./algorithms/sorting/index.js)。涵蓋 Bubble / Selection / Insertion / Merge / Quick / Heap / Shell / Counting / Radix / Bucket 共 10 種。
 
   - (WIP) `kmp.js` - KMP 字串匹配演算法的實作
 
