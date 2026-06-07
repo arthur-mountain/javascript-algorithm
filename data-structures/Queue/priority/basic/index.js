@@ -17,7 +17,7 @@
  * 空間複雜度：O(n)
  */
 
-const { MinHeap, MaxHeap } = require("../../Heap");
+const { MinHeap, MaxHeap } = require("../../../Heap");
 
 /**
  * 通用 Priority Queue 類別
@@ -291,4 +291,4 @@ class MaxPriorityQueue extends PriorityQueue {
   }
 }
 
-export { PriorityQueue, MinPriorityQueue, MaxPriorityQueue };
+module.exports = { PriorityQueue, MinPriorityQueue, MaxPriorityQueue };
