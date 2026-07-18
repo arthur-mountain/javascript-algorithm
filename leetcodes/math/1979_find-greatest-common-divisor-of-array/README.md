@@ -24,7 +24,9 @@ link: "https://leetcode.com/problems/find-greatest-common-divisor-of-array/descr
 
 - 需要先知道範圍，需要一次遍歷找到陣列中的最大、最小值
 
-- 有了最大、最小值後，從最大值遞減遍歷，找到最大公因數可以整除最大、最小值
+- 有了最大、最小值後，從最小值遞減遍歷（因為 GCD 不可能大於兩數中較小的那一個），找到最大公因數可以整除最大、最小值
+
+  - 候選公因數不可能大於兩數中較小的那一個（也就是 min），所以搜尋範圍可以直接鎖定在 [1, min] 之間
 
 ## 解法總覽
 
@@ -32,19 +34,19 @@ link: "https://leetcode.com/problems/find-greatest-common-divisor-of-array/descr
 
 - **核心策略**：
 
-  先找到最大、最小值，從最大值遞減遍歷找到最大公因數
+  先找到最大、最小值，從最小值遞減遍歷找到最大公因數
 
 - **思路說明**：
 
   1. 先遍歷輸入 nums，找到最大、最小值
 
-  2. 因為要找最大公因數，因此從最大值遞減，找到一個數字能同時整除最大值、最小值中間的最大的公因數
+  2. 因為候選公因數不可能大於兩數中較小的那一個（min），所以只需要在 [1, min] 範圍內搜尋；為了找到「最大」公因數，必須從 min 開始往下遞減檢查，第一個能同時整除 min、max 的數字，就是答案
 
-  補充：fallback 的最大公因數是 1，因為 1 可以整除任何數字
+  補充：fallback 的最大公因數是 1（兩數互質時的保底解）
 
 - **複雜度分析**：
 
-  - 時間複雜度：O(n)
+  - 時間複雜度：O(n + min(nums))（找最大最小值 O(n) + 從 min 遞減搜尋，最壞情況（min 與 max 互質時）要掃到 i = 1，耗費 O(min(nums))）
 
   - 空間複雜度：O(1)
 
@@ -68,7 +70,7 @@ link: "https://leetcode.com/problems/find-greatest-common-divisor-of-array/descr
 
   ***
 
-  - 案例 B：min = 1 — 值域下界觸發最壞時間複雜度
+  - 案例 B：min = 1 — 值域下界觸發提前結束
 
     Input: nums = [1, 1000]
 
@@ -76,7 +78,7 @@ link: "https://leetcode.com/problems/find-greatest-common-divisor-of-array/descr
 
     Expected: 1
 
-    Explain: gcd(1, x) 恆為 1，遞減迴圈必須從 1000 一路檢查到 i = 1 才會 return，驗證此寫法在 min = 1 時退化為 O(max) 的最壞情況
+    Explain: i 從 min = 1 開始遞減，第一次迭代 `min % 1 === 0 && max % 1 === 0` 即成立，立即 return，此案例為 O(1) 的最好情況（提前終止），並非掃到底的最壞情況
 
   ***
 
