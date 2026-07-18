@@ -126,6 +126,36 @@ link: "https://leetcode.com/problems/find-greatest-common-divisor-of-array/descr
 
 - **測試案例**：同 Solution1
 
+### Solution3：
+
+- **核心策略**：
+
+  歐幾里得演算法的遞迴寫法，邏輯與 Solution2 完全相同，差別只在用遞迴取代 while 迴圈
+
+- **思路說明**：
+
+  1. 一樣先找出最大值、最小值
+
+  2. 定義遞迴函式 gcd(a, b)：若 b === 0，回傳 a（base case）；否則回傳 gcd(b, a % b)
+
+  3. 與 Solution2 是同一套輾轉相除法邏輯，差別只在於用遞迴呼叫自己來逼近 base case，而不是用 while 迴圈手動迭代
+
+- **複雜度分析**：
+
+  - 時間複雜度：O(n + log(min(nums)))（與 Solution2 相同）
+
+  - 空間複雜度：O(log(min(nums)))（遞迴呼叫堆疊深度等於輾轉相除法的迭代次數，這是與 Solution2 唯一的複雜度差異）
+
+  - 通過狀態：✅ AC
+
+- **其他備註\(優化方向、特殊限制、問題延伸討論\)**：
+
+  - 本題數值上限僅 1000，遞迴深度非常淺，不會有 stack overflow 風險，但仍是與 Solution2 在空間複雜度上的明確差異點，面試時若被追問通常要能講出這個 trade-off
+
+  - Follow-up 方向：若輸入數值上限拉到極大（如 10^9 以上），迭代版本（Solution2）在空間上會更穩健
+
+- **測試案例**：同 Solution1
+
 ## 學習記錄
 
 首次開始：2026-07-18 01:38:13 PM
